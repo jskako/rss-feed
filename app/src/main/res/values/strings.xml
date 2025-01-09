@@ -3,8 +3,12 @@
 
     <!-- Global -->
     <string name="search">Search</string>
+    <string name="back">Back</string>
 
     <!-- Content descriptions -->
     <string name="menu_content_desc">Menu</string>
     <string name="add_content_desc">Add</string>
+
+    <!-- Screens -->
+    <string name="rss_management_title">RSS Management</string>
 </resources>

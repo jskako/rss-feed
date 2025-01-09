@@ -1,8 +1,9 @@
-package com.jskako.rssfeed.presentation.ui.sections.home
+package com.jskako.rssfeed.presentation.ui.layouts.home
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -22,12 +23,14 @@ import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 
 @Composable
-fun HomeSection(
+fun HomeLayout(
+    navigateToRssManagementScreen: () -> Unit,
     drawerList: List<String>,
     gridList: List<String>
 ) {
     GridDrawer(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         onNavigationContentSearch = {},
         drawerItems = {
             items(drawerList) { item ->
@@ -54,9 +57,7 @@ fun HomeSection(
         },
         drawerTrailingIcon = Icons.Default.Edit,
         drawerTrailingIconContentDesc = R.string.add_content_desc,
-        onDrawerTrailingIconClick = {
-
-        },
+        onDrawerTrailingIconClick = navigateToRssManagementScreen,
         onRefresh = {
 
         }
@@ -67,7 +68,8 @@ fun HomeSection(
 @Composable
 fun HomeSectionPreview() {
     RssFeedTheme {
-        HomeSection(
+        HomeLayout(
+            navigateToRssManagementScreen = {},
             drawerList = emptyList(),
             gridList = emptyList()
         )

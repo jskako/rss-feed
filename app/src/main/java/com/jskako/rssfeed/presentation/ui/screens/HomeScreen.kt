@@ -1,21 +1,31 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
 import androidx.compose.runtime.Composable
-import com.jskako.rssfeed.presentation.ui.sections.home.HomeSection
+import com.jskako.rssfeed.presentation.ui.layouts.home.HomeLayout
+import com.jskako.rssfeed.presentation.ui.navigation.mocks.mockNavigator
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.RssManagementScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navigator: DestinationsNavigator
+) {
 
     val testList = List(100) { "SomeLink" }
 
     when {
         testList.isNotEmpty() -> {
-            HomeSection(
+            HomeLayout(
+                navigateToRssManagementScreen = {
+                    navigator.navigate(
+                        RssManagementScreenDestination()
+                    )
+                },
                 drawerList = testList,
                 gridList = testList
             )
@@ -30,6 +40,8 @@ fun HomeScreen() {
 @Composable
 fun HomeScreenPreview() {
     RssFeedTheme {
-        HomeScreen()
+        HomeScreen(
+            navigator = mockNavigator
+        )
     }
 }
