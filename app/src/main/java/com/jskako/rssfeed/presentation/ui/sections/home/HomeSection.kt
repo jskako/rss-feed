@@ -13,10 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
+import com.jskako.rssfeed.presentation.ui.theme.Padding.l
+import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 
@@ -38,7 +39,7 @@ fun HomeSection(
             items(gridList) { item ->
                 Card(
                     modifier = Modifier
-                        .padding(4.dp)
+                        .padding(xs)
                         .fillMaxWidth()
                 ) {
                     Text(
@@ -46,7 +47,7 @@ fun HomeSection(
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(l)
                     )
                 }
             }
@@ -54,6 +55,9 @@ fun HomeSection(
         drawerTrailingIcon = Icons.Default.Edit,
         drawerTrailingIconContentDesc = R.string.add_content_desc,
         onDrawerTrailingIconClick = {
+
+        },
+        onRefresh = {
 
         }
     )
