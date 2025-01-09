@@ -4,11 +4,13 @@
     <!-- Global -->
     <string name="search">Search</string>
     <string name="back">Back</string>
+    <string name="add">Add</string>
 
     <!-- Content descriptions -->
     <string name="menu_content_desc">Menu</string>
-    <string name="add_content_desc">Add</string>
 
-    <!-- Screens -->
+    <!-- RSS management screen -->
     <string name="rss_management_title">RSS Management</string>
+    <string name="rss_management_add_hint">Add RSS url</string>
+
 </resources>

@@ -18,8 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -36,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.presentation.ui.theme.Padding.l
 import com.jskako.rssfeed.presentation.ui.theme.Padding.m
@@ -59,7 +56,7 @@ fun GridDrawer(
     onGridContentSearch: ((String) -> Unit)? = null,
     navigationIconVisible: Boolean = true,
     drawerTrailingIcon: ImageVector? = null,
-    @StringRes drawerTrailingIconContentDesc: Int? = null,
+    @StringRes drawerTrailingIconContentDescResId: Int? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
     onRefresh: () -> Unit,
     bottomBar: @Composable () -> Unit = {}
@@ -95,15 +92,10 @@ fun GridDrawer(
                                     scope.launch {
                                         onDrawerTrailingIconClick?.invoke()
                                     }
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = it,
-                                    contentDescription = drawerTrailingIconContentDesc?.let {
-                                        stringResource(it)
-                                    }
-                                )
-                            }
+                                },
+                                icon = it,
+                                iconContentDescriptionResId = drawerTrailingIconContentDescResId
+                            )
                         }
                     }
                     LazyColumn { drawerItems() }
@@ -128,13 +120,10 @@ fun GridDrawer(
                                 scope.launch {
                                     drawerState.open()
                                 }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = stringResource(R.string.menu_content_desc)
-                            )
-                        }
+                            },
+                            icon = Icons.Default.Menu,
+                            iconContentDescriptionResId = R.string.menu_content_desc
+                        )
                     }
 
                     onGridContentSearch?.let {

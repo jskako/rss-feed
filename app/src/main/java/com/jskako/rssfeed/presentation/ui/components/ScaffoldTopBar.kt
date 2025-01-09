@@ -4,13 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.zero
@@ -31,16 +27,16 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 @Composable
 fun ScaffoldTopBar(
     modifier: Modifier = Modifier,
-    @StringRes title: Int,
+    @StringRes titleResId: Int,
     onNavigationIconClick: () -> Unit,
     navigationIconId: ImageVector? = Icons.AutoMirrored.Filled.ArrowBack,
-    @StringRes navigationIconContentDescription: Int? = R.string.back,
+    @StringRes navigationIconContentDescriptionResId: Int? = R.string.back,
     topBar: @Composable () -> Unit = {
         CenterAlignedTopAppBar(
             windowInsets = WindowInsets(zero),
             title = {
                 Text(
-                    text = stringResource(title),
+                    text = stringResource(titleResId),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis
@@ -49,18 +45,12 @@ fun ScaffoldTopBar(
             navigationIcon = {
                 navigationIconId?.let {
                     IconButton(
-                        onClick = onNavigationIconClick,
                         modifier = Modifier
-                            .padding(horizontal = s)
-                            .size(48.dp)
-                    ) {
-                        Icon(
-                            imageVector = it,
-                            contentDescription = navigationIconContentDescription?.let {
-                                stringResource(it)
-                            }
-                        )
-                    }
+                            .padding(horizontal = s),
+                        onClick = onNavigationIconClick,
+                        icon = it,
+                        iconContentDescriptionResId = navigationIconContentDescriptionResId
+                    )
                 }
             }
         )
@@ -84,7 +74,7 @@ fun ScaffoldTopBarPreview() {
         ScaffoldTopBar(
             content = {},
             onNavigationIconClick = {},
-            title = R.string.back
+            titleResId = R.string.back
         )
     }
 }

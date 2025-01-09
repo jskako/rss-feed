@@ -3,7 +3,6 @@ package com.jskako.rssfeed.presentation.ui.layouts.home
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -56,7 +55,7 @@ fun HomeLayout(
             }
         },
         drawerTrailingIcon = Icons.Default.Edit,
-        drawerTrailingIconContentDesc = R.string.add_content_desc,
+        drawerTrailingIconContentDescResId = R.string.add,
         onDrawerTrailingIconClick = navigateToRssManagementScreen,
         onRefresh = {
 
