@@ -71,4 +71,15 @@ dependencies {
 
     implementation(libs.compose.destinations)
     ksp(libs.ksp.destinations)
+
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    implementation(libs.koin.android)
+
+    implementation(libs.androidx.work.runtime.ktx)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
