@@ -12,17 +12,17 @@ class RssViewModel(
     private val rssUseCases: RssUseCases
 ) : ViewModel() {
 
-    private val _rssItems = MutableStateFlow<List<RssFeed>>(emptyList())
-    val rssItems: StateFlow<List<RssFeed>> get() = _rssItems
+    private val _rssFeeds = MutableStateFlow<List<RssFeed>>(emptyList())
+    val rssFeeds: StateFlow<List<RssFeed>> get() = _rssFeeds
 
     init {
-        loadRssItems()
+        loadRssFeeds()
     }
 
-    private fun loadRssItems() {
+    private fun loadRssFeeds() {
         viewModelScope.launch {
-            rssUseCases.getRssItems().collect { items ->
-                _rssItems.value = items
+            rssUseCases.getRssFeeds().collect { items ->
+                _rssFeeds.value = items
             }
         }
     }

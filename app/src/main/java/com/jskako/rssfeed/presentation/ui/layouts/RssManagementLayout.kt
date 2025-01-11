@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jskako.rssfeed.R
+import com.jskako.rssfeed.domain.model.RssFeed
 import com.jskako.rssfeed.presentation.ui.components.AddRow
 import com.jskako.rssfeed.presentation.ui.components.DeleteEditRowCard
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar
@@ -19,7 +20,8 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 
 @Composable
 fun RssManagementLayout(
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    rssFeeds: List<RssFeed>
 ) {
 
     val mockedList = List(10) { "1234" }
@@ -62,7 +64,8 @@ fun RssManagementLayout(
 fun RssManagementLayoutPreview() {
     RssFeedTheme {
         RssManagementLayout(
-            navigateBack = {}
+            navigateBack = {},
+            rssFeeds = emptyList()
         )
     }
 }

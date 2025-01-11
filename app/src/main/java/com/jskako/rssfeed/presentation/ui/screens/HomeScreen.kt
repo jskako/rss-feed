@@ -22,7 +22,7 @@ fun HomeScreen(
     viewModel: RssViewModel = koinViewModel()
 ) {
 
-    val rssItems by viewModel.rssItems.collectAsState()
+    val rssItems by viewModel.rssFeeds.collectAsState()
     val gridList = List(100) { "SomeLink" }
 
     when {

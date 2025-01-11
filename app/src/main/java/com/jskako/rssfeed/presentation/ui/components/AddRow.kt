@@ -40,8 +40,8 @@ fun AddRow(
         trailingIcon = {
             IconButton(
                 modifier = Modifier.padding(end = s),
-                isEnabled = enabled,
-                tint = if (enabled) LocalContentColor.current else Color.LightGray,
+                isEnabled = enabled && input.isNotBlank(),
+                tint = if (enabled && input.isNotBlank()) LocalContentColor.current else Color.LightGray,
                 icon = icon,
                 onClick = {
                     onIconClick(input)
