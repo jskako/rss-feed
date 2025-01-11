@@ -1,6 +1,9 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeLayout
 import com.jskako.rssfeed.presentation.ui.navigation.mocks.mockNavigator
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
@@ -19,23 +22,27 @@ fun HomeScreen(
     viewModel: RssViewModel = koinViewModel()
 ) {
 
-    val testList = List(100) { "SomeLink" }
+    val rssItems by viewModel.rssItems.collectAsState()
+    val gridList = List(100) { "SomeLink" }
 
     when {
-        testList.isNotEmpty() -> {
-            HomeLayout(
-                navigateToRssManagementScreen = {
-                    navigator.navigate(
-                        RssManagementScreenDestination()
-                    )
-                },
-                drawerList = testList,
-                gridList = testList
-            )
-        }
+        rssItems.isNotEmpty() -> HomeLayout(
+            navigateToRssManagementScreen = {
+                navigator.navigate(
+                    RssManagementScreenDestination()
+                )
+            },
+            drawerList = rssItems,
+            gridList = gridList
+        )
 
-        else -> {
-        }
+        else -> HomeEmptyLayout(
+            navigateToRssManagementScreen = {
+                navigator.navigate(
+                    RssManagementScreenDestination()
+                )
+            }
+        )
     }
 }
 

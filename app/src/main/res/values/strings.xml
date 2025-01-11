@@ -13,6 +13,7 @@
 
     <!-- Content descriptions -->
     <string name="menu_content_desc">Menu</string>
+    <string name="cat_content_desc">Cat image</string>
 
     <!-- RSS management screen -->
     <string name="rss_management_title">RSS Management</string>
@@ -20,5 +21,9 @@
 
     <!-- DeleteEditRowCard -->
     <string name="delete_desc">Do you really want to proceed with deletion? This action is irreversible.</string>
+
+    <!-- Home -->
+    <string name="rss_empty">Looks like you didn\'t add any rss feed yet.</string>
+    <string name="add_rss_url">Add RSS url</string>
 
 </resources>

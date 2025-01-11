@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.jskako.rssfeed.R
+import com.jskako.rssfeed.domain.model.RssFeed
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.theme.Padding.l
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
@@ -24,7 +25,7 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 @Composable
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
-    drawerList: List<String>,
+    drawerList: List<RssFeed>,
     gridList: List<String>
 ) {
     GridDrawer(
@@ -33,7 +34,7 @@ fun HomeLayout(
         onNavigationContentSearch = {},
         drawerItems = {
             items(drawerList) { item ->
-                Text(item)
+                Text(item.url)
             }
         },
         onGridContentSearch = {},
@@ -68,7 +69,7 @@ fun HomeLayout(
 
 @PreviewLightDark
 @Composable
-fun HomeSectionPreview() {
+fun HomeLayoutPreview() {
     RssFeedTheme {
         HomeLayout(
             navigateToRssManagementScreen = {},
