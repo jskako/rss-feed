@@ -34,7 +34,7 @@ fun HomeLayout(
         onNavigationContentSearch = {},
         drawerItems = {
             items(drawerList) { item ->
-                Text(item.url)
+                Text(item.rss)
             }
         },
         onGridContentSearch = {},

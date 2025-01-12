@@ -1,11 +1,15 @@
 package com.jskako.rssfeed.data.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "rss")
 data class RssEntity(
-    @PrimaryKey val url: String,
+    @PrimaryKey val rss: String,
+    val title: String?,
     val description: String?,
-    val image: ByteArray?
+    val link: String?,
+    @ColumnInfo(name = "last_build_date") val lastBuildDate: String?,
+    @ColumnInfo(name = "image_path") val imagePath: String?
 )

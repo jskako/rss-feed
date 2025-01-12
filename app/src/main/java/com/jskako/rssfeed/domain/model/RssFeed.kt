@@ -1,9 +1,15 @@
 package com.jskako.rssfeed.domain.model
 
-import android.graphics.Bitmap
-
+/**
+ * TODO:
+ * Convert lastBuildDate from String to Date
+ * Convert imagePath to Bitmap
+ */
 data class RssFeed(
-    val url: String,
+    val rss: String,
+    val title: String?,
     val description: String?,
-    val image: Bitmap?
+    val link: String?,
+    val lastBuildDate: String?,
+    val imagePath: String?
 )

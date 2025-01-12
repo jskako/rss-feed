@@ -16,6 +16,6 @@ interface RssDao {
     @Query("SELECT * FROM rss")
     fun getAll(): Flow<List<RssEntity>>
 
-    @Query("DELETE FROM rss WHERE url = :url")
-    suspend fun deleteByUrl(url: String)
+    @Query("DELETE FROM rss WHERE rss = :rss")
+    suspend fun deleteByUrl(rss: String)
 }

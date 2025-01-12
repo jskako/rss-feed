@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d5cc7beb662914deb0f9b7650108c47f",
+    "identityHash": "7e987a1126a564860a03efaf9c6bba40",
     "entities": [
       {
         "tableName": "rss",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`url` TEXT NOT NULL, `description` TEXT, `image` BLOB, PRIMARY KEY(`url`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `title` TEXT, `description` TEXT, `link` TEXT, `last_build_date` TEXT, `image_path` TEXT, PRIMARY KEY(`rss`))",
         "fields": [
           {
-            "fieldPath": "url",
-            "columnName": "url",
+            "fieldPath": "rss",
+            "columnName": "rss",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "description",
@@ -21,26 +27,128 @@
             "notNull": false
           },
           {
-            "fieldPath": "image",
-            "columnName": "image",
-            "affinity": "BLOB",
+            "fieldPath": "link",
+            "columnName": "link",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastBuildDate",
+            "columnName": "last_build_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imagePath",
+            "columnName": "image_path",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "url"
+            "rss"
           ]
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "rss_item_entity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `list` TEXT NOT NULL, `description` TEXT NOT NULL, `image_paths` TEXT NOT NULL, `hasBeenRead` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "guid",
+            "columnName": "guid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rss",
+            "columnName": "rss",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updateDate",
+            "columnName": "update_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expiresDate",
+            "columnName": "expires_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "list",
+            "columnName": "list",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imagePaths",
+            "columnName": "image_paths",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasBeenRead",
+            "columnName": "hasBeenRead",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "guid"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_rss_item_entity_rss",
+            "unique": false,
+            "columnNames": [
+              "rss"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rss_item_entity_rss` ON `${TABLE_NAME}` (`rss`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "rss",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "rss"
+            ],
+            "referencedColumns": [
+              "rss"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd5cc7beb662914deb0f9b7650108c47f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7e987a1126a564860a03efaf9c6bba40')"
     ]
   }
 }
