@@ -1,6 +1,6 @@
-package com.jskako.rssfeed.data.mapper
+package com.jskako.rssfeed.data.local.mapper
 
-import com.jskako.rssfeed.data.model.RssEntity
+import com.jskako.rssfeed.data.local.models.RssEntity
 import com.jskako.rssfeed.domain.model.RssFeed
 
 fun RssEntity.toRssItem(): RssFeed {

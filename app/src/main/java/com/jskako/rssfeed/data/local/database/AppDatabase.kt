@@ -3,9 +3,9 @@ package com.jskako.rssfeed.data.local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.jskako.rssfeed.data.local.dao.RssDao
-import com.jskako.rssfeed.data.model.RssEntity
-import com.jskako.rssfeed.data.model.RssItemEntity
+import com.jskako.rssfeed.data.local.dao.RssEntityDao
+import com.jskako.rssfeed.data.local.models.RssEntity
+import com.jskako.rssfeed.data.local.models.RssItemEntity
 
 @Database(
     entities = [RssEntity::class, RssItemEntity::class],
@@ -14,7 +14,7 @@ import com.jskako.rssfeed.data.model.RssItemEntity
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun rssDao(): RssDao
+    abstract fun rssDao(): RssEntityDao
 
     companion object {
         const val DATABASE_NAME = "rss_feed_db"

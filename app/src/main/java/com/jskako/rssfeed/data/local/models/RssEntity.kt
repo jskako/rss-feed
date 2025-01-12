@@ -1,4 +1,4 @@
-package com.jskako.rssfeed.data.model
+package com.jskako.rssfeed.data.local.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
