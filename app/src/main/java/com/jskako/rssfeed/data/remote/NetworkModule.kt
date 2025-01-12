@@ -11,7 +11,7 @@ import io.ktor.serialization.kotlinx.xml.xml
 import nl.adaptivity.xmlutil.XmlDeclMode
 import nl.adaptivity.xmlutil.serialization.XML
 
-object RssNetworkModule {
+object NetworkModule {
 
     fun provideRssHttpClient(
         networkTimeout: NetworkTimeout = NetworkTimeout(),
