@@ -4,12 +4,12 @@ import com.jskako.rssfeed.data.local.dao.RssEntityDao
 import com.jskako.rssfeed.data.local.mapper.toRssEntity
 import com.jskako.rssfeed.data.local.mapper.toRssItem
 import com.jskako.rssfeed.domain.model.RssFeed
-import com.jskako.rssfeed.domain.repository.RssRepository
+import com.jskako.rssfeed.domain.repository.RssFeedRepository
 import kotlinx.coroutines.flow.map
 
-class RssEntityRepositoryImpl(
+class RssFeedRepositoryImpl(
     private val rssEntityDao: RssEntityDao
-) : RssRepository {
+) : RssFeedRepository {
 
     override suspend fun insertRss(rssFeed: RssFeed) =
         rssEntityDao.insertRss(rssFeed.toRssEntity())

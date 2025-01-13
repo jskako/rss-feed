@@ -4,5 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RssChannel(
-    val items: List<RssItemDto>
+    val title: String,
+    val link: String?,
+    val description: String?,
+    val lastBuildDate: String?,
+    val item: List<RssItemDto>
 )

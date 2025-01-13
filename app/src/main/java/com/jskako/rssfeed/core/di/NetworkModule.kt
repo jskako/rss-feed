@@ -1,11 +1,16 @@
 package com.jskako.rssfeed.core.di
 
-import com.jskako.rssfeed.data.remote.RssApi
+import com.jskako.rssfeed.data.local.repository.RssFeedRepositoryImpl
+import com.jskako.rssfeed.data.remote.api.RssApi
 import com.jskako.rssfeed.data.remote.RssNetworkModule
+import com.jskako.rssfeed.data.remote.repository.RssApiRepositoryImpl
+import com.jskako.rssfeed.domain.repository.RssApiRepository
+import com.jskako.rssfeed.domain.repository.RssFeedRepository
 import org.koin.dsl.module
 
 val networkModule = module {
 
     single { RssNetworkModule.provideRssHttpClient() }
+    single<RssApiRepository> { RssApiRepositoryImpl(get()) }
     single { RssApi(get()) }
 }
