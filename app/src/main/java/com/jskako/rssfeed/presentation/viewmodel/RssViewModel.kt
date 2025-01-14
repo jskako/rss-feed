@@ -32,8 +32,11 @@ class RssViewModel(
     fun testFetch() {
         viewModelScope.launch {
             apiUseCases.fetchRssFeeds(
-                link = "https://abcnews.go.com/abcnews/usheadlines"
+                link = TEST_1
             )
         }
     }
 }
+
+private const val TEST_1 = "https://news.yahoo.com/rss/us"
+private const val TEST_2 = "https://abcnews.go.com/abcnews/usheadlines"
