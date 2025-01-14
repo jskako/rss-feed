@@ -43,9 +43,6 @@ private fun RssFeedApp() {
         DestinationsNavHost(
             modifier = Modifier.padding(paddingValues),
             navGraph = NavGraphs.root,
-            dependenciesContainerBuilder = {
-                //dependency(viewModel)
-            },
             navController = rememberNavController(),
             engine = navHostEngine
         )

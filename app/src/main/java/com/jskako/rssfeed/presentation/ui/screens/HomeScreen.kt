@@ -1,13 +1,11 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeLayout
-import com.jskako.rssfeed.presentation.ui.navigation.mocks.mockNavigator
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 import com.jskako.rssfeed.presentation.viewmodel.NetworkViewModel
@@ -60,8 +58,10 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     RssFeedTheme {
-        HomeScreen(
-            navigator = mockNavigator
+        HomeLayout(
+            navigateToRssManagementScreen = {},
+            drawerList = emptyList(),
+            gridList = emptyList()
         )
     }
 }
