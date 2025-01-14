@@ -2,7 +2,7 @@ package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jskako.rssfeed.domain.model.RssFeed
+import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.feed.RssUseCases
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +14,8 @@ class RssViewModel(
     private val rssUseCases: RssUseCases
 ) : ViewModel() {
 
-    private val _rssFeeds = MutableStateFlow<List<RssFeed>>(emptyList())
-    val rssFeeds: StateFlow<List<RssFeed>> get() = _rssFeeds
+    private val _rssFeeds = MutableStateFlow<List<RssChannel>>(emptyList())
+    val rssChannels: StateFlow<List<RssChannel>> get() = _rssFeeds
 
     init {
         loadRssFeeds()
@@ -32,7 +32,7 @@ class RssViewModel(
     fun testFetch() {
         viewModelScope.launch {
             apiUseCases.fetchRssFeeds(
-                link = "https://news.yahoo.com/rss/us"
+                link = "https://abcnews.go.com/abcnews/usheadlines"
             )
         }
     }

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.jskako.rssfeed.R
-import com.jskako.rssfeed.domain.model.RssFeed
+import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.theme.Padding.l
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
@@ -25,7 +25,7 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 @Composable
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
-    drawerList: List<RssFeed>,
+    drawerList: List<RssChannel>,
     gridList: List<String>
 ) {
     GridDrawer(

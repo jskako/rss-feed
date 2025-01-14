@@ -1,7 +1,7 @@
 package com.jskako.rssfeed.domain.repository
 
-import com.jskako.rssfeed.data.remote.models.RssResponseDto
+import com.jskako.rssfeed.domain.model.RssResponse
 
 interface RssApiRepository {
-    suspend fun getRssFeed(link: String): RssResponseDto?
+    suspend fun getRssFeed(link: String): RssResponse?
 }

@@ -9,7 +9,7 @@ data class RssChannelDto(
     @JsonProperty("link") val link: String?,
     @JsonProperty("description") val description: String?,
     @JsonProperty("lastBuildDate") val lastBuildDate: String?,
-    @JsonProperty("image") val rssImageDto: RssImageDto?,
+    @JsonProperty("image") val image: RssImageDto?,
     @JsonProperty("item") val item: List<RssItemDto> = emptyList()
 )
 

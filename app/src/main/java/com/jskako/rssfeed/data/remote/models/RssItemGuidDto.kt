@@ -6,8 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RssItemGuidDto(
-    @JsonProperty("isPermaLink") val isPermaLink: String?,
-    @JsonProperty("guid") var guid: String? = null
+    @JsonProperty("guid") var guid: String
 ) {
     @JsonAnySetter
     fun setAdditionalProperty(key: String, value: String) {

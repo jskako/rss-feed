@@ -23,7 +23,7 @@ fun HomeScreen(
     viewModel: RssViewModel = koinViewModel()
 ) {
 
-    val rssItems by viewModel.rssFeeds.collectAsState()
+    val rssItems by viewModel.rssChannels.collectAsState()
     val gridList = List(100) { "SomeLink" }
 
     LaunchedEffect(Unit) {

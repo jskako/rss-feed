@@ -20,13 +20,13 @@ fun RssManagementScreen(
     viewModel: RssViewModel = koinViewModel()
 ) {
 
-    val rssFeeds by viewModel.rssFeeds.collectAsState()
+    val rssChannels by viewModel.rssChannels.collectAsState()
 
     RssManagementLayout(
         navigateBack = {
             navigator.navigateUp()
         },
-        rssFeeds = rssFeeds
+        rssChannels = rssChannels
     )
 }
 
