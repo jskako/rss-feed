@@ -1,6 +1,7 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
@@ -24,6 +25,10 @@ fun HomeScreen(
 
     val rssItems by viewModel.rssFeeds.collectAsState()
     val gridList = List(100) { "SomeLink" }
+
+    LaunchedEffect(Unit) {
+        viewModel.testFetch()
+    }
 
     when {
         rssItems.isNotEmpty() -> HomeLayout(

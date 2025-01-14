@@ -85,6 +85,11 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.gson)
+
+    implementation(libs.jackson.core)
+    implementation(libs.jackson.dataformat.xml)
+    implementation(libs.jackson.module.kotlin)
+    implementation(libs.stax.api)
 }
 
 ksp {

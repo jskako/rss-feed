@@ -3,7 +3,7 @@ package com.jskako.rssfeed.data.remote.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MediaContent(
+data class RssMediaContent(
     val url: String,
     val type: String? = null,
     val medium: String? = null,

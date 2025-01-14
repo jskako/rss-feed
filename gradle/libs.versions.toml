@@ -2,6 +2,7 @@
 agp = "8.8.0"
 coilCompose = "3.0.4"
 gson = "2.11.0"
+jackson = "2.18.2"
 koinAndroid = "4.0.1"
 kotlin = "2.0.21"
 ksp = "2.0.21-1.0.28"
@@ -17,6 +18,7 @@ mockk = "1.13.13"
 kotlinx-coroutines-test = "1.9.0"
 destinations = "2.1.0-beta14"
 roomRuntime = "2.6.1"
+staxApi = "1.0-2"
 workRuntimeKtx = "2.10.0"
 serialization = "2.0.21"
 
@@ -30,6 +32,9 @@ androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 koin-android = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
@@ -53,6 +58,7 @@ ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 compose-destinations = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "destinations" }
 ksp-destinations = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "destinations" }
+stax-api = { module = "javax.xml.stream:stax-api", version.ref = "staxApi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

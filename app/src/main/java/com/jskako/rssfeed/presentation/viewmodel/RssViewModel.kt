@@ -32,7 +32,7 @@ class RssViewModel(
     fun testFetch() {
         viewModelScope.launch {
             apiUseCases.fetchRssFeeds(
-                link = "https://feeds.nbcnews.com/nbcnews/public/world"
+                link = "https://news.yahoo.com/rss/us"
             )
         }
     }

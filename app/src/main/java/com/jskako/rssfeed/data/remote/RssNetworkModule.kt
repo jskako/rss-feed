@@ -27,7 +27,7 @@ object RssNetworkModule {
                     format = XML {
                         xmlDeclMode = XmlDeclMode.Charset
                     },
-                    contentType = ContentType.Application.Rss
+                    contentType = ContentType.Text.Xml
                 )
             }
 
