@@ -7,7 +7,9 @@ import com.jskako.rssfeed.data.remote.mapper.toRssResponse
 import com.jskako.rssfeed.data.remote.models.RssResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
+import io.ktor.client.request.head
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 
 class RssApi(private val client: HttpClient) {
 
@@ -20,5 +22,13 @@ class RssApi(private val client: HttpClient) {
     }.getOrElse { e ->
         Log.e("RssApi", "Failed to fetch RSS", e)
         null
+    }
+
+    suspend fun isUrlReachable(link: String): Boolean {
+        return runCatching {
+            client.head(link).status == HttpStatusCode.OK
+        }.getOrElse {
+            false
+        }
     }
 }

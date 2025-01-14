@@ -14,8 +14,8 @@ class RssApp : Application() {
         super.onCreate()
 
         startKoin {
-            androidLogger()
             androidContext(this@RssApp)
+            androidLogger()
             modules(databaseModule, useCasesModule, viewModelsModule, networkModule)
         }
     }

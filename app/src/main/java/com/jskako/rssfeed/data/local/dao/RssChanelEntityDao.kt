@@ -4,18 +4,18 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.jskako.rssfeed.data.local.models.RssEntity
+import com.jskako.rssfeed.data.local.models.RssChannelEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RssEntityDao {
+interface RssChanelEntityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRss(rss: RssEntity)
+    suspend fun insertRss(rss: RssChannelEntity)
 
-    @Query("SELECT * FROM rss")
-    fun getAll(): Flow<List<RssEntity>>
+    @Query("SELECT * FROM rss_channel")
+    fun getAll(): Flow<List<RssChannelEntity>>
 
-    @Query("DELETE FROM rss WHERE rss = :rss")
+    @Query("DELETE FROM rss_channel WHERE rss = :rss")
     suspend fun deleteByUrl(rss: String)
 }

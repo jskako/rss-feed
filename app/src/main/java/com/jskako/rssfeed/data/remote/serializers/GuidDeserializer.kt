@@ -10,7 +10,9 @@ class GuidDeserializer : JsonDeserializer<String>() {
         val node: JsonNode = p.codec.readTree(p)
         return when {
             node.isTextual -> node.asText()
-            node.isObject -> node[""]?.asText() ?: throw IllegalArgumentException("Invalid guid object format")
+            node.isObject -> node[""]?.asText()
+                ?: throw IllegalArgumentException("Invalid guid object format")
+
             else -> throw IllegalArgumentException("Unsupported guid format")
         }
     }

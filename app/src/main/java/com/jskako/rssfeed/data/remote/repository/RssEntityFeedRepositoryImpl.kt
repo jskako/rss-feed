@@ -11,4 +11,8 @@ class RssApiRepositoryImpl(
     override suspend fun getRssFeed(link: String): RssResponse? {
         return rssApi.fetchRss(link)
     }
+
+    override suspend fun isUrlReachable(link: String): Boolean {
+        return rssApi.isUrlReachable(link)
+    }
 }

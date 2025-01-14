@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7e987a1126a564860a03efaf9c6bba40",
+    "identityHash": "b965b7982d0f72bbeba047d0a091aa80",
     "entities": [
       {
-        "tableName": "rss",
+        "tableName": "rss_channel",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `title` TEXT, `description` TEXT, `link` TEXT, `last_build_date` TEXT, `image_path` TEXT, PRIMARY KEY(`rss`))",
         "fields": [
           {
@@ -55,8 +55,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "rss_item_entity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `list` TEXT NOT NULL, `description` TEXT NOT NULL, `image_paths` TEXT NOT NULL, `hasBeenRead` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "rss_item",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `list` TEXT NOT NULL, `description` TEXT NOT NULL, `image_paths` TEXT NOT NULL, `hasBeenRead` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "guid",
@@ -121,18 +121,120 @@
         },
         "indices": [
           {
-            "name": "index_rss_item_entity_rss",
+            "name": "index_rss_item_rss",
             "unique": false,
             "columnNames": [
               "rss"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_rss_item_entity_rss` ON `${TABLE_NAME}` (`rss`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rss_item_rss` ON `${TABLE_NAME}` (`rss`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "rss",
+            "table": "rss_channel",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "rss"
+            ],
+            "referencedColumns": [
+              "rss"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "rss_item_info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `isFavorite` INTEGER NOT NULL, `hasBeenRead` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`guid`) REFERENCES `rss_item`(`guid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "guid",
+            "columnName": "guid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasBeenRead",
+            "columnName": "hasBeenRead",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "guid"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_rss_item_info_guid",
+            "unique": false,
+            "columnNames": [
+              "guid"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rss_item_info_guid` ON `${TABLE_NAME}` (`guid`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "rss_item",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "guid"
+            ],
+            "referencedColumns": [
+              "guid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "rss_channel_info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `onWatchList` INTEGER NOT NULL, PRIMARY KEY(`rss`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "rss",
+            "columnName": "rss",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "onWatchList",
+            "columnName": "onWatchList",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "rss"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_rss_channel_info_rss",
+            "unique": false,
+            "columnNames": [
+              "rss"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rss_channel_info_rss` ON `${TABLE_NAME}` (`rss`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "rss_channel",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -148,7 +250,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7e987a1126a564860a03efaf9c6bba40')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b965b7982d0f72bbeba047d0a091aa80')"
     ]
   }
 }

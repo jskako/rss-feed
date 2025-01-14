@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "rss")
-data class RssEntity(
+@Entity(tableName = "rss_channel")
+data class RssChannelEntity(
     @PrimaryKey val rss: String,
     val title: String?,
     val description: String?,
