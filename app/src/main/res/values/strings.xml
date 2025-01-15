@@ -31,4 +31,7 @@
     <string name="state_done_success">RSS has been added</string>
     <string name="state_done_failure">Something went wrong while adding RSS</string>
 
+    <!-- Banners -->
+    <string name="offline_mode_banner">Application is working in offline mode with limited functionalities.</string>
+
 </resources>

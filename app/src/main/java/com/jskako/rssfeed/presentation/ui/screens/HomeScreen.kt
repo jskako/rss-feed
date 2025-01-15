@@ -1,9 +1,14 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.jskako.rssfeed.R
+import com.jskako.rssfeed.presentation.ui.components.InAppBanner
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
@@ -33,24 +38,33 @@ fun HomeScreen(
         viewModel.testFetch()
     }
 
-    when {
-        rssItems.isNotEmpty() -> HomeLayout(
-            navigateToRssManagementScreen = {
-                navigator.navigate(
-                    RssManagementScreenDestination()
-                )
-            },
-            drawerList = rssItems,
-            gridList = gridList
+    Column {
+        InAppBanner(
+            isVisible = !isConnected,
+            messageResId = R.string.offline_mode_banner,
+            icon = Icons.Default.Warning
         )
 
-        else -> HomeEmptyLayout(
-            navigateToRssManagementScreen = {
-                navigator.navigate(
-                    RssManagementScreenDestination()
-                )
-            }
-        )
+        when {
+            rssItems.isNotEmpty() -> HomeLayout(
+                navigateToRssManagementScreen = {
+                    navigator.navigate(
+                        RssManagementScreenDestination()
+                    )
+                },
+                drawerList = rssItems,
+                gridList = gridList
+            )
+
+            else -> HomeEmptyLayout(
+                isConnected = isConnected,
+                navigateToRssManagementScreen = {
+                    navigator.navigate(
+                        RssManagementScreenDestination()
+                    )
+                }
+            )
+        }
     }
 }
 

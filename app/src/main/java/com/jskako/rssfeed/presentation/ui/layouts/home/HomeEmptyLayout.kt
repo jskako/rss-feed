@@ -25,6 +25,7 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 
 @Composable
 fun HomeEmptyLayout(
+    isConnected: Boolean,
     navigateToRssManagementScreen: () -> Unit
 ) {
     Box(
@@ -50,6 +51,7 @@ fun HomeEmptyLayout(
             )
 
             Button(
+                enabled = isConnected,
                 text = stringResource(R.string.add_rss_url),
                 onClick = { navigateToRssManagementScreen() }
             )
@@ -62,6 +64,7 @@ fun HomeEmptyLayout(
 fun HomeEmptyLayoutPreview() {
     RssFeedTheme {
         HomeEmptyLayout(
+            isConnected = true,
             navigateToRssManagementScreen = {}
         )
     }
