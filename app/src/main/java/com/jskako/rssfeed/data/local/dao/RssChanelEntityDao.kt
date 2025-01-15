@@ -18,4 +18,10 @@ interface RssChanelEntityDao {
 
     @Query("DELETE FROM rss_channel WHERE rss = :rss")
     suspend fun deleteByUrl(rss: String)
+
+    @Query("SELECT * FROM rss_channel WHERE rss = :rss")
+    suspend fun get(rss: String): RssChannelEntity?
+
+    @Query("SELECT last_build_date FROM rss_channel WHERE rss = :rss")
+    suspend fun getLastBuildDate(rss: String): String?
 }

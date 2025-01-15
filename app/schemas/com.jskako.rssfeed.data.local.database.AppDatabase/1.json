@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b965b7982d0f72bbeba047d0a091aa80",
+    "identityHash": "86946883da2daa12a422fd0146918ec5",
     "entities": [
       {
         "tableName": "rss_channel",
@@ -56,7 +56,7 @@
       },
       {
         "tableName": "rss_item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `list` TEXT NOT NULL, `description` TEXT NOT NULL, `image_paths` TEXT NOT NULL, `hasBeenRead` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT NOT NULL, `expires_date` TEXT, `list` TEXT NOT NULL, `description` TEXT NOT NULL, `image_paths` TEXT NOT NULL, `hasBeenRead` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "guid",
@@ -80,7 +80,7 @@
             "fieldPath": "updateDate",
             "columnName": "update_date",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "expiresDate",
@@ -200,7 +200,7 @@
       },
       {
         "tableName": "rss_channel_info",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `onWatchList` INTEGER NOT NULL, PRIMARY KEY(`rss`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `onWatchList` INTEGER NOT NULL, `customTitle` TEXT NOT NULL, PRIMARY KEY(`rss`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "rss",
@@ -212,6 +212,12 @@
             "fieldPath": "onWatchList",
             "columnName": "onWatchList",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customTitle",
+            "columnName": "customTitle",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -250,7 +256,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b965b7982d0f72bbeba047d0a091aa80')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86946883da2daa12a422fd0146918ec5')"
     ]
   }
 }

@@ -33,7 +33,7 @@ class RssViewModel(
         }
     }
 
-    fun addRssFeed(rssLink: String) = viewModelScope.launch {
+    fun fetchRssFeed(rssLink: String) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
         runCatching {
             if (!apiUseCases.isUrlReachable(rssLink)) {
@@ -43,7 +43,6 @@ class RssViewModel(
             val feeds = apiUseCases.fetchRssFeeds(link = rssLink)
                 ?: throw Exception("Failed to fetch feeds")
 
-            // Add feeds to the database
             addToDatabase(feeds = feeds)
         }.onSuccess {
             _addingProcessState.value = AddingProcessState.Done(
@@ -66,6 +65,7 @@ class RssViewModel(
          * if channel has newer date add items but check date also
          * if channel doesn't exist add all items
          */
+
     }
 
     fun testFetch() {

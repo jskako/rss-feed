@@ -22,7 +22,7 @@ data class RssItemEntity(
     @PrimaryKey val guid: String,
     val rss: String,
     val title: String?,
-    @ColumnInfo(name = "update_date") val updateDate: String?,
+    @ColumnInfo(name = "update_date") val updateDate: String,
     @ColumnInfo(name = "expires_date") val expiresDate: String?,
     val list: String,
     val description: String,

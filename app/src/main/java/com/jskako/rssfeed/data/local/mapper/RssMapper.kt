@@ -11,7 +11,7 @@ fun RssChannelEntity.toRssChannel(): RssChannel {
         title = this.title,
         description = this.description,
         link = this.link,
-        lastBuildDate = this.lastBuildDate.let { Instant.parse(it) },
+        lastBuildDate = this.lastBuildDate?.let { Instant.parse(it) },
         imagePath = this.imagePath
     )
 }

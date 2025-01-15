@@ -21,4 +21,12 @@ class RssChannelRepositoryImpl(
     override suspend fun deleteRssByUrl(url: String) {
         rssChanelEntityDao.deleteByUrl(url)
     }
+
+    override suspend fun get(url: String): RssChannel? {
+        return rssChanelEntityDao.get(url)?.toRssChannel()
+    }
+
+    override suspend fun getLastBuildDate(url: String): String? {
+        return rssChanelEntityDao.getLastBuildDate(url)
+    }
 }

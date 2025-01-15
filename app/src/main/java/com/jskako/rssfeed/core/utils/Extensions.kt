@@ -10,5 +10,3 @@ fun Instant.toFormattedString(zoneId: ZoneId = ZoneId.systemDefault()): String {
 
     return zonedDateTime.format(dateFormatter)
 }
-
-private const val LONG_DATE_PATTERN = "dd.MM.yyyy HH:mm:ss"
