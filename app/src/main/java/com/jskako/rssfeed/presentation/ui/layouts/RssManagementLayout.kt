@@ -21,10 +21,9 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 @Composable
 fun RssManagementLayout(
     navigateBack: () -> Unit,
-    rssChannels: List<RssChannel>
+    rssChannels: List<RssChannel>,
+    onAddRssChannel: (String) -> Unit
 ) {
-
-    val mockedList = List(10) { "1234" }
 
     ScaffoldTopBar(
         titleResId = R.string.rss_management_title,
@@ -41,15 +40,13 @@ fun RssManagementLayout(
                 modifier = Modifier
                     .fillMaxWidth(),
                 hintResId = R.string.rss_management_add_hint,
-                onIconClick = {
-
-                }
+                onIconClick = onAddRssChannel
             )
 
             LazyColumn {
-                items(mockedList) { item ->
+                items(rssChannels) { item ->
                     DeleteEditRowCard(
-                        text = item,
+                        text = item.rss,
                         onEditConfirmed = {},
                         onDeleteConfirmed = {}
                     )
@@ -65,7 +62,8 @@ fun RssManagementLayoutPreview() {
     RssFeedTheme {
         RssManagementLayout(
             navigateBack = {},
-            rssChannels = emptyList()
+            rssChannels = emptyList(),
+            onAddRssChannel = {}
         )
     }
 }

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.presentation.ui.layouts.RssManagementLayout
-import com.jskako.rssfeed.presentation.ui.navigation.mocks.mockNavigator
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 import com.jskako.rssfeed.presentation.viewmodel.RssViewModel
@@ -26,16 +25,21 @@ fun RssManagementScreen(
         navigateBack = {
             navigator.navigateUp()
         },
-        rssChannels = rssChannels
+        rssChannels = rssChannels,
+        onAddRssChannel = { rssLink ->
+            viewModel.fetchRssFeed(rssLink = rssLink)
+        }
     )
 }
 
 @PreviewLightDark
 @Composable
-fun RssManagementScreenPreview() {
+fun RssManagementLayoutPreview() {
     RssFeedTheme {
-        RssManagementScreen(
-            navigator = mockNavigator
+        RssManagementLayout(
+            navigateBack = {},
+            rssChannels = emptyList(),
+            onAddRssChannel = {}
         )
     }
 }

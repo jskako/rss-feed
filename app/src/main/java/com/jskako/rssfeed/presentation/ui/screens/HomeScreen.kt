@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.R
@@ -33,10 +32,6 @@ fun HomeScreen(
     val isConnected by networkViewModel.isConnected.collectAsState()
 
     val gridList = List(100) { "SomeLink" }
-
-    LaunchedEffect(Unit) {
-        viewModel.testFetch()
-    }
 
     Column {
         InAppBanner(

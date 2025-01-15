@@ -6,6 +6,7 @@ import com.jskako.rssfeed.data.local.mapper.toRssEntity
 import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.domain.repository.RssChannelRepository
 import kotlinx.coroutines.flow.map
+import java.time.Instant
 
 class RssChannelRepositoryImpl(
     private val rssChanelEntityDao: RssChanelEntityDao
@@ -26,7 +27,7 @@ class RssChannelRepositoryImpl(
         return rssChanelEntityDao.get(url)?.toRssChannel()
     }
 
-    override suspend fun getLastBuildDate(url: String): String? {
-        return rssChanelEntityDao.getLastBuildDate(url)
+    override suspend fun getLastBuildDate(url: String): Instant? {
+        return rssChanelEntityDao.getLastBuildDate(url)?.let { Instant.parse(it) }
     }
 }
