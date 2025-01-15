@@ -10,7 +10,7 @@ import java.time.Instant
 
 fun RssResponseDto.toRssResponse(rss: String) = RssResponse(
     rssChannel = this.channel.toRssChannel(rss = rss),
-    rssItem = this.channel.item.toRssItems(rss = rss)
+    rssItems = this.channel.item.toRssItems(rss = rss)
 )
 
 fun RssChannelDto.toRssChannel(rss: String): RssChannel = RssChannel(

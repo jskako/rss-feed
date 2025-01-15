@@ -22,7 +22,8 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 fun RssManagementLayout(
     navigateBack: () -> Unit,
     rssChannels: List<RssChannel>,
-    onAddRssChannel: (String) -> Unit
+    onAddRssChannel: (String) -> Unit,
+    onDelete: (String) -> Unit
 ) {
 
     ScaffoldTopBar(
@@ -44,11 +45,13 @@ fun RssManagementLayout(
             )
 
             LazyColumn {
-                items(rssChannels) { item ->
+                items(rssChannels) { channel ->
                     DeleteEditRowCard(
-                        text = item.rss,
+                        text = channel.rss,
                         onEditConfirmed = {},
-                        onDeleteConfirmed = {}
+                        onDeleteConfirmed = {
+                            onDelete(channel.rss)
+                        }
                     )
                 }
             }
@@ -63,7 +66,8 @@ fun RssManagementLayoutPreview() {
         RssManagementLayout(
             navigateBack = {},
             rssChannels = emptyList(),
-            onAddRssChannel = {}
+            onAddRssChannel = {},
+            onDelete = {}
         )
     }
 }
