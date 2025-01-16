@@ -49,7 +49,7 @@ fun GridDrawer(
     modifier: Modifier = Modifier,
     drawerItems: LazyListScope.() -> Unit,
     gridItems: LazyGridScope.() -> Unit,
-    onNavigationContentSearch: ((String) -> Unit)? = null,
+    onDrawerContentSearch: ((String) -> Unit)? = null,
     onGridContentSearch: ((String) -> Unit)? = null,
     drawerTrailingIcon: ImageVector? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
@@ -74,7 +74,7 @@ fun GridDrawer(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        onNavigationContentSearch?.let {
+                        onDrawerContentSearch?.let {
                             SearchText(
                                 onSearch = it
                             )

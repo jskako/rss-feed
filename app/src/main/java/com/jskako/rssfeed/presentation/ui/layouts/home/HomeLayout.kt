@@ -40,6 +40,15 @@ fun HomeLayout(
     rssChannels: List<RssChannel>,
 ) {
 
+    var itemsSearchText by remember { mutableStateOf("") }
+    var channelsSearchText by remember { mutableStateOf("") }
+
+    val filteredChannels = rssChannels.filter { channel ->
+        channelsSearchText.isEmpty() ||
+                channel.title?.contains(channelsSearchText, ignoreCase = true) == true ||
+                channel.rss.contains(channelsSearchText, ignoreCase = true)
+    }
+
     var selectedChannel by remember { mutableStateOf(rssChannels.first()) }
 
     /*val rssItems by produceState<List<RssItem>?>(initialValue = null, selectedChannel) {
@@ -51,9 +60,11 @@ fun HomeLayout(
     GridDrawer(
         modifier = Modifier
             .fillMaxSize(),
-        onNavigationContentSearch = {},
+        onDrawerContentSearch = {
+            channelsSearchText = it
+        },
         drawerItems = {
-            items(rssChannels) { item ->
+            items(filteredChannels) { item ->
                 DrawerCard(
                     text = item.title ?: item.rss,
                     leadingIcon = item.imagePath?.let {
@@ -91,7 +102,9 @@ fun HomeLayout(
                 )
             }
         },
-        onGridContentSearch = {},
+        onGridContentSearch = {
+            itemsSearchText = it
+        },
         gridItems = {
             items(gridList) { item ->
                 Card(
