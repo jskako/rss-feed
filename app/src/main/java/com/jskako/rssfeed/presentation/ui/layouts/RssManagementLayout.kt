@@ -9,7 +9,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.presentation.ui.components.AddRow
@@ -24,9 +29,13 @@ fun RssManagementLayout(
     navigateBack: () -> Unit,
     snackbarHostState: SnackbarHostState? = null,
     rssChannels: List<RssChannel>,
-    onAddRssChannel: (String) -> Unit,
+    fetchRss: (rssLink: String, runRssExistCheck: Boolean, onDone: () -> Unit) -> Unit,
     onDelete: (String) -> Unit
 ) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var isRunning by remember { mutableStateOf(false) }
+    var input by remember { mutableStateOf("") }
 
     ScaffoldTopBar(
         titleResId = R.string.rss_management_title,
@@ -43,8 +52,20 @@ fun RssManagementLayout(
             AddRow(
                 modifier = Modifier
                     .fillMaxWidth(),
+                input = input,
+                isRunning = isRunning,
+                onInputChanged = {
+                    input = it
+                },
                 hintResId = R.string.rss_management_add_hint,
-                onIconClick = onAddRssChannel
+                onIconClick = {
+                    isRunning = true
+                    keyboardController?.hide()
+                    fetchRss(it, true) {
+                        input = ""
+                        isRunning = false
+                    }
+                }
             )
 
             LazyColumn {
@@ -69,8 +90,8 @@ fun RssManagementLayoutPreview() {
         RssManagementLayout(
             navigateBack = {},
             rssChannels = emptyList(),
-            onAddRssChannel = {},
-            onDelete = {}
+            onDelete = {},
+            fetchRss = { _, _, _ -> }
         )
     }
 }

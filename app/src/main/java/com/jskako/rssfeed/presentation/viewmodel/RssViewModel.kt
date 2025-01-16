@@ -34,12 +34,13 @@ class RssViewModel(
 
     fun fetchRssFeed(
         rssLink: String,
-        checkRssExist: Boolean = true,
+        runRssExistCheck: Boolean = true,
+        onDone: () -> Unit
     ) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
 
         runCatching {
-            if (checkRssExist && channelExist(rssLink)) {
+            if (runRssExistCheck && channelExist(rssLink)) {
                 throw IllegalArgumentException("RSS already added: $rssLink")
             }
 
@@ -66,5 +67,6 @@ class RssViewModel(
                 )
             }
         )
+        onDone()
     }
 }

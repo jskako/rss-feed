@@ -6,7 +6,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.layouts.RssManagementLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
@@ -29,7 +28,6 @@ fun RssManagementScreen(
     val rssChannels by viewModel.rssChannels.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val addingProcessState by viewModel.addingProcessState.collectAsState()
-    val keyboardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
 
     addingProcessState.also {
@@ -58,12 +56,7 @@ fun RssManagementScreen(
         },
         snackbarHostState = snackbarHostState,
         rssChannels = rssChannels ?: emptyList(),
-        onAddRssChannel = { rssLink ->
-            keyboardController?.hide()
-            viewModel.fetchRssFeed(
-                rssLink = rssLink
-            )
-        },
+        fetchRss = viewModel::fetchRssFeed,
         onDelete = { rssLink ->
             viewModel.deleteRssChannels(rssLink = rssLink)
         }
@@ -77,8 +70,8 @@ fun RssManagementLayoutPreview() {
         RssManagementLayout(
             navigateBack = {},
             rssChannels = emptyList(),
-            onAddRssChannel = {},
-            onDelete = {}
+            onDelete = {},
+            fetchRss = { _, _, _ -> }
         )
     }
 }
