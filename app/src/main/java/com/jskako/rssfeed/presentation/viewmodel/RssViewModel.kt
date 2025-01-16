@@ -9,7 +9,6 @@ import com.jskako.rssfeed.presentation.state.AddingProcessState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -19,11 +18,11 @@ class RssViewModel(
 ) : BaseRssViewModel(databaseUseCases) {
 
     private val _rssChannels = databaseUseCases.getRssChannels()
-    val rssChannels: StateFlow<List<RssChannel>> = _rssChannels
+    val rssChannels: StateFlow<List<RssChannel>?> = _rssChannels
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = emptyList()
+            initialValue = null
         )
 
     private val _addingProcessState =

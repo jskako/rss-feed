@@ -29,35 +29,39 @@ fun HomeScreen(
 ) {
 
     val rssChannels by viewModel.rssChannels.collectAsState()
-    val isConnected by networkViewModel.isConnected.collectAsState()
-    val gridList = List(100) { "SomeLink" }
 
-    Column {
-        InAppBanner(
-            isVisible = !isConnected,
-            messageResId = R.string.offline_mode_banner,
-            icon = Icons.Default.Warning
-        )
+    if (rssChannels != null) {
 
-        when {
-            rssChannels.isNotEmpty() -> HomeLayout(
-                navigateToRssManagementScreen = {
-                    navigator.navigate(
-                        RssManagementScreenDestination()
-                    )
-                },
-                drawerList = rssChannels,
-                gridList = gridList
+        val isConnected by networkViewModel.isConnected.collectAsState()
+        val gridList = List(100) { "SomeLink" }
+
+        Column {
+            InAppBanner(
+                isVisible = !isConnected,
+                messageResId = R.string.offline_mode_banner,
+                icon = Icons.Default.Warning
             )
 
-            else -> HomeEmptyLayout(
-                isConnected = isConnected,
-                navigateToRssManagementScreen = {
-                    navigator.navigate(
-                        RssManagementScreenDestination()
-                    )
-                }
-            )
+            when {
+                rssChannels?.isNotEmpty() == true -> HomeLayout(
+                    navigateToRssManagementScreen = {
+                        navigator.navigate(
+                            RssManagementScreenDestination()
+                        )
+                    },
+                    drawerList = rssChannels ?: emptyList(),
+                    gridList = gridList
+                )
+
+                else -> HomeEmptyLayout(
+                    isConnected = isConnected,
+                    navigateToRssManagementScreen = {
+                        navigator.navigate(
+                            RssManagementScreenDestination()
+                        )
+                    }
+                )
+            }
         }
     }
 }

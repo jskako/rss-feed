@@ -25,7 +25,7 @@ fun RssManagementScreen(
         navigateBack = {
             navigator.navigateUp()
         },
-        rssChannels = rssChannels,
+        rssChannels = rssChannels ?: emptyList(),
         onAddRssChannel = { rssLink ->
             viewModel.fetchRssFeed(
                 rssLink = rssLink
