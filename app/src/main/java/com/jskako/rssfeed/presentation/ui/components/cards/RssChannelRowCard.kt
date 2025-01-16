@@ -1,4 +1,4 @@
-package com.jskako.rssfeed.presentation.ui.components
+package com.jskako.rssfeed.presentation.ui.components.cards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +26,8 @@ import com.jskako.rssfeed.R
 import com.jskako.rssfeed.core.utils.toFormattedString
 import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.domain.model.RssChannel.Companion.mockedRssChannel
+import com.jskako.rssfeed.presentation.ui.components.IconButton
+import com.jskako.rssfeed.presentation.ui.components.TextDialog
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xxl

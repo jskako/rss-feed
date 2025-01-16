@@ -36,7 +36,6 @@ fun HomeScreen(
     if (rssChannels != null) {
 
         val isConnected by networkViewModel.isConnected.collectAsState()
-        val gridList = List(100) { "SomeLink" }
 
         Column {
             InAppBanner(
@@ -52,8 +51,7 @@ fun HomeScreen(
                             RssManagementScreenDestination()
                         )
                     },
-                    drawerList = rssChannels ?: emptyList(),
-                    gridList = gridList
+                    rssChannels = rssChannels ?: emptyList()
                 )
 
                 else -> HomeEmptyLayout(
@@ -75,8 +73,7 @@ fun HomeScreenPreview() {
     RssFeedTheme {
         HomeLayout(
             navigateToRssManagementScreen = {},
-            drawerList = emptyList(),
-            gridList = emptyList()
+            rssChannels = emptyList()
         )
     }
 }

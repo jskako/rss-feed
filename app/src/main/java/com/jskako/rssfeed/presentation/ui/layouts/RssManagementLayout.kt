@@ -20,8 +20,8 @@ import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.AddRow
-import com.jskako.rssfeed.presentation.ui.components.RssChannelRowCard
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar
+import com.jskako.rssfeed.presentation.ui.components.cards.RssChannelRowCard
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark

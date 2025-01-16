@@ -1,6 +1,5 @@
 package com.jskako.rssfeed.presentation.ui.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -48,20 +47,17 @@ import kotlinx.coroutines.launch
 @Composable
 fun GridDrawer(
     modifier: Modifier = Modifier,
-    drawerValue: DrawerValue = DrawerValue.Closed,
     drawerItems: LazyListScope.() -> Unit,
     gridItems: LazyGridScope.() -> Unit,
     onNavigationContentSearch: ((String) -> Unit)? = null,
     onGridContentSearch: ((String) -> Unit)? = null,
-    navigationIconVisible: Boolean = true,
     drawerTrailingIcon: ImageVector? = null,
-    @StringRes drawerTrailingIconContentDescResId: Int? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
-    onRefresh: () -> Unit
+    onPullToRefresh: () -> Unit
 ) {
 
     val scope = rememberCoroutineScope()
-    val drawerState = rememberDrawerState(initialValue = drawerValue)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val state = rememberPullToRefreshState()
     var isRefreshing by remember { mutableStateOf(false) }
 
@@ -92,7 +88,7 @@ fun GridDrawer(
                                     }
                                 },
                                 icon = it,
-                                iconContentDescriptionResId = drawerTrailingIconContentDescResId
+                                iconContentDescriptionResId = null
                             )
                         }
                     }
@@ -107,17 +103,15 @@ fun GridDrawer(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (navigationIconVisible) {
-                    IconButton(
-                        onClick = {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        },
-                        icon = Icons.Default.Menu,
-                        iconContentDescriptionResId = R.string.menu_content_desc
-                    )
-                }
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    },
+                    icon = Icons.Default.Menu,
+                    iconContentDescriptionResId = R.string.menu_content_desc
+                )
 
                 onGridContentSearch?.let {
                     SearchText(
@@ -142,7 +136,7 @@ fun GridDrawer(
                 onRefresh = {
                     scope.launch {
                         isRefreshing = true
-                        onRefresh()
+                        onPullToRefresh()
                         delay(5000L)
                         isRefreshing = false
                     }
@@ -168,7 +162,6 @@ fun GridDrawerPreview() {
     RssFeedTheme {
         val mockedList = List(10) { "MockedString" }
         GridDrawer(
-            drawerValue = DrawerValue.Open,
             drawerItems = {
                 items(mockedList) { item ->
                     Text(item)
@@ -179,7 +172,7 @@ fun GridDrawerPreview() {
                     Text(item)
                 }
             },
-            onRefresh = {}
+            onPullToRefresh = {}
         )
     }
 }
