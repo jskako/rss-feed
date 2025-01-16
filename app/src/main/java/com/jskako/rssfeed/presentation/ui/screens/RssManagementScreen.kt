@@ -27,7 +27,9 @@ fun RssManagementScreen(
         },
         rssChannels = rssChannels,
         onAddRssChannel = { rssLink ->
-            viewModel.fetchRssFeed(rssLink = rssLink)
+            viewModel.fetchRssFeed(
+                rssLink = rssLink
+            )
         },
         onDelete = { rssLink ->
             viewModel.deleteRssChannels(rssLink = rssLink)
