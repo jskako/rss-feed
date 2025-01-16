@@ -1,5 +1,6 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -27,6 +28,8 @@ fun HomeScreen(
     viewModel: RssViewModel = koinViewModel(),
     networkViewModel: NetworkViewModel = koinViewModel()
 ) {
+
+    BackHandler {  }
 
     val rssChannels by viewModel.rssChannels.collectAsState()
 
