@@ -4,12 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.presentation.ui.components.InAppBanner
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
@@ -32,49 +28,36 @@ fun HomeScreen(
     networkViewModel: NetworkViewModel = koinViewModel()
 ) {
 
-    var loadingDone by remember { mutableStateOf(false) }
+    val rssChannels by viewModel.rssChannels.collectAsState()
+    val isConnected by networkViewModel.isConnected.collectAsState()
+    val gridList = List(100) { "SomeLink" }
 
-    LaunchedEffect(Unit) {
-        viewModel.loadRssChannels(
-            onDone = {
-                loadingDone = !loadingDone
-            }
+    Column {
+        InAppBanner(
+            isVisible = !isConnected,
+            messageResId = R.string.offline_mode_banner,
+            icon = Icons.Default.Warning
         )
-    }
 
-    if (loadingDone) {
-        val rssChannels by viewModel.rssChannels.collectAsState()
-        val isConnected by networkViewModel.isConnected.collectAsState()
-
-        val gridList = List(100) { "SomeLink" }
-
-        Column {
-            InAppBanner(
-                isVisible = !isConnected,
-                messageResId = R.string.offline_mode_banner,
-                icon = Icons.Default.Warning
+        when {
+            rssChannels.isNotEmpty() -> HomeLayout(
+                navigateToRssManagementScreen = {
+                    navigator.navigate(
+                        RssManagementScreenDestination()
+                    )
+                },
+                drawerList = rssChannels,
+                gridList = gridList
             )
 
-            when {
-                rssChannels.isNotEmpty() -> HomeLayout(
-                    navigateToRssManagementScreen = {
-                        navigator.navigate(
-                            RssManagementScreenDestination()
-                        )
-                    },
-                    drawerList = rssChannels,
-                    gridList = gridList
-                )
-
-                else -> HomeEmptyLayout(
-                    isConnected = isConnected,
-                    navigateToRssManagementScreen = {
-                        navigator.navigate(
-                            RssManagementScreenDestination()
-                        )
-                    }
-                )
-            }
+            else -> HomeEmptyLayout(
+                isConnected = isConnected,
+                navigateToRssManagementScreen = {
+                    navigator.navigate(
+                        RssManagementScreenDestination()
+                    )
+                }
+            )
         }
     }
 }

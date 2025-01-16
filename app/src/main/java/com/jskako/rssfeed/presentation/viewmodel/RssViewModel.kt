@@ -7,8 +7,10 @@ import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseUseCases
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RssViewModel(
@@ -16,19 +18,17 @@ class RssViewModel(
     databaseUseCases: DatabaseUseCases
 ) : BaseRssViewModel(databaseUseCases) {
 
-    private val _rssChannels = MutableStateFlow<List<RssChannel>>(emptyList())
-    val rssChannels: StateFlow<List<RssChannel>> get() = _rssChannels
+    private val _rssChannels = databaseUseCases.getRssChannels()
+    val rssChannels: StateFlow<List<RssChannel>> = _rssChannels
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
 
     private val _addingProcessState =
         MutableStateFlow<AddingProcessState>(AddingProcessState.NotStarted)
     val addingProcessState: StateFlow<AddingProcessState> = _addingProcessState
-
-    fun loadRssChannels(
-        onDone: () -> Unit
-    ) = viewModelScope.launch {
-        _rssChannels.value = databaseUseCases.getRssChannels().first()
-        onDone()
-    }
 
     fun deleteRssChannels(rssLink: String) = viewModelScope.launch {
         databaseUseCases.deleteRssChannel(url = rssLink)
