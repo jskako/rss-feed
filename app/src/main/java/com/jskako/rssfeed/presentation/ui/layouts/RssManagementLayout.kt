@@ -12,30 +12,60 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.RssChannel
+import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.AddRow
 import com.jskako.rssfeed.presentation.ui.components.RssChannelRowCard
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
+import com.jskako.rssfeed.presentation.utils.showSnackbarMessage
+import kotlinx.coroutines.launch
 
 @Composable
 fun RssManagementLayout(
     navigateBack: () -> Unit,
-    snackbarHostState: SnackbarHostState? = null,
+    addingProcessState: AddingProcessState,
     rssChannels: List<RssChannel>,
-    fetchRss: (rssLink: String, runRssExistCheck: Boolean, onDone: () -> Unit) -> Unit,
+    fetchRss: (rssLink: String, runRssExistCheck: Boolean) -> Unit,
+    resetAddingProcess: () -> Unit,
     onDelete: (String) -> Unit
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
     var isRunning by remember { mutableStateOf(false) }
     var input by remember { mutableStateOf("") }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    addingProcessState.also {
+        when (it) {
+            is AddingProcessState.Done -> {
+                it.result.fold(
+                    onSuccess = {
+                        input = ""
+                        isRunning = false
+                        resetAddingProcess()
+                    },
+                    onFailure = { error ->
+                        isRunning = false
+                        scope.launch {
+                            error.message.showSnackbarMessage(snackbarHostState = snackbarHostState)
+                        }
+                    }
+                )
+            }
+
+            AddingProcessState.FetchingData -> {}
+            AddingProcessState.NotStarted -> {}
+        }
+    }
 
     ScaffoldTopBar(
         titleResId = R.string.rss_management_title,
@@ -61,10 +91,7 @@ fun RssManagementLayout(
                 onIconClick = {
                     isRunning = true
                     keyboardController?.hide()
-                    fetchRss(it, true) {
-                        input = ""
-                        isRunning = false
-                    }
+                    fetchRss(it, true)
                 }
             )
 
@@ -89,8 +116,10 @@ fun RssManagementLayoutPreview() {
         RssManagementLayout(
             navigateBack = {},
             rssChannels = emptyList(),
+            addingProcessState = AddingProcessState.NotStarted,
+            resetAddingProcess = {},
             onDelete = {},
-            fetchRss = { _, _, _ -> }
+            fetchRss = { _, _ -> }
         )
     }
 }

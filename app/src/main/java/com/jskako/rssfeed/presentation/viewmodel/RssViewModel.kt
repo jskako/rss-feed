@@ -28,14 +28,17 @@ class RssViewModel(
         MutableStateFlow<AddingProcessState>(AddingProcessState.NotStarted)
     val addingProcessState: StateFlow<AddingProcessState> = _addingProcessState
 
+    fun resetAddingProcess() {
+        _addingProcessState.value = AddingProcessState.NotStarted
+    }
+
     fun deleteRssChannels(rssLink: String) = viewModelScope.launch {
         databaseUseCases.deleteRssChannel(url = rssLink)
     }
 
     fun fetchRssFeed(
         rssLink: String,
-        runRssExistCheck: Boolean = true,
-        onDone: () -> Unit
+        runRssExistCheck: Boolean = true
     ) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
 
@@ -67,6 +70,5 @@ class RssViewModel(
                 )
             }
         )
-        onDone()
     }
 }

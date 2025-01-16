@@ -50,7 +50,7 @@ fun AddRow(
                 )
             } else {
                 CircularProgressIndicator(
-                    modifier = Modifier.padding(end = m),
+                    modifier = Modifier.padding(horizontal = m),
                     color = LocalContentColor.current,
                     strokeWidth = xs
                 )
