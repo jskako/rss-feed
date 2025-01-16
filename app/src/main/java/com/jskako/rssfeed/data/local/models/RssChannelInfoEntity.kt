@@ -19,8 +19,7 @@ import androidx.room.PrimaryKey
 )
 data class RssChannelInfoEntity(
     @PrimaryKey val rss: String,
-    val onWatchList: Boolean = false,
-    val customTitle: String = ""
+    val onWatchList: Boolean = false
 )
 
 private const val RSS_KEY = "rss"

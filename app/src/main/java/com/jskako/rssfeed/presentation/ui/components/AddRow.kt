@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.jskako.rssfeed.R
+import com.jskako.rssfeed.presentation.ui.theme.Padding.m
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
@@ -49,7 +50,7 @@ fun AddRow(
                 )
             } else {
                 CircularProgressIndicator(
-                    modifier = Modifier.padding(end = s),
+                    modifier = Modifier.padding(end = m),
                     color = LocalContentColor.current,
                     strokeWidth = xs
                 )

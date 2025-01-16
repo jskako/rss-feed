@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.presentation.ui.components.AddRow
-import com.jskako.rssfeed.presentation.ui.components.DeleteEditRowCard
+import com.jskako.rssfeed.presentation.ui.components.RssChannelRowCard
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
@@ -70,9 +70,8 @@ fun RssManagementLayout(
 
             LazyColumn {
                 items(rssChannels) { channel ->
-                    DeleteEditRowCard(
-                        text = channel.rss,
-                        onEditConfirmed = {},
+                    RssChannelRowCard(
+                        rssChannel = channel,
                         onDeleteConfirmed = {
                             onDelete(channel.rss)
                         }

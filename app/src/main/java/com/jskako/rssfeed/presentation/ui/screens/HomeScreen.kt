@@ -29,7 +29,7 @@ fun HomeScreen(
     networkViewModel: NetworkViewModel = koinViewModel()
 ) {
 
-    BackHandler {  }
+    BackHandler { }
 
     val rssChannels by viewModel.rssChannels.collectAsState()
 
