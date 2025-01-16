@@ -3,14 +3,14 @@ package com.jskako.rssfeed.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
-import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseUseCases
+import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class InitViewModel(
     private val apiUseCases: ApiUseCases,
-    databaseUseCases: DatabaseUseCases
-) : BaseRssViewModel(databaseUseCases) {
+    databaseChannelUseCases: DatabaseChannelUseCases
+) : BaseRssViewModel(databaseChannelUseCases) {
 
 
     fun fetchRssFeeds(
@@ -19,7 +19,7 @@ class InitViewModel(
         onDone: () -> Unit
     ) = viewModelScope.launch {
 
-        val rssList = databaseUseCases.getRssChannels().first().map { it.rss }
+        val rssList = databaseChannelUseCases.getRssChannels().first().map { it.rss }
         onTotalSteps?.let {
             it(rssList.size)
         }

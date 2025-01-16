@@ -2,9 +2,9 @@ package com.jskako.rssfeed.data.local.repository
 
 import com.jskako.rssfeed.data.local.dao.RssChanelEntityDao
 import com.jskako.rssfeed.data.local.mapper.toRssChannel
-import com.jskako.rssfeed.data.local.mapper.toRssEntity
-import com.jskako.rssfeed.domain.model.RssChannel
-import com.jskako.rssfeed.domain.repository.RssChannelRepository
+import com.jskako.rssfeed.data.local.mapper.toRssInfoEntity
+import com.jskako.rssfeed.domain.model.channel.RssChannel
+import com.jskako.rssfeed.domain.repository.channel.RssChannelRepository
 import kotlinx.coroutines.flow.map
 import java.time.Instant
 
@@ -13,7 +13,7 @@ class RssChannelRepositoryImpl(
 ) : RssChannelRepository {
 
     override suspend fun insertRss(rssChannel: RssChannel) =
-        rssChanelEntityDao.insertRss(rssChannel.toRssEntity())
+        rssChanelEntityDao.upsertRss(rssChannel.toRssInfoEntity())
 
     override fun getAllRss() = rssChanelEntityDao.getAll().map { entities ->
         entities.map { it.toRssChannel() }

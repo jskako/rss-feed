@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.R
-import com.jskako.rssfeed.domain.model.RssChannel
+import com.jskako.rssfeed.domain.model.channel.RssChannel
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.AddRow
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar

@@ -1,6 +1,6 @@
-package com.jskako.rssfeed.domain.repository
+package com.jskako.rssfeed.domain.repository.channel
 
-import com.jskako.rssfeed.domain.model.RssChannel
+import com.jskako.rssfeed.domain.model.channel.RssChannel
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 

@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.core.utils.toFormattedString
-import com.jskako.rssfeed.domain.model.RssChannel
-import com.jskako.rssfeed.domain.model.RssChannel.Companion.mockedRssChannel
+import com.jskako.rssfeed.domain.model.channel.RssChannel
+import com.jskako.rssfeed.domain.model.channel.RssChannel.Companion.mockedRssChannel
 import com.jskako.rssfeed.presentation.ui.components.IconButton
 import com.jskako.rssfeed.presentation.ui.components.TextDialog
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s

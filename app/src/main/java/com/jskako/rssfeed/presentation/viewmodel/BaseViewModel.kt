@@ -1,30 +1,30 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.jskako.rssfeed.domain.model.RssChannel
-import com.jskako.rssfeed.domain.model.RssItem
-import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseUseCases
+import com.jskako.rssfeed.domain.model.channel.RssChannel
+import com.jskako.rssfeed.domain.model.item.RssItem
+import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import java.time.Instant
 
 abstract class BaseRssViewModel(
-    protected val databaseUseCases: DatabaseUseCases
+    protected val databaseChannelUseCases: DatabaseChannelUseCases
 ) : ViewModel() {
 
     protected suspend fun isChannelUpdated(
         rssLink: String,
         currentDate: Instant?
     ): Boolean {
-        return databaseUseCases.getLastBuildDate(url = rssLink)?.isBefore(currentDate) ?: true
+        return databaseChannelUseCases.getLastBuildDate(url = rssLink)?.isBefore(currentDate) ?: true
     }
 
     protected suspend fun channelExist(
         rssLink: String
-    ) = databaseUseCases.channelExist(rss = rssLink)
+    ) = databaseChannelUseCases.channelExist(rss = rssLink)
 
     protected suspend fun addChannelToDatabase(
         rssChannel: RssChannel
     ) {
-        databaseUseCases.insertRssChannel(rssChannel = rssChannel)
+        databaseChannelUseCases.insertRssChannel(rssChannel = rssChannel)
     }
 
     protected suspend fun addItemsToDatabase(

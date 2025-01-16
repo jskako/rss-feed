@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface RssChanelEntityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRss(rss: RssChannelEntity)
+    suspend fun upsertRss(rss: RssChannelEntity)
 
     @Query("SELECT * FROM rss_channel")
     fun getAll(): Flow<List<RssChannelEntity>>

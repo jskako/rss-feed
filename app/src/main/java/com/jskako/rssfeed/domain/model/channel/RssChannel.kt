@@ -1,4 +1,4 @@
-package com.jskako.rssfeed.domain.model
+package com.jskako.rssfeed.domain.model.channel
 
 import java.time.Instant
 

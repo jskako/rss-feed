@@ -2,7 +2,7 @@ package com.jskako.rssfeed.data.local.mapper
 
 import com.jskako.rssfeed.core.utils.toFormattedString
 import com.jskako.rssfeed.data.local.models.RssChannelEntity
-import com.jskako.rssfeed.domain.model.RssChannel
+import com.jskako.rssfeed.domain.model.channel.RssChannel
 import java.time.Instant
 
 fun RssChannelEntity.toRssChannel(): RssChannel {
@@ -16,7 +16,7 @@ fun RssChannelEntity.toRssChannel(): RssChannel {
     )
 }
 
-fun RssChannel.toRssEntity(): RssChannelEntity {
+fun RssChannel.toRssInfoEntity(): RssChannelEntity {
     return RssChannelEntity(
         rss = this.rss,
         title = this.title,

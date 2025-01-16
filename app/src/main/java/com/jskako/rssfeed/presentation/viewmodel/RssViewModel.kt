@@ -1,9 +1,9 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.jskako.rssfeed.domain.model.RssChannel
+import com.jskako.rssfeed.domain.model.channel.RssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
-import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseUseCases
+import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 
 class RssViewModel(
     private val apiUseCases: ApiUseCases,
-    databaseUseCases: DatabaseUseCases
-) : BaseRssViewModel(databaseUseCases) {
+    databaseChannelUseCases: DatabaseChannelUseCases
+) : BaseRssViewModel(databaseChannelUseCases) {
 
-    private val _rssChannels = databaseUseCases.getRssChannels()
+    private val _rssChannels = databaseChannelUseCases.getRssChannels()
     val rssChannels: StateFlow<List<RssChannel>?> = _rssChannels
         .stateIn(
             scope = viewModelScope,
@@ -33,7 +33,7 @@ class RssViewModel(
     }
 
     fun deleteRssChannels(rssLink: String) = viewModelScope.launch {
-        databaseUseCases.deleteRssChannel(url = rssLink)
+        databaseChannelUseCases.deleteRssChannel(url = rssLink)
     }
 
     fun fetchRssFeed(

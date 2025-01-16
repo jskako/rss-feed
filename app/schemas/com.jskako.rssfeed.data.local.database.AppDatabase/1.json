@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "01ee6cef44094cf32e0a65f69df21cc4",
+    "identityHash": "df051eea4613eb8ca3accf214b7279fc",
     "entities": [
       {
         "tableName": "rss_channel",
@@ -200,7 +200,7 @@
       },
       {
         "tableName": "rss_channel_info",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `onWatchList` INTEGER NOT NULL, PRIMARY KEY(`rss`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `isNotificationEnabled` INTEGER NOT NULL, PRIMARY KEY(`rss`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "rss",
@@ -209,8 +209,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "onWatchList",
-            "columnName": "onWatchList",
+            "fieldPath": "isNotificationEnabled",
+            "columnName": "isNotificationEnabled",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -250,7 +250,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '01ee6cef44094cf32e0a65f69df21cc4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'df051eea4613eb8ca3accf214b7279fc')"
     ]
   }
 }
