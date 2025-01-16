@@ -17,10 +17,14 @@ abstract class BaseRssViewModel(
         return databaseUseCases.getLastBuildDate(url = rssLink)?.isBefore(currentDate) ?: true
     }
 
+    protected suspend fun channelExist(
+        rssLink: String
+    ) = databaseUseCases.channelExist(rss = rssLink)
+
     protected suspend fun addChannelToDatabase(
         rssChannel: RssChannel
     ) {
-        databaseUseCases.insertRssChannelUseCase(rssChannel = rssChannel)
+        databaseUseCases.insertRssChannel(rssChannel = rssChannel)
     }
 
     protected suspend fun addItemsToDatabase(

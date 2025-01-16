@@ -1,6 +1,5 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.model.RssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
@@ -33,10 +32,16 @@ class RssViewModel(
         databaseUseCases.deleteRssChannel(url = rssLink)
     }
 
-    fun fetchRssFeed(rssLink: String) = viewModelScope.launch {
+    fun fetchRssFeed(
+        rssLink: String,
+        checkRssExist: Boolean = true,
+    ) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
 
         runCatching {
+            if (checkRssExist && channelExist(rssLink)) {
+                throw IllegalArgumentException("RSS already added: $rssLink")
+            }
 
             if (!apiUseCases.isUrlReachable(rssLink)) {
                 throw IllegalArgumentException("The RSS link is not reachable: $rssLink")
@@ -51,13 +56,13 @@ class RssViewModel(
             }
         }.fold(
             onSuccess = {
-                _addingProcessState.value = AddingProcessState.Done(succeed = true)
+                _addingProcessState.value = AddingProcessState.Done(
+                    result = Result.success(null)
+                )
             },
             onFailure = { error ->
-                Log.e("Error", "$error")
                 _addingProcessState.value = AddingProcessState.Done(
-                    succeed = false,
-                    message = error.localizedMessage ?: "An unknown error occurred"
+                    Result.failure(error)
                 )
             }
         )

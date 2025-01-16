@@ -10,4 +10,5 @@ interface RssChannelRepository {
     suspend fun deleteRssByUrl(url: String)
     suspend fun get(url: String): RssChannel?
     suspend fun getLastBuildDate(url: String): Instant?
+    suspend fun channelExists(rss: String): Boolean
 }

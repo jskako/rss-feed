@@ -24,4 +24,7 @@ interface RssChanelEntityDao {
 
     @Query("SELECT last_build_date FROM rss_channel WHERE rss = :rss")
     suspend fun getLastBuildDate(rss: String): String?
+
+    @Query("SELECT EXISTS(SELECT 1 FROM rss_channel WHERE rss = :rss)")
+    suspend fun channelExist(rss: String): Boolean
 }

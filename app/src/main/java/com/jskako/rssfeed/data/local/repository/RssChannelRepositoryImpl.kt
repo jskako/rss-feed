@@ -30,4 +30,8 @@ class RssChannelRepositoryImpl(
     override suspend fun getLastBuildDate(url: String): Instant? {
         return rssChanelEntityDao.getLastBuildDate(url)?.let { Instant.parse(it) }
     }
+
+    override suspend fun channelExists(rss: String): Boolean {
+        return rssChanelEntityDao.channelExist(rss)
+    }
 }

@@ -1,15 +1,22 @@
 package com.jskako.rssfeed.presentation.ui.screens
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.layouts.RssManagementLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
+import com.jskako.rssfeed.presentation.utils.showSnackbarMessage
 import com.jskako.rssfeed.presentation.viewmodel.RssViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Destination<RootGraph>
@@ -20,13 +27,39 @@ fun RssManagementScreen(
 ) {
 
     val rssChannels by viewModel.rssChannels.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val addingProcessState by viewModel.addingProcessState.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
+
+    addingProcessState.also {
+        when (it) {
+            is AddingProcessState.Done -> {
+                it.result.fold(
+                    onSuccess = {
+
+                    },
+                    onFailure = { error ->
+                        scope.launch {
+                            error.message.showSnackbarMessage(snackbarHostState = snackbarHostState)
+                        }
+                    }
+                )
+            }
+
+            AddingProcessState.FetchingData -> {}
+            AddingProcessState.NotStarted -> {}
+        }
+    }
 
     RssManagementLayout(
         navigateBack = {
             navigator.navigateUp()
         },
+        snackbarHostState = snackbarHostState,
         rssChannels = rssChannels ?: emptyList(),
         onAddRssChannel = { rssLink ->
+            keyboardController?.hide()
             viewModel.fetchRssFeed(
                 rssLink = rssLink
             )

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.jskako.rssfeed.R
@@ -21,6 +22,7 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 @Composable
 fun RssManagementLayout(
     navigateBack: () -> Unit,
+    snackbarHostState: SnackbarHostState? = null,
     rssChannels: List<RssChannel>,
     onAddRssChannel: (String) -> Unit,
     onDelete: (String) -> Unit
@@ -28,6 +30,7 @@ fun RssManagementLayout(
 
     ScaffoldTopBar(
         titleResId = R.string.rss_management_title,
+        snackbarHostState = snackbarHostState,
         onNavigationIconClick = navigateBack
     ) { paddingValues ->
         Column(

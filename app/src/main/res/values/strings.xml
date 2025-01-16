@@ -26,11 +26,6 @@
     <string name="rss_empty">Looks like you didn\'t add any rss feed yet.</string>
     <string name="add_rss_url">Add RSS url</string>
 
-    <!-- AddingProcessState -->
-    <string name="state_fetch_data">Fetching data</string>
-    <string name="state_done_success">RSS has been added</string>
-    <string name="state_done_failure">Something went wrong while adding RSS</string>
-
     <!-- Banners -->
     <string name="offline_mode_banner">Application is working in offline mode with limited functionalities.</string>
 

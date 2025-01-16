@@ -5,5 +5,6 @@ data class DatabaseUseCases(
     val getLastBuildDate: GetLastBuildDateUseCase,
     val getRssChannels: GetRssChannelsUseCase,
     val getRssChannel: GetRssChannelUseCase,
-    val insertRssChannelUseCase: InsertRssChannelUseCase
+    val insertRssChannel: InsertRssChannelUseCase,
+    val channelExist: ChannelExistUseCase
 )
