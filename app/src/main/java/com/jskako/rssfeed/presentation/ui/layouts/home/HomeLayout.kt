@@ -38,9 +38,6 @@ fun HomeLayout(
             }
         },
         onGridContentSearch = {},
-        bottomBar = {
-            Text("1213")
-        },
         gridItems = {
             items(gridList) { item ->
                 Card(

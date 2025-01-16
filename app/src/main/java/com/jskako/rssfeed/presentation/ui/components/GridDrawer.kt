@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -15,12 +14,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -58,8 +57,7 @@ fun GridDrawer(
     drawerTrailingIcon: ImageVector? = null,
     @StringRes drawerTrailingIconContentDescResId: Int? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
-    onRefresh: () -> Unit,
-    bottomBar: @Composable () -> Unit = {}
+    onRefresh: () -> Unit
 ) {
 
     val scope = rememberCoroutineScope()
@@ -103,57 +101,62 @@ fun GridDrawer(
             }
         },
     ) {
-        Scaffold(
-            bottomBar = bottomBar
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .padding(bottom = paddingValues.calculateBottomPadding()),
-                verticalArrangement = Arrangement.spacedBy(s)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(s)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (navigationIconVisible) {
-                        IconButton(
-                            onClick = {
-                                scope.launch {
-                                    drawerState.open()
-                                }
-                            },
-                            icon = Icons.Default.Menu,
-                            iconContentDescriptionResId = R.string.menu_content_desc
-                        )
-                    }
-
-                    onGridContentSearch?.let {
-                        SearchText(
-                            onSearch = it
-                        )
-                    }
-                }
-                PullToRefreshBox(
-                    state = state,
-                    isRefreshing = isRefreshing,
-                    onRefresh = {
-                        scope.launch {
-                            isRefreshing = true
-                            onRefresh()
-                            delay(5000L)
-                            isRefreshing = false
-                        }
-                    },
-                ) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(xxxl),
-                        contentPadding = PaddingValues(
-                            start = m,
-                            end = m,
-                            bottom = l
-                        ),
-                        content = { gridItems() }
+                if (navigationIconVisible) {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        icon = Icons.Default.Menu,
+                        iconContentDescriptionResId = R.string.menu_content_desc
                     )
                 }
+
+                onGridContentSearch?.let {
+                    SearchText(
+                        modifier = Modifier.weight(1f),
+                        onSearch = it
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    },
+                    icon = Icons.Default.Favorite,
+                    iconContentDescriptionResId = null
+                )
+            }
+            PullToRefreshBox(
+                state = state,
+                isRefreshing = isRefreshing,
+                onRefresh = {
+                    scope.launch {
+                        isRefreshing = true
+                        onRefresh()
+                        delay(5000L)
+                        isRefreshing = false
+                    }
+                },
+            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(xxxl),
+                    contentPadding = PaddingValues(
+                        start = m,
+                        end = m,
+                        bottom = l
+                    ),
+                    content = { gridItems() }
+                )
             }
         }
     }
