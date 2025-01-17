@@ -3,17 +3,17 @@ package com.jskako.rssfeed.data.remote.mapper
 import com.jskako.rssfeed.data.remote.models.RssChannelDto
 import com.jskako.rssfeed.data.remote.models.RssItemDto
 import com.jskako.rssfeed.data.remote.models.RssResponseDto
-import com.jskako.rssfeed.domain.model.channel.RssChannel
-import com.jskako.rssfeed.domain.model.item.RssItem
-import com.jskako.rssfeed.domain.model.RssResponse
+import com.jskako.rssfeed.domain.model.api.RssApiChannel
+import com.jskako.rssfeed.domain.model.api.RssApiItem
+import com.jskako.rssfeed.domain.model.api.RssApiResponse
 import java.time.Instant
 
-fun RssResponseDto.toRssResponse(rss: String) = RssResponse(
-    rssChannel = this.channel.toRssChannel(rss = rss),
-    rssItems = this.channel.item.toRssItems(rss = rss)
+fun RssResponseDto.toRssApiResponse(rss: String) = RssApiResponse(
+    rssApiChannel = this.channel.toRssApiChannel(rss = rss),
+    rssApiItems = this.channel.item.toRssApiItems(rss = rss)
 )
 
-private fun RssChannelDto.toRssChannel(rss: String): RssChannel = RssChannel(
+private fun RssChannelDto.toRssApiChannel(rss: String): RssApiChannel = RssApiChannel(
     rss = rss,
     title = this.title,
     link = this.link,
@@ -22,8 +22,8 @@ private fun RssChannelDto.toRssChannel(rss: String): RssChannel = RssChannel(
     imagePath = this.image?.url
 )
 
-private fun List<RssItemDto>.toRssItems(rss: String): List<RssItem> = this.map { itemDto ->
-    RssItem(
+private fun List<RssItemDto>.toRssApiItems(rss: String): List<RssApiItem> = this.map { itemDto ->
+    RssApiItem(
         guid = itemDto.guid,
         rss = rss,
         title = itemDto.title,

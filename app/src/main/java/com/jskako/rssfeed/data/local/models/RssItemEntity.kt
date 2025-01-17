@@ -27,7 +27,8 @@ data class RssItemEntity(
     val list: String,
     val description: String,
     @ColumnInfo(name = "image_paths") val imagePaths: List<String>,
-    val hasBeenRead: Boolean
+    val hasBeenRead: Boolean,
+    val isFavorite: Boolean = false
 )
 
 private const val RSS_KEY = "rss"

@@ -3,8 +3,8 @@ package com.jskako.rssfeed.data.local.repository
 import com.jskako.rssfeed.data.local.dao.RssChanelEntityDao
 import com.jskako.rssfeed.data.local.mapper.toRssChannel
 import com.jskako.rssfeed.data.local.mapper.toRssInfoEntity
-import com.jskako.rssfeed.domain.model.channel.RssChannel
-import com.jskako.rssfeed.domain.repository.channel.RssChannelRepository
+import com.jskako.rssfeed.domain.model.database.RssChannel
+import com.jskako.rssfeed.domain.repository.RssChannelRepository
 import kotlinx.coroutines.flow.map
 import java.time.Instant
 

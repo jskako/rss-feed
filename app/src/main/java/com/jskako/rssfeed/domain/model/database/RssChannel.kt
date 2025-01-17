@@ -1,4 +1,4 @@
-package com.jskako.rssfeed.domain.model.channel
+package com.jskako.rssfeed.domain.model.database
 
 import java.time.Instant
 
@@ -8,7 +8,8 @@ data class RssChannel(
     val link: String? = null,
     val description: String? = null,
     val lastBuildDate: Instant? = null,
-    val imagePath: String? = null
+    val imagePath: String? = null,
+    val notifications: Boolean? = false
 ) {
     companion object {
         val mockedRssChannel = RssChannel(

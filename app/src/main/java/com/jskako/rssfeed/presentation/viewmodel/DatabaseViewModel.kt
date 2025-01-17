@@ -1,12 +1,12 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.jskako.rssfeed.domain.model.channel.RssChannel
-import com.jskako.rssfeed.domain.model.item.RssItem
+import com.jskako.rssfeed.domain.model.database.RssChannel
+import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import java.time.Instant
 
-abstract class BaseRssViewModel(
+abstract class DatabaseRssViewModel(
     protected val databaseChannelUseCases: DatabaseChannelUseCases
 ) : ViewModel() {
 
@@ -14,7 +14,8 @@ abstract class BaseRssViewModel(
         rssLink: String,
         currentDate: Instant?
     ): Boolean {
-        return databaseChannelUseCases.getLastBuildDate(url = rssLink)?.isBefore(currentDate) ?: true
+        return databaseChannelUseCases.getLastBuildDate(url = rssLink)?.isBefore(currentDate)
+            ?: true
     }
 
     protected suspend fun channelExist(

@@ -1,7 +1,8 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.jskako.rssfeed.domain.model.channel.RssChannel
+import com.jskako.rssfeed.domain.mapper.toRssChannel
+import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import com.jskako.rssfeed.presentation.state.AddingProcessState
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 class RssViewModel(
     private val apiUseCases: ApiUseCases,
     databaseChannelUseCases: DatabaseChannelUseCases
-) : BaseRssViewModel(databaseChannelUseCases) {
+) : DatabaseRssViewModel(databaseChannelUseCases) {
 
     private val _rssChannels = databaseChannelUseCases.getRssChannels()
     val rssChannels: StateFlow<List<RssChannel>?> = _rssChannels
@@ -54,9 +55,17 @@ class RssViewModel(
             val feeds = apiUseCases.fetchRssFeeds(link = rssLink)
                 ?: throw Exception("Failed to fetch feeds for $rssLink")
 
-            if (isChannelUpdated(rssLink = rssLink, currentDate = feeds.rssChannel.lastBuildDate)) {
-                addChannelToDatabase(rssChannel = feeds.rssChannel)
-                addItemsToDatabase(rssItems = feeds.rssItems)
+            if (isChannelUpdated(
+                    rssLink = rssLink,
+                    currentDate = feeds.rssApiChannel.lastBuildDate
+                )
+            ) {
+                addChannelToDatabase(
+                    rssChannel = feeds.rssApiChannel.toRssChannel(
+                        databaseChannelUseCases = databaseChannelUseCases
+                    )
+                )
+                //addItemsToDatabase(rssItems = feeds.rssItems)
             }
         }.fold(
             onSuccess = {

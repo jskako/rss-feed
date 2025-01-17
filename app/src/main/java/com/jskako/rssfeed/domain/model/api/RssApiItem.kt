@@ -1,8 +1,8 @@
-package com.jskako.rssfeed.domain.model.item
+package com.jskako.rssfeed.domain.model.api
 
 import java.time.Instant
 
-data class RssItem(
+data class RssApiItem(
     val guid: String,
     val rss: String,
     val title: String?,

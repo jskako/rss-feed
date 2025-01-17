@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.jskako.rssfeed.domain.model.channel.RssChannel
+import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.components.IconButton
 import com.jskako.rssfeed.presentation.ui.components.cards.DrawerCard

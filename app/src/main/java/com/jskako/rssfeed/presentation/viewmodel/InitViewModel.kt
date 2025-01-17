@@ -2,6 +2,7 @@ package com.jskako.rssfeed.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import kotlinx.coroutines.flow.first
@@ -10,7 +11,7 @@ import kotlinx.coroutines.launch
 class InitViewModel(
     private val apiUseCases: ApiUseCases,
     databaseChannelUseCases: DatabaseChannelUseCases
-) : BaseRssViewModel(databaseChannelUseCases) {
+) : DatabaseRssViewModel(databaseChannelUseCases) {
 
 
     fun fetchRssFeeds(
@@ -35,11 +36,15 @@ class InitViewModel(
 
                 if (isChannelUpdated(
                         rssLink = link,
-                        currentDate = feeds.rssChannel.lastBuildDate
+                        currentDate = feeds.rssApiChannel.lastBuildDate
                     )
                 ) {
-                    addChannelToDatabase(rssChannel = feeds.rssChannel)
-                    addItemsToDatabase(rssItems = feeds.rssItems)
+                    addChannelToDatabase(
+                        rssChannel = feeds.rssApiChannel.toRssChannel(
+                            databaseChannelUseCases = databaseChannelUseCases
+                        )
+                    )
+                    //addItemsToDatabase(rssItems = feeds.rssItems)
                 }
             }.onFailure {
                 Log.e("Error", "$it")
@@ -47,4 +52,6 @@ class InitViewModel(
         }
         onDone()
     }
+
+
 }

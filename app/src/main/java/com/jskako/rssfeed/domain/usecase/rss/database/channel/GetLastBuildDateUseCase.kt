@@ -1,6 +1,6 @@
 package com.jskako.rssfeed.domain.usecase.rss.database.channel
 
-import com.jskako.rssfeed.domain.repository.channel.RssChannelRepository
+import com.jskako.rssfeed.domain.repository.RssChannelRepository
 import java.time.Instant
 
 class GetLastBuildDateUseCase(
