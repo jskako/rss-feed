@@ -32,9 +32,6 @@ fun RssManagementScreen(
         fetchRss = viewModel::fetchRssFeed,
         onDelete = { rssLink ->
             viewModel.deleteRssChannels(rssLink = rssLink)
-        },
-        resetAddingProcess = {
-            viewModel.resetAddingProcess()
         }
     )
 }
@@ -48,7 +45,6 @@ fun RssManagementLayoutPreview() {
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
             onDelete = {},
-            resetAddingProcess = {},
             fetchRss = { _, _ -> }
         )
     }

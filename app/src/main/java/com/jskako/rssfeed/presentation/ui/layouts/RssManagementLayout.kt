@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,36 +35,33 @@ fun RssManagementLayout(
     addingProcessState: AddingProcessState,
     rssChannels: List<RssChannel>,
     fetchRss: (rssLink: String, runRssExistCheck: Boolean) -> Unit,
-    resetAddingProcess: () -> Unit,
     onDelete: (String) -> Unit
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
-    var isRunning by remember { mutableStateOf(false) }
     var input by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    addingProcessState.also {
-        when (it) {
-            is AddingProcessState.Done -> {
-                it.result.fold(
-                    onSuccess = {
-                        input = ""
-                        isRunning = false
-                        resetAddingProcess()
-                    },
-                    onFailure = { error ->
-                        isRunning = false
-                        scope.launch {
-                            error.message.showSnackbarMessage(snackbarHostState = snackbarHostState)
+    LaunchedEffect(addingProcessState) {
+        addingProcessState.also {
+            when (it) {
+                is AddingProcessState.Done -> {
+                    it.result.fold(
+                        onSuccess = {
+                            input = ""
+                        },
+                        onFailure = { error ->
+                            scope.launch {
+                                error.message.showSnackbarMessage(snackbarHostState = snackbarHostState)
+                            }
                         }
-                    }
-                )
-            }
+                    )
+                }
 
-            AddingProcessState.FetchingData -> {}
-            AddingProcessState.NotStarted -> {}
+                AddingProcessState.FetchingData -> {}
+                AddingProcessState.NotStarted -> {}
+            }
         }
     }
 
@@ -83,13 +81,12 @@ fun RssManagementLayout(
                 modifier = Modifier
                     .fillMaxWidth(),
                 input = input,
-                isRunning = isRunning,
+                isRunning = addingProcessState == AddingProcessState.FetchingData,
                 onInputChanged = {
                     input = it
                 },
                 hintResId = R.string.rss_management_add_hint,
                 onIconClick = {
-                    isRunning = true
                     keyboardController?.hide()
                     fetchRss(it, true)
                 }
@@ -117,7 +114,6 @@ fun RssManagementLayoutPreview() {
             navigateBack = {},
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
-            resetAddingProcess = {},
             onDelete = {},
             fetchRss = { _, _ -> }
         )

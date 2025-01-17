@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.jskako.rssfeed.domain.model.database.RssChannel
+import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.components.IconButton
 import com.jskako.rssfeed.presentation.ui.components.cards.DrawerCard
@@ -34,17 +36,21 @@ import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
     rssChannels: List<RssChannel>,
-    updateNotification: (rssLink: String, isEnabled: Boolean) -> Unit
+    updateNotification: (rssLink: String, isEnabled: Boolean) -> Unit,
+    onRefresh: (rssLink: String, runRssExistCheck: Boolean) -> Unit,
+    addingProcessState: AddingProcessState
 ) {
 
 
     var itemsSearchText by remember { mutableStateOf("") }
     var channelsSearchText by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     val filteredChannels = rssChannels.filter { channel ->
         channelsSearchText.isEmpty() ||
@@ -128,8 +134,11 @@ fun HomeLayout(
         },
         drawerTrailingIcon = Icons.Default.Edit,
         onDrawerTrailingIconClick = navigateToRssManagementScreen,
+        isRefreshing = addingProcessState == AddingProcessState.FetchingData,
         onPullToRefresh = {
-
+            scope.launch {
+                onRefresh(selectedChannel.rss, false)
+            }
         }
     )
 }
@@ -141,7 +150,9 @@ fun HomeLayoutPreview() {
         HomeLayout(
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
-            updateNotification = { _, _ -> }
+            updateNotification = { _, _ -> },
+            onRefresh = { _, _ -> },
+            addingProcessState = AddingProcessState.NotStarted
         )
     }
 }

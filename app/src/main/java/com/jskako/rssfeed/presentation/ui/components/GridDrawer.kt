@@ -24,11 +24,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,7 +36,6 @@ import com.jskako.rssfeed.presentation.ui.theme.Padding.xxxl
 import com.jskako.rssfeed.presentation.ui.theme.Padding.zero
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,13 +48,13 @@ fun GridDrawer(
     onGridContentSearch: ((String) -> Unit)? = null,
     drawerTrailingIcon: ImageVector? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
+    isRefreshing: Boolean,
     onPullToRefresh: () -> Unit
 ) {
 
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val state = rememberPullToRefreshState()
-    var isRefreshing by remember { mutableStateOf(false) }
 
     ModalNavigationDrawer(
         modifier = modifier,
@@ -133,14 +128,7 @@ fun GridDrawer(
             PullToRefreshBox(
                 state = state,
                 isRefreshing = isRefreshing,
-                onRefresh = {
-                    scope.launch {
-                        isRefreshing = true
-                        onPullToRefresh()
-                        delay(5000L)
-                        isRefreshing = false
-                    }
-                },
+                onRefresh = onPullToRefresh,
             ) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(xxxl),
@@ -172,6 +160,7 @@ fun GridDrawerPreview() {
                     Text(item)
                 }
             },
+            isRefreshing = false,
             onPullToRefresh = {}
         )
     }

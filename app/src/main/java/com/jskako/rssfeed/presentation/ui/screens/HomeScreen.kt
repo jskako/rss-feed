@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.R
+import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.InAppBanner
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeLayout
@@ -32,6 +33,7 @@ fun HomeScreen(
     BackHandler { }
 
     val rssChannels by viewModel.rssChannels.collectAsState()
+    val addingProcessState by viewModel.addingProcessState.collectAsState()
 
     if (rssChannels != null) {
 
@@ -52,7 +54,9 @@ fun HomeScreen(
                         )
                     },
                     rssChannels = rssChannels ?: emptyList(),
-                    updateNotification = viewModel::updateNotification
+                    updateNotification = viewModel::updateNotification,
+                    onRefresh = viewModel::fetchRssFeed,
+                    addingProcessState = addingProcessState
                 )
 
                 else -> HomeEmptyLayout(
@@ -75,7 +79,9 @@ fun HomeScreenPreview() {
         HomeLayout(
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
-            updateNotification = { _, _ -> }
+            updateNotification = { _, _ -> },
+            onRefresh = { _, _ -> },
+            addingProcessState = AddingProcessState.NotStarted
         )
     }
 }

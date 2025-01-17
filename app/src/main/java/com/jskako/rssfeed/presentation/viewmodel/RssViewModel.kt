@@ -1,5 +1,6 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.model.database.RssChannel
@@ -29,10 +30,6 @@ class RssViewModel(
         MutableStateFlow<AddingProcessState>(AddingProcessState.NotStarted)
     val addingProcessState: StateFlow<AddingProcessState> = _addingProcessState
 
-    fun resetAddingProcess() {
-        _addingProcessState.value = AddingProcessState.NotStarted
-    }
-
     fun deleteRssChannels(rssLink: String) = viewModelScope.launch {
         databaseChannelUseCases.deleteRssChannel(url = rssLink)
     }
@@ -42,7 +39,7 @@ class RssViewModel(
         runRssExistCheck: Boolean = true
     ) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
-
+        Log.e("123123", "HereVM")
         runCatching {
             if (runRssExistCheck && channelExist(rssLink)) {
                 throw IllegalArgumentException("RSS already added: $rssLink")
