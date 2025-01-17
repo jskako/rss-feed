@@ -6,7 +6,11 @@ data class RssItem(
     val guid: String,
     val rss: String,
     val title: String?,
-    val link: String?,
     val updateDate: Instant?,
-    val imagePaths: List<String>
+    val expiresDate: Instant?,
+    val link: String?,
+    val description: String?,
+    val imagePaths: List<String>?,
+    val hasBeenRead: Boolean = false,
+    val isFavorite: Boolean = false
 )

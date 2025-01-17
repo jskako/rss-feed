@@ -21,7 +21,7 @@ abstract class DatabaseRssViewModel(
         currentDate: Instant?
     ): Boolean {
         return databaseChannelUseCases.getLastBuildDate(url = rssLink)?.isBefore(currentDate)
-            ?: true
+            ?: !channelExist(rssLink = rssLink)
     }
 
     protected suspend fun channelExist(

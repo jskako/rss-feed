@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "675d662c39aed4ddc0201514c9fb2de6",
+    "identityHash": "f1cf1065a912a92f341e0dfe0f1d142a",
     "entities": [
       {
         "tableName": "rss_channel",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "rss_item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT NOT NULL, `expires_date` TEXT, `list` TEXT NOT NULL, `description` TEXT NOT NULL, `image_paths` TEXT NOT NULL, `hasBeenRead` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `link` TEXT, `description` TEXT, `image_paths` TEXT, `hasBeenRead` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "guid",
@@ -86,7 +86,7 @@
             "fieldPath": "updateDate",
             "columnName": "update_date",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "expiresDate",
@@ -95,22 +95,22 @@
             "notNull": false
           },
           {
-            "fieldPath": "list",
-            "columnName": "list",
+            "fieldPath": "link",
+            "columnName": "link",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "imagePaths",
             "columnName": "image_paths",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "hasBeenRead",
@@ -160,7 +160,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '675d662c39aed4ddc0201514c9fb2de6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1cf1065a912a92f341e0dfe0f1d142a')"
     ]
   }
 }

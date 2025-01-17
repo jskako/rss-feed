@@ -1,5 +1,6 @@
 package com.jskako.rssfeed.data.local.repository
 
+import com.jskako.rssfeed.core.utils.toInstantOrNull
 import com.jskako.rssfeed.data.local.dao.RssChanelEntityDao
 import com.jskako.rssfeed.data.local.mapper.toRssChannel
 import com.jskako.rssfeed.data.local.mapper.toRssInfoEntity
@@ -28,7 +29,7 @@ class RssChannelRepositoryImpl(
     }
 
     override suspend fun getLastBuildDate(url: String): Instant? {
-        return rssChanelEntityDao.getLastBuildDate(url)?.let { Instant.parse(it) }
+        return rssChanelEntityDao.getLastBuildDate(url)?.toInstantOrNull()
     }
 
     override suspend fun channelExists(rss: String): Boolean {

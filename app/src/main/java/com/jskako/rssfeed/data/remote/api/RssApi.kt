@@ -18,9 +18,7 @@ class RssApi(private val client: HttpClient) {
         jsonOutput?.let {
             jsonToDataClass<RssResponseDto>(it)
         }?.toRssApiResponse(rss = rssLink)
-    }.getOrElse { e ->
-        null
-    }
+    }.getOrNull()
 
     suspend fun isUrlReachable(link: String): Boolean {
         return runCatching {

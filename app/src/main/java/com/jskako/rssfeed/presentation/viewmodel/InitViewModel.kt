@@ -52,6 +52,4 @@ class InitViewModel(
         }
         onDone()
     }
-
-
 }

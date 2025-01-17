@@ -7,6 +7,8 @@ data class RssApiItem(
     val rss: String,
     val title: String?,
     val link: String?,
+    val description: String?,
     val updateDate: Instant?,
-    val imagePaths: List<String>
+    val expiresDate: Instant?,
+    val imagePaths: List<String>?
 )

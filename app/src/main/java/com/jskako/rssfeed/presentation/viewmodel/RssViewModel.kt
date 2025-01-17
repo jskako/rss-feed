@@ -1,8 +1,8 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.mapper.toRssChannel
+import com.jskako.rssfeed.domain.mapper.toRssItems
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
@@ -39,7 +39,6 @@ class RssViewModel(
         runRssExistCheck: Boolean = true
     ) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
-        Log.e("123123", "HereVM")
         runCatching {
             if (runRssExistCheck && channelExist(rssLink)) {
                 throw IllegalArgumentException("RSS already added: $rssLink")
@@ -62,7 +61,11 @@ class RssViewModel(
                         databaseChannelUseCases = databaseChannelUseCases
                     )
                 )
-                //addItemsToDatabase(rssItems = feeds.rssItems)
+                addItemsToDatabase(
+                    rssItems = feeds.rssApiItems.toRssItems(
+                        databaseChannelUseCases = databaseChannelUseCases
+                    )
+                )
             }
         }.fold(
             onSuccess = {
