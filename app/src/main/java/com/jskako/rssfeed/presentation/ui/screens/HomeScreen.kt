@@ -51,7 +51,8 @@ fun HomeScreen(
                             RssManagementScreenDestination()
                         )
                     },
-                    rssChannels = rssChannels ?: emptyList()
+                    rssChannels = rssChannels ?: emptyList(),
+                    updateNotification = viewModel::updateNotification
                 )
 
                 else -> HomeEmptyLayout(
@@ -73,7 +74,8 @@ fun HomeScreenPreview() {
     RssFeedTheme {
         HomeLayout(
             navigateToRssManagementScreen = {},
-            rssChannels = emptyList()
+            rssChannels = emptyList(),
+            updateNotification = { _, _ -> }
         )
     }
 }

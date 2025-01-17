@@ -11,4 +11,6 @@ interface RssChannelRepository {
     suspend fun get(url: String): RssChannel?
     suspend fun getLastBuildDate(url: String): Instant?
     suspend fun channelExists(rss: String): Boolean
+    suspend fun isNotificationEnabled(rss: String): Boolean
+    suspend fun updateNotification(rss: String, isEnabled: Boolean)
 }

@@ -6,6 +6,8 @@ import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetLastBuildDateUs
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetRssChannelUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetRssChannelsUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.InsertRssChannelUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.channel.IsNotificationEnabledUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.channel.UpdateNotificationUseCase
 
 data class DatabaseChannelUseCases(
     val deleteRssChannel: DeleteRssChannelUseCase,
@@ -13,5 +15,7 @@ data class DatabaseChannelUseCases(
     val getRssChannels: GetRssChannelsUseCase,
     val getRssChannel: GetRssChannelUseCase,
     val insertRssChannel: InsertRssChannelUseCase,
-    val channelExist: ChannelExistUseCase
+    val channelExist: ChannelExistUseCase,
+    val isNotificationEnabled: IsNotificationEnabledUseCase,
+    val updateNotification: UpdateNotificationUseCase
 )

@@ -34,4 +34,12 @@ class RssChannelRepositoryImpl(
     override suspend fun channelExists(rss: String): Boolean {
         return rssChanelEntityDao.channelExist(rss)
     }
+
+    override suspend fun isNotificationEnabled(rss: String): Boolean {
+        return rssChanelEntityDao.isNotificationEnabled(rss)
+    }
+
+    override suspend fun updateNotification(rss: String, isEnabled: Boolean) {
+        rssChanelEntityDao.updateNotification(rss, isEnabled)
+    }
 }

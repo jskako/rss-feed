@@ -1,14 +1,20 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
+import kotlinx.coroutines.launch
 import java.time.Instant
 
 abstract class DatabaseRssViewModel(
     protected val databaseChannelUseCases: DatabaseChannelUseCases
 ) : ViewModel() {
+
+    fun updateNotification(rssLink: String, isEnabled: Boolean) = viewModelScope.launch {
+        databaseChannelUseCases.updateNotification(rss = rssLink, isEnabled = isEnabled)
+    }
 
     protected suspend fun isChannelUpdated(
         rssLink: String,

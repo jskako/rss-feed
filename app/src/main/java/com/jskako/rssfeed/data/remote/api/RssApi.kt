@@ -1,6 +1,5 @@
 package com.jskako.rssfeed.data.remote.api
 
-import android.util.Log
 import com.jskako.rssfeed.core.utils.convertXmlToJsonString
 import com.jskako.rssfeed.core.utils.jsonToDataClass
 import com.jskako.rssfeed.data.remote.mapper.toRssApiResponse
@@ -20,7 +19,6 @@ class RssApi(private val client: HttpClient) {
             jsonToDataClass<RssResponseDto>(it)
         }?.toRssApiResponse(rss = rssLink)
     }.getOrElse { e ->
-        Log.e("RssApi", "Failed to fetch RSS", e)
         null
     }
 

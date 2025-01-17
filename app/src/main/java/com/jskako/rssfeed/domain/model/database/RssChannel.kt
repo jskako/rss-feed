@@ -9,7 +9,7 @@ data class RssChannel(
     val description: String? = null,
     val lastBuildDate: Instant? = null,
     val imagePath: String? = null,
-    val notifications: Boolean? = false
+    val notifications: Boolean = false
 ) {
     companion object {
         val mockedRssChannel = RssChannel(

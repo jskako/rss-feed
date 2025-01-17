@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Card
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +39,9 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
     rssChannels: List<RssChannel>,
+    updateNotification: (rssLink: String, isEnabled: Boolean) -> Unit
 ) {
+
 
     var itemsSearchText by remember { mutableStateOf("") }
     var channelsSearchText by remember { mutableStateOf("") }
@@ -64,10 +67,10 @@ fun HomeLayout(
             channelsSearchText = it
         },
         drawerItems = {
-            items(filteredChannels) { item ->
+            items(filteredChannels) { channel ->
                 DrawerCard(
-                    text = item.title ?: item.rss,
-                    leadingIcon = item.imagePath?.let {
+                    text = channel.title ?: channel.rss,
+                    leadingIcon = channel.imagePath?.let {
                         {
                             AsyncImage(
                                 model = it,
@@ -89,15 +92,16 @@ fun HomeLayout(
 
                             IconButton(
                                 icon = Icons.Default.Notifications,
+                                tint = if (channel.notifications) LocalContentColor.current else MaterialTheme.colorScheme.outline,
                                 onClick = {
-
+                                    updateNotification(channel.rss, !channel.notifications)
                                 }
                             )
                         }
                     },
-                    isSelected = selectedChannel.rss == item.rss,
+                    isSelected = selectedChannel.rss == channel.rss,
                     onClick = {
-                        selectedChannel = item
+                        selectedChannel = channel
                     }
                 )
             }
@@ -136,7 +140,8 @@ fun HomeLayoutPreview() {
     RssFeedTheme {
         HomeLayout(
             navigateToRssManagementScreen = {},
-            rssChannels = emptyList()
+            rssChannels = emptyList(),
+            updateNotification = { _, _ -> }
         )
     }
 }

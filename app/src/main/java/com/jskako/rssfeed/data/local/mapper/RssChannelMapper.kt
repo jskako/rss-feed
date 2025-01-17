@@ -12,7 +12,8 @@ fun RssChannelEntity.toRssChannel(): RssChannel {
         description = this.description,
         link = this.link,
         lastBuildDate = this.lastBuildDate?.let { Instant.parse(it) },
-        imagePath = this.imagePath
+        imagePath = this.imagePath,
+        notifications = this.isNotificationEnabled
     )
 }
 
@@ -23,6 +24,7 @@ fun RssChannel.toRssInfoEntity(): RssChannelEntity {
         description = this.description,
         link = this.link,
         lastBuildDate = this.lastBuildDate?.toFormattedString(),
-        imagePath = this.imagePath
+        imagePath = this.imagePath,
+        isNotificationEnabled = this.notifications
     )
 }

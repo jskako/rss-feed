@@ -10,6 +10,8 @@ import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetLastBuildDateUs
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetRssChannelUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetRssChannelsUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.InsertRssChannelUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.channel.IsNotificationEnabledUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.channel.UpdateNotificationUseCase
 import org.koin.dsl.module
 
 val useCasesModule = module {
@@ -21,7 +23,9 @@ val useCasesModule = module {
     factory { InsertRssChannelUseCase(get()) }
     factory { GetLastBuildDateUseCase(get()) }
     factory { ChannelExistUseCase(get()) }
-    factory { DatabaseChannelUseCases(get(), get(), get(), get(), get(), get()) }
+    factory { IsNotificationEnabledUseCase(get()) }
+    factory { UpdateNotificationUseCase(get()) }
+    factory { DatabaseChannelUseCases(get(), get(), get(), get(), get(), get(), get(), get()) }
 
     factory { FetchRssFeedUseCase(get()) }
     factory { CheckUrlReachabilityUseCase(get()) }
