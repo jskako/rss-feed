@@ -18,6 +18,7 @@ import com.jskako.rssfeed.domain.usecase.rss.database.item.GetLastUpdateDateUseC
 import com.jskako.rssfeed.domain.usecase.rss.database.item.GetRssItemByGuidUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.GetRssItemsUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.GetUnreadItemsCountUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.item.HasBeenReadUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.InsertRssItemUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.IsFavoriteUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.UpdateFavoriteStatusUseCase
@@ -47,8 +48,9 @@ val useCasesModule = module {
     factory { UpdateReadStatusUseCase(get()) }
     factory { IsFavoriteUseCase(get()) }
     factory { UpdateFavoriteStatusUseCase(get()) }
+    factory { HasBeenReadUseCase(get()) }
     factory {
-        DatabaseItemUseCases(get(), get(), get(), get(), get(), get(), get(), get(), get())
+        DatabaseItemUseCases(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory { FetchRssFeedUseCase(get(), get()) }

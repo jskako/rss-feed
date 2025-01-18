@@ -5,6 +5,7 @@ import com.jskako.rssfeed.domain.usecase.rss.database.item.GetLastUpdateDateUseC
 import com.jskako.rssfeed.domain.usecase.rss.database.item.GetRssItemByGuidUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.GetRssItemsUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.GetUnreadItemsCountUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.item.HasBeenReadUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.InsertRssItemUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.IsFavoriteUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.UpdateFavoriteStatusUseCase
@@ -19,5 +20,6 @@ data class DatabaseItemUseCases(
     val getUnreadItemsCount: GetUnreadItemsCountUseCase,
     val updateReadStatus: UpdateReadStatusUseCase,
     val isFavorite: IsFavoriteUseCase,
-    val updateFavoriteStatus: UpdateFavoriteStatusUseCase
+    val updateFavoriteStatus: UpdateFavoriteStatusUseCase,
+    val hasBeenRead: HasBeenReadUseCase
 )

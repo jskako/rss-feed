@@ -13,5 +13,6 @@ interface RssItemRepository {
     suspend fun unreadItems(rss: String): Int
     suspend fun updateReadStatus(guid: String, isEnabled: Boolean)
     suspend fun isFavorite(guid: String): Boolean
+    suspend fun hasBeenRead(guid: String): Boolean
     suspend fun updateFavorite(guid: String, isEnabled: Boolean)
 }

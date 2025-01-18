@@ -5,7 +5,7 @@ import com.jskako.rssfeed.domain.repository.RssChannelRepository
 class DeleteRssChannelUseCase(
     private val repository: RssChannelRepository
 ) {
-    suspend operator fun invoke(url: String) {
-        repository.deleteRssByUrl(url)
+    suspend operator fun invoke(rss: String) {
+        repository.deleteRssByUrl(rss = rss)
     }
 }

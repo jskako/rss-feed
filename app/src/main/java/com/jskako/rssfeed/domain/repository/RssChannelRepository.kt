@@ -7,9 +7,9 @@ import java.time.Instant
 interface RssChannelRepository {
     suspend fun insertRss(rssChannel: RssChannel)
     fun getAllRss(): Flow<List<RssChannel>>
-    suspend fun deleteRssByUrl(url: String)
+    suspend fun deleteRssByUrl(rss: String)
     suspend fun get(url: String): RssChannel?
-    suspend fun getLastBuildDate(url: String): Instant?
+    suspend fun getLastBuildDate(rss: String): Instant?
     suspend fun channelExists(rss: String): Boolean
     suspend fun isNotificationEnabled(rss: String): Boolean
     suspend fun updateNotification(rss: String, isEnabled: Boolean)

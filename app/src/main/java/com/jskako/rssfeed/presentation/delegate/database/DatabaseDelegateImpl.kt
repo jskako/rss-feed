@@ -4,12 +4,33 @@ import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseItemUseCases
+import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
 class DatabaseDelegateImpl(
     private val databaseChannelUseCases: DatabaseChannelUseCases,
     private val databaseItemUseCases: DatabaseItemUseCases
 ) : DatabaseDelegate {
+
+    override fun getRssChannels(): Flow<List<RssChannel>> {
+        return databaseChannelUseCases.getRssChannels()
+    }
+
+    override suspend fun deleteRssChannel(rss: String) {
+        return databaseChannelUseCases.deleteRssChannel(rss = rss)
+    }
+
+    override suspend fun isNotificationEnabled(rss: String): Boolean {
+        return databaseChannelUseCases.isNotificationEnabled(rss = rss)
+    }
+
+    override suspend fun isFavorite(guid: String): Boolean {
+        return databaseItemUseCases.isFavorite(guid = guid)
+    }
+
+    override suspend fun hasBeenRead(guid: String): Boolean {
+        return databaseItemUseCases.hasBeenRead(guid = guid)
+    }
 
     override suspend fun updateNotification(rss: String, isEnabled: Boolean) {
         databaseChannelUseCases.updateNotification(rss = rss, isEnabled = isEnabled)

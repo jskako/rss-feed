@@ -20,16 +20,16 @@ class RssChannelRepositoryImpl(
         entities.map { it.toRssChannel() }
     }
 
-    override suspend fun deleteRssByUrl(url: String) {
-        rssChannelDao.deleteByUrl(url)
+    override suspend fun deleteRssByUrl(rss: String) {
+        rssChannelDao.deleteByUrl(rss)
     }
 
     override suspend fun get(url: String): RssChannel? {
         return rssChannelDao.get(url)?.toRssChannel()
     }
 
-    override suspend fun getLastBuildDate(url: String): Instant? {
-        return rssChannelDao.getLastBuildDate(url)?.toInstantOrNull()
+    override suspend fun getLastBuildDate(rss: String): Instant? {
+        return rssChannelDao.getLastBuildDate(rss)?.toInstantOrNull()
     }
 
     override suspend fun channelExists(rss: String): Boolean {

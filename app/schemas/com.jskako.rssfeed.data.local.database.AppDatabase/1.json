@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bd82cab521e68d58e41c24db7c861630",
+    "identityHash": "5f5eded058187e367ca3ec3c6a649454",
     "entities": [
       {
         "tableName": "rss_channel",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "rss_item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `link` TEXT, `description` TEXT, `image_paths` TEXT, `has_been_read` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `link` TEXT, `description` TEXT, `image_paths` TEXT, `has_been_read` INTEGER NOT NULL, `is_favorite` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "guid",
@@ -120,7 +120,7 @@
           },
           {
             "fieldPath": "isFavorite",
-            "columnName": "isFavorite",
+            "columnName": "is_favorite",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -160,7 +160,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd82cab521e68d58e41c24db7c861630')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5f5eded058187e367ca3ec3c6a649454')"
     ]
   }
 }
