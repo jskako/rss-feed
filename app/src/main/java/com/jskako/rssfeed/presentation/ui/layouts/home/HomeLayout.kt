@@ -61,6 +61,13 @@ fun HomeLayout(
                 channel.rss.contains(channelsSearchText, ignoreCase = true)
     }
 
+    val filteredItems = rssItems.filter { item ->
+        channelsSearchText.isEmpty() ||
+                item.title?.contains(channelsSearchText, ignoreCase = true) == true ||
+                item.description?.contains(channelsSearchText, ignoreCase = true) == true ||
+                item.link?.contains(channelsSearchText, ignoreCase = true) == true
+    }
+
     GridDrawer(
         modifier = Modifier
             .fillMaxSize(),
@@ -111,7 +118,7 @@ fun HomeLayout(
             itemsSearchText = it
         },
         gridItems = {
-            items(rssItems) { item ->
+            items(filteredItems) { item ->
                 Card(
                     modifier = Modifier
                         .padding(xs)

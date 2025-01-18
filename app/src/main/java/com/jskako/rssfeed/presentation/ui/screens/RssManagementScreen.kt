@@ -45,7 +45,7 @@ fun RssManagementLayoutPreview() {
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
             onDelete = {},
-            fetchRss = { _, _ -> }
+            fetchRss = { _, _, _ -> }
         )
     }
 }

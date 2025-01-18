@@ -7,6 +7,7 @@ import java.time.Instant
 
 interface DatabaseDelegate {
     fun getRssChannels(): Flow<List<RssChannel>>
+    suspend fun getRssChannel(rss: String): RssChannel?
     fun getRssItems(rss: String): Flow<List<RssItem>>
     suspend fun deleteRssChannel(rss: String)
     suspend fun isNotificationEnabled(rss: String): Boolean

@@ -16,6 +16,10 @@ class DatabaseDelegateImpl(
         return databaseChannelUseCases.getRssChannels()
     }
 
+    override suspend fun getRssChannel(rss: String): RssChannel? {
+        return databaseChannelUseCases.getRssChannel(rss = rss)
+    }
+
     override fun getRssItems(rss: String): Flow<List<RssItem>> {
         return databaseItemUseCases.getRssItems(rss = rss)
     }
@@ -41,7 +45,7 @@ class DatabaseDelegateImpl(
     }
 
     override suspend fun isChannelUpdated(rss: String, lastBuildDate: Instant?): Boolean {
-        return databaseChannelUseCases.getLastBuildDate(url = rss)?.isBefore(lastBuildDate)
+        return databaseChannelUseCases.getLastBuildDate(rss = rss)?.isBefore(lastBuildDate)
             ?: !channelExist(rss)
     }
 

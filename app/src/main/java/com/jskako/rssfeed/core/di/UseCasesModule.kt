@@ -5,6 +5,7 @@ import com.jskako.rssfeed.domain.usecase.rss.api.CheckUrlReachabilityUseCase
 import com.jskako.rssfeed.domain.usecase.rss.api.FetchRssFeedUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseItemUseCases
+import com.jskako.rssfeed.domain.usecase.rss.database.PreferencesUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.ChannelExistUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.DeleteRssChannelUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetLastBuildDateUseCase
@@ -23,6 +24,8 @@ import com.jskako.rssfeed.domain.usecase.rss.database.item.InsertRssItemUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.IsFavoriteUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.UpdateFavoriteStatusUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.item.UpdateReadStatusUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.preferences.GetPreferenceUseCase
+import com.jskako.rssfeed.domain.usecase.rss.database.preferences.SavePreferenceUseCase
 import org.koin.dsl.module
 
 val useCasesModule = module {
@@ -52,6 +55,11 @@ val useCasesModule = module {
     factory {
         DatabaseItemUseCases(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
+
+    // Preferences UseCases
+    factory { GetPreferenceUseCase(get()) }
+    factory { SavePreferenceUseCase(get()) }
+    factory { PreferencesUseCases(get(), get()) }
 
     factory { FetchRssFeedUseCase(get(), get()) }
     factory { CheckUrlReachabilityUseCase(get()) }

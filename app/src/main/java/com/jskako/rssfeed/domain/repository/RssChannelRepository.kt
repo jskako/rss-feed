@@ -8,7 +8,7 @@ interface RssChannelRepository {
     suspend fun insertRss(rssChannel: RssChannel)
     fun getAllRss(): Flow<List<RssChannel>>
     suspend fun deleteRssByUrl(rss: String)
-    suspend fun get(url: String): RssChannel?
+    suspend fun get(rss: String): RssChannel?
     suspend fun getLastBuildDate(rss: String): Instant?
     suspend fun channelExists(rss: String): Boolean
     suspend fun isNotificationEnabled(rss: String): Boolean

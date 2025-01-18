@@ -34,7 +34,7 @@ fun RssManagementLayout(
     navigateBack: () -> Unit,
     addingProcessState: AddingProcessState,
     rssChannels: List<RssChannel>,
-    fetchRss: (rss: String, runRssExistCheck: Boolean) -> Unit,
+    fetchRss: (rss: String, runRssExistCheck: Boolean, setSelected: Boolean) -> Unit,
     onDelete: (String) -> Unit
 ) {
 
@@ -88,7 +88,7 @@ fun RssManagementLayout(
                 hintResId = R.string.rss_management_add_hint,
                 onIconClick = {
                     keyboardController?.hide()
-                    fetchRss(it, true)
+                    fetchRss(it, true, true)
                 }
             )
 
@@ -115,7 +115,7 @@ fun RssManagementLayoutPreview() {
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
             onDelete = {},
-            fetchRss = { _, _ -> }
+            fetchRss = { _, _, _ -> }
         )
     }
 }
