@@ -6,7 +6,7 @@ import java.time.Instant
 class GetLastUpdateDateUseCase(
     private val repository: RssItemRepository
 ) {
-    suspend operator fun invoke(url: String): Instant? {
-        return repository.getLastUpdateDate(url)
+    suspend operator fun invoke(guid: String): Instant? {
+        return repository.getLastUpdateDate(guid)
     }
 }

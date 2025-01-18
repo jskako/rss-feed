@@ -27,8 +27,8 @@ class RssItemIRepositoryImpl(
         return rssItemDao.getByGuid(guid)?.toRssItem()
     }
 
-    override suspend fun getLastUpdateDate(url: String): Instant? {
-        return rssItemDao.getLastUpdateDate(url)?.toInstantOrNull()
+    override suspend fun getLastUpdateDate(guid: String): Instant? {
+        return rssItemDao.getLastUpdateDate(guid)?.toInstantOrNull()
     }
 
     override suspend fun itemExists(guid: String): Boolean {

@@ -34,7 +34,7 @@ fun RssManagementLayout(
     navigateBack: () -> Unit,
     addingProcessState: AddingProcessState,
     rssChannels: List<RssChannel>,
-    fetchRss: (rssLink: String, runRssExistCheck: Boolean) -> Unit,
+    fetchRss: (rss: String, runRssExistCheck: Boolean) -> Unit,
     onDelete: (String) -> Unit
 ) {
 

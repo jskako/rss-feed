@@ -8,11 +8,11 @@ class RssApiRepositoryImpl(
     private val rssApi: RssApi
 ) : RssApiRepository {
 
-    override suspend fun getRssFeed(link: String): RssApiResponse? {
-        return rssApi.fetchRss(link)
+    override suspend fun getRssFeed(rss: String): RssApiResponse? {
+        return rssApi.fetchRss(rss)
     }
 
-    override suspend fun isUrlReachable(link: String): Boolean {
-        return rssApi.isUrlReachable(link)
+    override suspend fun isUrlReachable(rss: String): Boolean {
+        return rssApi.isUrlReachable(rss)
     }
 }

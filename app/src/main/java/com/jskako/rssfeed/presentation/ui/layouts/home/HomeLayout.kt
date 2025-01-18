@@ -42,8 +42,8 @@ import kotlinx.coroutines.launch
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
     rssChannels: List<RssChannel>,
-    updateNotification: (rssLink: String, isEnabled: Boolean) -> Unit,
-    onRefresh: (rssLink: String, runRssExistCheck: Boolean) -> Unit,
+    updateNotification: (rss: String, isEnabled: Boolean) -> Unit,
+    onRefresh: (rss: String, runRssExistCheck: Boolean) -> Unit,
     addingProcessState: AddingProcessState
 ) {
 

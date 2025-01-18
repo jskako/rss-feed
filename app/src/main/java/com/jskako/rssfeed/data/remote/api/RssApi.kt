@@ -12,17 +12,17 @@ import io.ktor.http.HttpStatusCode
 
 class RssApi(private val client: HttpClient) {
 
-    suspend fun fetchRss(rssLink: String) = runCatching {
-        val rssResponse = client.get(rssLink).bodyAsText()
+    suspend fun fetchRss(rss: String) = runCatching {
+        val rssResponse = client.get(rss).bodyAsText()
         val jsonOutput = convertXmlToJsonString(rssResponse)
         jsonOutput?.let {
             jsonToDataClass<RssResponseDto>(it)
-        }?.toRssApiResponse(rss = rssLink)
+        }?.toRssApiResponse(rss = rss)
     }.getOrNull()
 
-    suspend fun isUrlReachable(link: String): Boolean {
+    suspend fun isUrlReachable(rss: String): Boolean {
         return runCatching {
-            client.head(link).status == HttpStatusCode.OK
+            client.head(rss).status == HttpStatusCode.OK
         }.getOrElse {
             false
         }

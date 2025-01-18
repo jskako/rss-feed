@@ -4,7 +4,7 @@ import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.api.CheckUrlReachabilityUseCase
 import com.jskako.rssfeed.domain.usecase.rss.api.FetchRssFeedUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
-import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseRssItemUseCases
+import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseItemUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.ChannelExistUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.DeleteRssChannelUseCase
 import com.jskako.rssfeed.domain.usecase.rss.database.channel.GetLastBuildDateUseCase
@@ -48,7 +48,7 @@ val useCasesModule = module {
     factory { IsFavoriteUseCase(get()) }
     factory { UpdateFavoriteStatusUseCase(get()) }
     factory {
-        DatabaseRssItemUseCases(
+        DatabaseItemUseCases(
             get(),
             get(),
             get(),

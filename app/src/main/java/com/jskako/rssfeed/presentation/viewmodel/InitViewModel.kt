@@ -3,15 +3,18 @@ package com.jskako.rssfeed.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.mapper.toRssChannel
+import com.jskako.rssfeed.domain.mapper.toRssItems
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
+import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseItemUseCases
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class InitViewModel(
     private val apiUseCases: ApiUseCases,
-    databaseChannelUseCases: DatabaseChannelUseCases
-) : DatabaseRssViewModel(databaseChannelUseCases) {
+    databaseChannelUseCases: DatabaseChannelUseCases,
+    databaseItemUseCases: DatabaseItemUseCases,
+) : DatabaseRssViewModel(databaseChannelUseCases, databaseItemUseCases) {
 
 
     fun fetchRssFeeds(
@@ -24,18 +27,18 @@ class InitViewModel(
         onTotalSteps?.let {
             it(rssList.size)
         }
-        rssList.forEachIndexed { index, link ->
+        rssList.forEachIndexed { index, rss ->
             onCurrentStepIndex?.let {
                 it(index.inc())
             }
 
             runCatching {
 
-                val feeds = apiUseCases.fetchRssFeeds(link = link)
-                    ?: throw Exception("Failed to fetch feeds for $link")
+                val feeds = apiUseCases.fetchRssFeeds(rss = rss)
+                    ?: throw Exception("Failed to fetch feeds for $rss")
 
                 if (isChannelUpdated(
-                        rssLink = link,
+                        rss = rss,
                         currentDate = feeds.rssApiChannel.lastBuildDate
                     )
                 ) {
@@ -44,7 +47,11 @@ class InitViewModel(
                             databaseChannelUseCases = databaseChannelUseCases
                         )
                     )
-                    //addItemsToDatabase(rssItems = feeds.rssItems)
+                    addItemsToDatabase(
+                        rssItems = feeds.rssApiItems.toRssItems(
+                            databaseChannelUseCases = databaseChannelUseCases
+                        )
+                    )
                 }
             }.onFailure {
                 Log.e("Error", "$it")
