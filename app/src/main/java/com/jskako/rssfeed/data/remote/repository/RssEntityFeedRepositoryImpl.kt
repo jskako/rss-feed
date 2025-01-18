@@ -8,7 +8,7 @@ class RssApiRepositoryImpl(
     private val rssApi: RssApi
 ) : RssApiRepository {
 
-    override suspend fun getRssFeed(rss: String): RssApiResponse? {
+    override suspend fun fetchRssFeeds(rss: String): RssApiResponse? {
         return rssApi.fetchRss(rss)
     }
 

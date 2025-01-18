@@ -1,4 +1,4 @@
-package com.jskako.rssfeed.presentation.delegate
+package com.jskako.rssfeed.presentation.delegate.database
 
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem

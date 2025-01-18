@@ -51,7 +51,7 @@ val useCasesModule = module {
         DatabaseItemUseCases(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
-    factory { FetchRssFeedUseCase(get()) }
+    factory { FetchRssFeedUseCase(get(), get()) }
     factory { CheckUrlReachabilityUseCase(get()) }
     factory { ApiUseCases(get(), get()) }
 }

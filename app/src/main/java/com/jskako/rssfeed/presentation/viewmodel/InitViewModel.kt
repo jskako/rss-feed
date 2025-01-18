@@ -7,7 +7,7 @@ import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItems
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
-import com.jskako.rssfeed.presentation.delegate.DatabaseDelegate
+import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -36,7 +36,6 @@ class InitViewModel(
             runCatching {
                 databaseDelegate.run {
                     val feeds = apiUseCases.fetchRssFeeds(rss = rss)
-                        ?: throw Exception("Failed to fetch feeds for $rss")
 
                     if (isChannelUpdated(
                             rss = rss,

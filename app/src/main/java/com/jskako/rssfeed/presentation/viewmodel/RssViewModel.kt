@@ -7,7 +7,7 @@ import com.jskako.rssfeed.domain.mapper.toRssItems
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.DatabaseChannelUseCases
-import com.jskako.rssfeed.presentation.delegate.DatabaseDelegate
+import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -50,16 +50,11 @@ class RssViewModel(
         _addingProcessState.value = AddingProcessState.FetchingData
         runCatching {
             databaseDelegate.run {
-                if (runRssExistCheck && channelExist(rss)) {
-                    throw IllegalArgumentException("RSS already added: $rss")
-                }
 
-                if (!apiUseCases.isUrlReachable(rss)) {
-                    throw IllegalArgumentException("The RSS link is not reachable: $rss")
-                }
-
-                val feeds = apiUseCases.fetchRssFeeds(rss = rss)
-                    ?: throw Exception("Failed to fetch feeds for $rss")
+                val feeds = apiUseCases.fetchRssFeeds(
+                    rss = rss,
+                    runRssExistCheck = runRssExistCheck
+                )
 
                 if (isChannelUpdated(
                         rss = rss,
