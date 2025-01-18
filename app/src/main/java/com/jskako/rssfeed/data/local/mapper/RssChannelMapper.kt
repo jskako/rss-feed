@@ -17,7 +17,7 @@ fun RssChannelEntity.toRssChannel(): RssChannel {
     )
 }
 
-fun RssChannel.toRssInfoEntity(): RssChannelEntity {
+fun RssChannel.toRssChannelEntity(): RssChannelEntity {
     return RssChannelEntity(
         rss = this.rss,
         title = this.title,

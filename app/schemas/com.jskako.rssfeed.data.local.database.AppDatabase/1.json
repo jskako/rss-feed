@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f1cf1065a912a92f341e0dfe0f1d142a",
+    "identityHash": "bd82cab521e68d58e41c24db7c861630",
     "entities": [
       {
         "tableName": "rss_channel",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `title` TEXT, `description` TEXT, `link` TEXT, `last_build_date` TEXT, `image_path` TEXT, `isNotificationEnabled` INTEGER NOT NULL, PRIMARY KEY(`rss`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rss` TEXT NOT NULL, `title` TEXT, `description` TEXT, `link` TEXT, `last_build_date` TEXT, `image_path` TEXT, `is_notification_enabled` INTEGER NOT NULL, PRIMARY KEY(`rss`))",
         "fields": [
           {
             "fieldPath": "rss",
@@ -46,7 +46,7 @@
           },
           {
             "fieldPath": "isNotificationEnabled",
-            "columnName": "isNotificationEnabled",
+            "columnName": "is_notification_enabled",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "rss_item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `link` TEXT, `description` TEXT, `image_paths` TEXT, `hasBeenRead` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`guid` TEXT NOT NULL, `rss` TEXT NOT NULL, `title` TEXT, `update_date` TEXT, `expires_date` TEXT, `link` TEXT, `description` TEXT, `image_paths` TEXT, `has_been_read` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, PRIMARY KEY(`guid`), FOREIGN KEY(`rss`) REFERENCES `rss_channel`(`rss`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "guid",
@@ -114,7 +114,7 @@
           },
           {
             "fieldPath": "hasBeenRead",
-            "columnName": "hasBeenRead",
+            "columnName": "has_been_read",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -160,7 +160,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1cf1065a912a92f341e0dfe0f1d142a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd82cab521e68d58e41c24db7c861630')"
     ]
   }
 }

@@ -8,7 +8,7 @@ import com.jskako.rssfeed.data.local.models.RssChannelEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RssChanelEntityDao {
+interface RssChannelDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertRss(rss: RssChannelEntity)
@@ -28,9 +28,9 @@ interface RssChanelEntityDao {
     @Query("SELECT EXISTS(SELECT 1 FROM rss_channel WHERE rss = :rss)")
     suspend fun channelExist(rss: String): Boolean
 
-    @Query("SELECT isNotificationEnabled FROM rss_channel WHERE rss = :rss")
+    @Query("SELECT is_notification_enabled FROM rss_channel WHERE rss = :rss")
     suspend fun isNotificationEnabled(rss: String): Boolean
 
-    @Query("UPDATE rss_channel SET isNotificationEnabled = :isEnabled WHERE rss = :rss")
+    @Query("UPDATE rss_channel SET is_notification_enabled = :isEnabled WHERE rss = :rss")
     suspend fun updateNotification(rss: String, isEnabled: Boolean)
 }

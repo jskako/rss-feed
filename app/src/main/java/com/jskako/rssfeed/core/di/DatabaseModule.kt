@@ -4,7 +4,9 @@ import androidx.room.Room
 import com.jskako.rssfeed.data.local.database.AppDatabase
 import com.jskako.rssfeed.data.local.database.AppDatabase.Companion.DATABASE_NAME
 import com.jskako.rssfeed.data.local.repository.RssChannelRepositoryImpl
+import com.jskako.rssfeed.data.local.repository.RssItemIRepositoryImpl
 import com.jskako.rssfeed.domain.repository.RssChannelRepository
+import com.jskako.rssfeed.domain.repository.RssItemRepository
 import org.koin.dsl.module
 
 val databaseModule = module {
@@ -14,6 +16,8 @@ val databaseModule = module {
             .build()
     }
 
-    single { get<AppDatabase>().rssDao() }
+    single { get<AppDatabase>().rssChannelDao() }
+    single { get<AppDatabase>().rssItemDao() }
     single<RssChannelRepository> { RssChannelRepositoryImpl(get()) }
+    single<RssItemRepository> { RssItemIRepositoryImpl(get()) }
 }

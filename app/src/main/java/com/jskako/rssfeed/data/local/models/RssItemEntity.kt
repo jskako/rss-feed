@@ -27,7 +27,7 @@ data class RssItemEntity(
     val link: String?,
     val description: String?,
     @ColumnInfo(name = "image_paths") val imagePaths: List<String>?,
-    val hasBeenRead: Boolean = false,
+    @ColumnInfo(name = "has_been_read") val hasBeenRead: Boolean = false,
     val isFavorite: Boolean = false
 )
 

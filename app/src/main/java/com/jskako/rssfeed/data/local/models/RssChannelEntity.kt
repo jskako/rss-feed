@@ -12,5 +12,5 @@ data class RssChannelEntity(
     val link: String?,
     @ColumnInfo(name = "last_build_date") val lastBuildDate: String?,
     @ColumnInfo(name = "image_path") val imagePath: String?,
-    val isNotificationEnabled: Boolean
+    @ColumnInfo(name = "is_notification_enabled") val isNotificationEnabled: Boolean
 )
