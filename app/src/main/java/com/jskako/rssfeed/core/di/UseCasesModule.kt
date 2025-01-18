@@ -48,17 +48,7 @@ val useCasesModule = module {
     factory { IsFavoriteUseCase(get()) }
     factory { UpdateFavoriteStatusUseCase(get()) }
     factory {
-        DatabaseItemUseCases(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            get()
-        )
+        DatabaseItemUseCases(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory { FetchRssFeedUseCase(get()) }

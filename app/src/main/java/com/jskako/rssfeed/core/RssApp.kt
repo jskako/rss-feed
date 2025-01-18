@@ -2,6 +2,7 @@ package com.jskako.rssfeed.core
 
 import android.app.Application
 import com.jskako.rssfeed.core.di.databaseModule
+import com.jskako.rssfeed.core.di.delegateModule
 import com.jskako.rssfeed.core.di.networkModule
 import com.jskako.rssfeed.core.di.useCasesModule
 import com.jskako.rssfeed.core.di.viewModelsModule
@@ -16,7 +17,7 @@ class RssApp : Application() {
         startKoin {
             androidContext(this@RssApp)
             androidLogger()
-            modules(databaseModule, useCasesModule, viewModelsModule, networkModule)
+            modules(databaseModule, useCasesModule, viewModelsModule, networkModule, delegateModule)
         }
     }
 }
