@@ -26,12 +26,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.components.IconButton
 import com.jskako.rssfeed.presentation.ui.components.cards.DrawerCard
+import com.jskako.rssfeed.presentation.ui.layouts.MessageLayout
 import com.jskako.rssfeed.presentation.ui.theme.Padding.l
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
@@ -62,89 +64,95 @@ fun HomeLayout(
     }
 
     val filteredItems = rssItems.filter { item ->
-        channelsSearchText.isEmpty() ||
-                item.title?.contains(channelsSearchText, ignoreCase = true) == true ||
-                item.description?.contains(channelsSearchText, ignoreCase = true) == true ||
-                item.link?.contains(channelsSearchText, ignoreCase = true) == true
+        itemsSearchText.isEmpty() ||
+                item.title?.contains(itemsSearchText, ignoreCase = true) == true ||
+                item.description?.contains(itemsSearchText, ignoreCase = true) == true ||
+                item.link?.contains(itemsSearchText, ignoreCase = true) == true
     }
 
-    GridDrawer(
-        modifier = Modifier
-            .fillMaxSize(),
-        onDrawerContentSearch = {
-            channelsSearchText = it
-        },
-        drawerItems = {
-            items(filteredChannels) { channel ->
-                DrawerCard(
-                    text = channel.title ?: channel.rss,
-                    leadingIcon = channel.imagePath?.let {
-                        {
-                            AsyncImage(
-                                model = it,
-                                contentDescription = null
-                            )
-                        }
-                    },
-                    trailingIcon = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(s)
-                        ) {
-                            Text(
-                                text = "23",
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontSize = 12.sp
-                            )
+    if(selectedChannel != null) {
+        GridDrawer(
+            modifier = Modifier
+                .fillMaxSize(),
+            onDrawerContentSearch = {
+                channelsSearchText = it
+            },
+            drawerItems = {
+                items(filteredChannels) { channel ->
+                    DrawerCard(
+                        text = channel.title ?: channel.rss,
+                        leadingIcon = channel.imagePath?.let {
+                            {
+                                AsyncImage(
+                                    model = it,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                        trailingIcon = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(s)
+                            ) {
+                                Text(
+                                    text = "23",
+                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontSize = 12.sp
+                                )
 
-                            IconButton(
-                                icon = Icons.Default.Notifications,
-                                tint = if (channel.notifications) LocalContentColor.current else MaterialTheme.colorScheme.outline,
-                                onClick = {
-                                    updateNotification(channel.rss, !channel.notifications)
-                                }
-                            )
+                                IconButton(
+                                    icon = Icons.Default.Notifications,
+                                    tint = if (channel.notifications) LocalContentColor.current else MaterialTheme.colorScheme.outline,
+                                    onClick = {
+                                        updateNotification(channel.rss, !channel.notifications)
+                                    }
+                                )
+                            }
+                        },
+                        isSelected = selectedChannel.rss == channel.rss,
+                        onClick = {
+                            onChannelSelected(channel)
                         }
-                    },
-                    isSelected = selectedChannel?.rss == channel.rss,
-                    onClick = {
-                        onChannelSelected(channel)
-                    }
-                )
-            }
-        },
-        onGridContentSearch = {
-            itemsSearchText = it
-        },
-        gridItems = {
-            items(filteredItems) { item ->
-                Card(
-                    modifier = Modifier
-                        .padding(xs)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = item.link ?: "",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(l)
                     )
                 }
-            }
-        },
-        drawerTrailingIcon = Icons.Default.Edit,
-        onDrawerTrailingIconClick = navigateToRssManagementScreen,
-        isRefreshing = addingProcessState == AddingProcessState.FetchingData,
-        onPullToRefresh = selectedChannel?.rss?.let {
-            {
-                scope.launch {
-                    onRefresh(it, false)
+            },
+            onGridContentSearch = {
+                itemsSearchText = it
+            },
+            gridItems = {
+                items(filteredItems) { item ->
+                    Card(
+                        modifier = Modifier
+                            .padding(xs)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = item.link ?: "",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(l)
+                        )
+                    }
+                }
+            },
+            drawerTrailingIcon = Icons.Default.Edit,
+            onDrawerTrailingIconClick = navigateToRssManagementScreen,
+            isRefreshing = addingProcessState == AddingProcessState.FetchingData,
+            onPullToRefresh = selectedChannel?.rss?.let {
+                {
+                    scope.launch {
+                        onRefresh(it, false)
+                    }
                 }
             }
-        }
-    )
+        )
+    } else {
+        MessageLayout(
+            messageResId = R.string.no_rss_selected
+        )
+    }
 }
 
 @PreviewLightDark
