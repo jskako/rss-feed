@@ -7,8 +7,6 @@ import java.time.Instant
 interface RssItemRepository {
     suspend fun insert(rssItem: RssItem)
     fun getItems(rss: String): Flow<List<RssItem>>
-    suspend fun deleteByRss(rss: String)
-    suspend fun deleteByGuid(guid: String)
     suspend fun get(guid: String): RssItem?
     suspend fun getLastUpdateDate(url: String): Instant?
     suspend fun itemExists(guid: String): Boolean

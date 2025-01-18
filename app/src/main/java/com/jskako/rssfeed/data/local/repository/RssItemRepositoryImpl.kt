@@ -23,14 +23,6 @@ class RssItemIRepositoryImpl(
         }
     }
 
-    override suspend fun deleteByRss(rss: String) {
-        rssItemDao.deleteByRss(rss)
-    }
-
-    override suspend fun deleteByGuid(guid: String) {
-        rssItemDao.deleteByGuid(guid)
-    }
-
     override suspend fun get(guid: String): RssItem? {
         return rssItemDao.getByGuid(guid)?.toRssItem()
     }

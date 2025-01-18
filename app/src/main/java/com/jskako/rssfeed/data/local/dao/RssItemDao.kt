@@ -16,12 +16,6 @@ interface RssItemDao {
     @Query("SELECT * FROM rss_item WHERE rss = :rss")
     fun getItemsByRss(rss: String): Flow<List<RssItemEntity>>
 
-    @Query("DELETE FROM rss_item WHERE rss = :rss")
-    suspend fun deleteByRss(rss: String)
-
-    @Query("DELETE FROM rss_item WHERE guid = :guid")
-    suspend fun deleteByGuid(guid: String)
-
     @Query("SELECT * FROM rss_item WHERE guid = :guid")
     suspend fun getByGuid(guid: String): RssItemEntity?
 
