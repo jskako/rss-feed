@@ -34,6 +34,8 @@ fun HomeScreen(
 
     val rssChannels by viewModel.rssChannels.collectAsState()
     val addingProcessState by viewModel.addingProcessState.collectAsState()
+    val selectedChannel by viewModel.selectedChannel.collectAsState()
+    val rssItems by viewModel.rssItems.collectAsState()
 
     if (rssChannels != null) {
 
@@ -56,7 +58,10 @@ fun HomeScreen(
                     rssChannels = rssChannels ?: emptyList(),
                     updateNotification = viewModel::updateNotification,
                     onRefresh = viewModel::fetchRssFeed,
-                    addingProcessState = addingProcessState
+                    addingProcessState = addingProcessState,
+                    selectedChannel = selectedChannel,
+                    rssItems = rssItems,
+                    onChannelSelected = viewModel::selectChannel
                 )
 
                 else -> HomeEmptyLayout(
@@ -81,7 +86,10 @@ fun HomeScreenPreview() {
             rssChannels = emptyList(),
             updateNotification = { _, _ -> },
             onRefresh = { _, _ -> },
-            addingProcessState = AddingProcessState.NotStarted
+            addingProcessState = AddingProcessState.NotStarted,
+            selectedChannel = null,
+            rssItems = emptyList(),
+            onChannelSelected = {}
         )
     }
 }

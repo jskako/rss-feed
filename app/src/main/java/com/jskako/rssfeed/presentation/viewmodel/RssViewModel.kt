@@ -5,12 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItem
 import com.jskako.rssfeed.domain.model.database.RssChannel
+import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import com.jskako.rssfeed.presentation.state.AddingProcessState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -27,9 +31,30 @@ class RssViewModel(
             initialValue = null
         )
 
+    private val _selectedChannel = MutableStateFlow<RssChannel?>(null)
+    val selectedChannel: StateFlow<RssChannel?> = _selectedChannel
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _rssItems = _selectedChannel
+        .filterNotNull()
+        .flatMapLatest { channel ->
+            databaseDelegate.getRssItems(channel.rss)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = emptyList()
+        )
+
+    val rssItems: StateFlow<List<RssItem>> = _rssItems
+
     private val _addingProcessState =
         MutableStateFlow<AddingProcessState>(AddingProcessState.NotStarted)
     val addingProcessState: StateFlow<AddingProcessState> = _addingProcessState
+
+    fun selectChannel(channel: RssChannel) {
+        _selectedChannel.value = channel
+    }
 
     fun deleteRssChannels(rss: String) = viewModelScope.launch {
         databaseDelegate.deleteRssChannel(rss = rss)

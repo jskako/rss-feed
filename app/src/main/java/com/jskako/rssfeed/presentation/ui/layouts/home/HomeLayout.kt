@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -44,11 +43,13 @@ import kotlinx.coroutines.launch
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
     rssChannels: List<RssChannel>,
+    rssItems: List<RssItem>,
+    selectedChannel: RssChannel?,
+    onChannelSelected: (RssChannel) -> Unit,
     updateNotification: (rss: String, isEnabled: Boolean) -> Unit,
     onRefresh: (rss: String, runRssExistCheck: Boolean) -> Unit,
     addingProcessState: AddingProcessState
 ) {
-
 
     var itemsSearchText by remember { mutableStateOf("") }
     var channelsSearchText by remember { mutableStateOf("") }
@@ -59,14 +60,6 @@ fun HomeLayout(
                 channel.title?.contains(channelsSearchText, ignoreCase = true) == true ||
                 channel.rss.contains(channelsSearchText, ignoreCase = true)
     }
-
-    var selectedChannel by remember { mutableStateOf(rssChannels.first()) }
-
-    /*val rssItems by produceState<List<RssItem>?>(initialValue = null, selectedChannel) {
-        value = getRssItems(selectedChannel)
-    }*/
-
-    val gridList = List(100) { "SomeLink" }
 
     GridDrawer(
         modifier = Modifier
@@ -107,9 +100,9 @@ fun HomeLayout(
                             )
                         }
                     },
-                    isSelected = selectedChannel.rss == channel.rss,
+                    isSelected = selectedChannel?.rss == channel.rss,
                     onClick = {
-                        selectedChannel = channel
+                        onChannelSelected(channel)
                     }
                 )
             }
@@ -118,14 +111,14 @@ fun HomeLayout(
             itemsSearchText = it
         },
         gridItems = {
-            items(gridList) { item ->
+            items(rssItems) { item ->
                 Card(
                     modifier = Modifier
                         .padding(xs)
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = item,
+                        text = item.link ?: "",
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
                         textAlign = TextAlign.Center,
@@ -137,9 +130,11 @@ fun HomeLayout(
         drawerTrailingIcon = Icons.Default.Edit,
         onDrawerTrailingIconClick = navigateToRssManagementScreen,
         isRefreshing = addingProcessState == AddingProcessState.FetchingData,
-        onPullToRefresh = {
-            scope.launch {
-                onRefresh(selectedChannel.rss, false)
+        onPullToRefresh = selectedChannel?.rss?.let {
+            {
+                scope.launch {
+                    onRefresh(it, false)
+                }
             }
         }
     )
@@ -154,7 +149,10 @@ fun HomeLayoutPreview() {
             rssChannels = emptyList(),
             updateNotification = { _, _ -> },
             onRefresh = { _, _ -> },
-            addingProcessState = AddingProcessState.NotStarted
+            addingProcessState = AddingProcessState.NotStarted,
+            selectedChannel = null,
+            rssItems = emptyList(),
+            onChannelSelected = {}
         )
     }
 }

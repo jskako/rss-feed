@@ -16,6 +16,10 @@ class DatabaseDelegateImpl(
         return databaseChannelUseCases.getRssChannels()
     }
 
+    override fun getRssItems(rss: String): Flow<List<RssItem>> {
+        return databaseItemUseCases.getRssItems(rss = rss)
+    }
+
     override suspend fun deleteRssChannel(rss: String) {
         return databaseChannelUseCases.deleteRssChannel(rss = rss)
     }

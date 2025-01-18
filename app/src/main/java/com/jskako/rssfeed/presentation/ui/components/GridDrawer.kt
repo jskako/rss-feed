@@ -49,7 +49,7 @@ fun GridDrawer(
     drawerTrailingIcon: ImageVector? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
     isRefreshing: Boolean,
-    onPullToRefresh: () -> Unit
+    onPullToRefresh: (() -> Unit)?
 ) {
 
     val scope = rememberCoroutineScope()
@@ -127,8 +127,8 @@ fun GridDrawer(
             }
             PullToRefreshBox(
                 state = state,
-                isRefreshing = isRefreshing,
-                onRefresh = onPullToRefresh,
+                isRefreshing = isRefreshing && onPullToRefresh != null,
+                onRefresh = { onPullToRefresh?.invoke() },
             ) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(xxxl),
