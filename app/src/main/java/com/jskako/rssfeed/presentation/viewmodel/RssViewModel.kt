@@ -49,30 +49,20 @@ class RssViewModel(
     ) = viewModelScope.launch {
         _addingProcessState.value = AddingProcessState.FetchingData
         runCatching {
-            databaseDelegate.run {
+            val feeds = apiUseCases.fetchRssFeeds(
+                rss = rss,
+                runRssExistCheck = runRssExistCheck
+            )
 
-                val feeds = apiUseCases.fetchRssFeeds(
-                    rss = rss,
-                    runRssExistCheck = runRssExistCheck
+            databaseDelegate.addToDatabase(
+                rss = rss,
+                rssChannel = feeds.rssApiChannel.toRssChannel(
+                    databaseChannelUseCases = databaseChannelUseCases
+                ),
+                rssItems = feeds.rssApiItems.toRssItems(
+                    databaseChannelUseCases = databaseChannelUseCases
                 )
-
-                if (isChannelUpdated(
-                        rss = rss,
-                        currentDate = feeds.rssApiChannel.lastBuildDate
-                    )
-                ) {
-                    addChannelToDatabase(
-                        rssChannel = feeds.rssApiChannel.toRssChannel(
-                            databaseChannelUseCases = databaseChannelUseCases
-                        )
-                    )
-                    addItemsToDatabase(
-                        rssItems = feeds.rssApiItems.toRssItems(
-                            databaseChannelUseCases = databaseChannelUseCases
-                        )
-                    )
-                }
-            }
+            )
         }.fold(
             onSuccess = {
                 _addingProcessState.value = AddingProcessState.Done(

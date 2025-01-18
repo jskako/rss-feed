@@ -20,40 +20,32 @@ class InitViewModel(
 
     fun fetchRssFeeds(
         onCurrentStepIndex: ((Int) -> Unit)? = null,
-        onTotalSteps: ((Int) -> Unit)? = null,
+        onTotalSteps: ((Int) -> Unit),
         onDone: () -> Unit
     ) = viewModelScope.launch {
 
         val rssList = databaseChannelUseCases.getRssChannels().first().map { it.rss }
-        onTotalSteps?.let {
-            it(rssList.size)
-        }
+
+        onTotalSteps(rssList.size)
+
         rssList.forEachIndexed { index, rss ->
             onCurrentStepIndex?.let {
                 it(index.inc())
             }
 
             runCatching {
-                databaseDelegate.run {
-                    val feeds = apiUseCases.fetchRssFeeds(rss = rss)
 
-                    if (isChannelUpdated(
-                            rss = rss,
-                            currentDate = feeds.rssApiChannel.lastBuildDate
-                        )
-                    ) {
-                        addChannelToDatabase(
-                            rssChannel = feeds.rssApiChannel.toRssChannel(
-                                databaseChannelUseCases = databaseChannelUseCases
-                            )
-                        )
-                        addItemsToDatabase(
-                            rssItems = feeds.rssApiItems.toRssItems(
-                                databaseChannelUseCases = databaseChannelUseCases
-                            )
-                        )
-                    }
-                }
+                val feeds = apiUseCases.fetchRssFeeds(rss = rss)
+
+                databaseDelegate.addToDatabase(
+                    rss = rss,
+                    rssChannel = feeds.rssApiChannel.toRssChannel(
+                        databaseChannelUseCases = databaseChannelUseCases
+                    ),
+                    rssItems = feeds.rssApiItems.toRssItems(
+                        databaseChannelUseCases = databaseChannelUseCases
+                    )
+                )
             }.onFailure {
                 Log.e("Error", "$it")
             }

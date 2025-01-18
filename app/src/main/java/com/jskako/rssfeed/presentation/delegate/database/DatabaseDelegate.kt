@@ -6,8 +6,11 @@ import java.time.Instant
 
 interface DatabaseDelegate {
     suspend fun updateNotification(rss: String, isEnabled: Boolean)
-    suspend fun isChannelUpdated(rss: String, currentDate: Instant?): Boolean
-    suspend fun addChannelToDatabase(rssChannel: RssChannel)
-    suspend fun addItemsToDatabase(rssItems: List<RssItem>)
+    suspend fun isChannelUpdated(rss: String, lastBuildDate: Instant?): Boolean
     suspend fun channelExist(rss: String): Boolean
+    suspend fun addToDatabase(
+        rss: String,
+        rssChannel: RssChannel,
+        rssItems: List<RssItem>,
+    )
 }

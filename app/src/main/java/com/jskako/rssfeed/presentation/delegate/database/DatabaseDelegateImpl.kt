@@ -15,25 +15,40 @@ class DatabaseDelegateImpl(
         databaseChannelUseCases.updateNotification(rss = rss, isEnabled = isEnabled)
     }
 
-    override suspend fun isChannelUpdated(rss: String, currentDate: Instant?): Boolean {
-        return databaseChannelUseCases.getLastBuildDate(url = rss)?.isBefore(currentDate)
+    override suspend fun isChannelUpdated(rss: String, lastBuildDate: Instant?): Boolean {
+        return databaseChannelUseCases.getLastBuildDate(url = rss)?.isBefore(lastBuildDate)
             ?: !channelExist(rss)
     }
 
-    override suspend fun addChannelToDatabase(rssChannel: RssChannel) {
+    override suspend fun channelExist(rss: String): Boolean {
+        return databaseChannelUseCases.channelExist(rss)
+    }
+
+    override suspend fun addToDatabase(
+        rss: String,
+        rssChannel: RssChannel,
+        rssItems: List<RssItem>
+    ) {
+        if (isChannelUpdated(rss = rss, lastBuildDate = rssChannel.lastBuildDate)) {
+            addChannelToDatabase(
+                rssChannel = rssChannel
+            )
+            addItemsToDatabase(
+                rssItems = rssItems
+            )
+        }
+    }
+
+    private suspend fun addChannelToDatabase(rssChannel: RssChannel) {
         databaseChannelUseCases.insertRssChannel(rssChannel)
     }
 
-    override suspend fun addItemsToDatabase(rssItems: List<RssItem>) {
+    private suspend fun addItemsToDatabase(rssItems: List<RssItem>) {
         rssItems.forEach { item ->
             if (isItemUpdated(item.guid, item.updateDate)) {
                 databaseItemUseCases.insertRssItem(item)
             }
         }
-    }
-
-    override suspend fun channelExist(rss: String): Boolean {
-        return databaseChannelUseCases.channelExist(rss)
     }
 
     private suspend fun isItemUpdated(guid: String, currentDate: Instant?): Boolean {
