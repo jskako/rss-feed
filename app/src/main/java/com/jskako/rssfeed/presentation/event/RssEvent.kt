@@ -19,4 +19,8 @@ sealed interface RssEvent {
         val onTotalSteps: ((Int) -> Unit),
         val onDone: () -> Unit
     ) : RssEvent
+
+    data class DoWork(val rss: String) : RssEvent
+    data class ScheduleWork(val rss: String) : RssEvent
+    data class CancelWork(val rss: String) : RssEvent
 }

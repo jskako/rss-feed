@@ -30,4 +30,8 @@
     <!-- Banners -->
     <string name="offline_mode_banner">Application is working in offline mode with limited functionalities.</string>
 
+    <!-- Worker -->
+    <string name="rss_notification_title">Some RSS feeds are waiting for you.</string>
+    <string name="rss_notification_desc">You have %d unread articles</string>
+
 </resources>

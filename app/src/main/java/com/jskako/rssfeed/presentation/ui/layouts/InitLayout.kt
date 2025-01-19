@@ -1,4 +1,4 @@
-package com.jskako.rssfeed.presentation.ui.layouts.home
+package com.jskako.rssfeed.presentation.ui.layouts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

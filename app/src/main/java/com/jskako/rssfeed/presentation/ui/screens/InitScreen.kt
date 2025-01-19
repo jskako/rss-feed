@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.jskako.rssfeed.presentation.event.RssEvent
-import com.jskako.rssfeed.presentation.ui.layouts.home.InitConnectedLayout
+import com.jskako.rssfeed.presentation.ui.layouts.InitConnectedLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 import com.jskako.rssfeed.presentation.viewmodel.InitViewModel

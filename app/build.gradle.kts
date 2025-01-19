@@ -91,6 +91,8 @@ dependencies {
     implementation(libs.jackson.dataformat.xml)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.stax.api)
+
+    implementation(libs.koin.androidx.workmanager)
 }
 
 ksp {

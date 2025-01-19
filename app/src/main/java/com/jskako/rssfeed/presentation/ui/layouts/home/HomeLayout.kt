@@ -109,6 +109,14 @@ fun HomeLayout(
                                 tint = if (channel.notifications) LocalContentColor.current else MaterialTheme.colorScheme.outline,
                                 onClick = {
                                     onEvent(
+                                        if (channel.notifications) {
+                                            RssEvent.CancelWork(rss = channel.rss)
+                                        } else {
+                                            RssEvent.ScheduleWork(rss = channel.rss)
+                                        }
+                                    )
+
+                                    onEvent(
                                         RssEvent.UpdateNotification(
                                             rss = channel.rss,
                                             isEnabled = !channel.notifications
