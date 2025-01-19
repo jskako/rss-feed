@@ -28,8 +28,8 @@ interface RssItemDao {
     @Query("SELECT COUNT(*) FROM rss_item WHERE rss = :rss AND has_been_read = 0")
     fun countUnreadItems(rss: String): Flow<Int>
 
-    @Query("UPDATE rss_item SET has_been_read = :isEnabled WHERE guid = :guid")
-    suspend fun updateReadStatus(guid: String, isEnabled: Boolean)
+    @Query("UPDATE rss_item SET has_been_read = :hasBeenRead WHERE guid = :guid")
+    suspend fun updateReadStatus(guid: String, hasBeenRead: Boolean)
 
     @Query("SELECT is_favorite FROM rss_item WHERE guid = :guid")
     suspend fun isFavorite(guid: String): Boolean

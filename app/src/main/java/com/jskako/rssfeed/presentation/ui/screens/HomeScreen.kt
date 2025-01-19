@@ -65,9 +65,12 @@ fun HomeScreen(
                     rssItems = rssItems,
                     onChannelSelected = viewModel::selectChannel,
                     unreadItemsFlow = viewModel::observeUnreadCount,
-                    onItemClick = { link ->
-                        link?.let {
-                            navigator.navigate(WebViewScreenDestination(url = it))
+                    onItemClick = { guid, link ->
+                        if (isConnected) {
+                            viewModel.hasBeenRead(guid = guid)
+                            link?.let {
+                                navigator.navigate(WebViewScreenDestination(url = it))
+                            }
                         }
                     }
                 )
@@ -99,7 +102,7 @@ fun HomeScreenPreview() {
             rssItems = emptyList(),
             onChannelSelected = {},
             unreadItemsFlow = { _ -> flowOf(5) },
-            onItemClick = {}
+            onItemClick = { _, _ -> }
         )
     }
 }

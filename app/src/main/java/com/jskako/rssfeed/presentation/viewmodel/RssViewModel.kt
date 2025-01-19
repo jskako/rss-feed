@@ -56,6 +56,10 @@ class RssViewModel(
         return databaseDelegate.getUnreadItemsCount(rss)
     }
 
+    fun hasBeenRead(guid: String, hasBeenRead: Boolean = true) = viewModelScope.launch {
+        databaseDelegate.updateReadStatus(guid = guid, hasBeenRead = hasBeenRead)
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val _rssItems = _selectedChannel
         .filterNotNull()

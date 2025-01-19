@@ -44,7 +44,7 @@ fun HomeLayout(
     rssItems: List<RssItem>,
     selectedChannel: RssChannel?,
     onChannelSelected: (RssChannel) -> Unit,
-    onItemClick: (String?) -> Unit,
+    onItemClick: (guid: String, link: String?) -> Unit,
     updateNotification: (rss: String, isEnabled: Boolean) -> Unit,
     onRefresh: (rss: String, runRssExistCheck: Boolean) -> Unit,
     addingProcessState: AddingProcessState,
@@ -125,7 +125,7 @@ fun HomeLayout(
                 RssItemCard(
                     rssItem = item,
                     onClick = {
-                        onItemClick(item.link)
+                        onItemClick(item.guid, item.link)
                     }
                 )
             }
@@ -157,7 +157,7 @@ fun HomeLayoutPreview() {
             rssItems = emptyList(),
             onChannelSelected = {},
             unreadItemsFlow = { _ -> flowOf(5) },
-            onItemClick = {}
+            onItemClick = { _, _ -> }
         )
     }
 }

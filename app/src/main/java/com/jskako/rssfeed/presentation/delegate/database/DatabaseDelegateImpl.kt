@@ -57,6 +57,10 @@ class DatabaseDelegateImpl(
         return databaseChannelUseCases.channelExist(rss)
     }
 
+    override suspend fun updateReadStatus(guid: String, hasBeenRead: Boolean) {
+        databaseItemUseCases.updateReadStatus(guid = guid, hasBeenRead = hasBeenRead)
+    }
+
     override suspend fun addToDatabase(
         rss: String,
         rssChannel: RssChannel,

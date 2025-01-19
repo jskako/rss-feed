@@ -39,8 +39,8 @@ class RssItemIRepositoryImpl(
         return rssItemDao.countUnreadItems(rss)
     }
 
-    override suspend fun updateReadStatus(guid: String, isEnabled: Boolean) {
-        rssItemDao.updateReadStatus(guid, isEnabled)
+    override suspend fun updateReadStatus(guid: String, hasBeenRead: Boolean) {
+        rssItemDao.updateReadStatus(guid, hasBeenRead)
     }
 
     override suspend fun isFavorite(guid: String): Boolean {
