@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +52,7 @@ fun HomeLayout(
 
     var itemsSearchText by remember { mutableStateOf("") }
     var channelsSearchText by remember { mutableStateOf("") }
+    var filterFavorites by remember { mutableStateOf(false) }
 
     val filteredChannels = rssChannels.filter { channel ->
         channelsSearchText.isEmpty() ||
@@ -58,10 +61,14 @@ fun HomeLayout(
     }
 
     val filteredItems = rssItems.filter { item ->
-        itemsSearchText.isEmpty() ||
+        val matchesSearchText = itemsSearchText.isEmpty() ||
                 item.title?.contains(itemsSearchText, ignoreCase = true) == true ||
                 item.description?.contains(itemsSearchText, ignoreCase = true) == true ||
                 item.link?.contains(itemsSearchText, ignoreCase = true) == true
+
+        val matchesFavorites = !filterFavorites || item.isFavorite
+
+        matchesSearchText && matchesFavorites
     }
 
     GridDrawer(
@@ -143,6 +150,10 @@ fun HomeLayout(
         },
         drawerTrailingIcon = Icons.Default.Edit,
         onDrawerTrailingIconClick = navigateToRssManagementScreen,
+        gridLeadingIcon = if (filterFavorites) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+        onGridLeadingIconClick = {
+            filterFavorites = !filterFavorites
+        },
         isRefreshing = addingProcessState == AddingProcessState.FetchingData,
         onPullToRefresh = selectedChannel?.rss?.let {
             {

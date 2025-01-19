@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +47,8 @@ fun GridDrawer(
     onGridContentSearch: ((String) -> Unit)? = null,
     drawerTrailingIcon: ImageVector? = null,
     onDrawerTrailingIconClick: (() -> Unit)? = null,
+    gridLeadingIcon: ImageVector? = null,
+    onGridLeadingIconClick: (() -> Unit)? = null,
     isRefreshing: Boolean,
     onPullToRefresh: (() -> Unit)?
 ) {
@@ -91,57 +92,58 @@ fun GridDrawer(
                 }
             }
         },
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(s)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+        content = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(s)
             ) {
-                IconButton(
-                    onClick = {
-                        scope.launch {
-                            drawerState.open()
-                        }
-                    },
-                    icon = Icons.Default.Menu,
-                    iconContentDescriptionResId = R.string.menu_content_desc
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        icon = Icons.Default.Menu,
+                        iconContentDescriptionResId = R.string.menu_content_desc
+                    )
 
-                onGridContentSearch?.let {
-                    SearchText(
-                        modifier = Modifier.weight(1f),
-                        onSearch = it
+                    onGridContentSearch?.let {
+                        SearchText(
+                            modifier = Modifier.weight(1f),
+                            onSearch = it
+                        )
+                    }
+
+                    gridLeadingIcon?.let {
+                        IconButton(
+                            onClick = {
+                                onGridLeadingIconClick?.invoke()
+                            },
+                            icon = it,
+                            iconContentDescriptionResId = null
+                        )
+                    }
+                }
+                PullToRefreshBox(
+                    state = state,
+                    isRefreshing = isRefreshing && onPullToRefresh != null,
+                    onRefresh = { onPullToRefresh?.invoke() },
+                ) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(xxxl),
+                        contentPadding = PaddingValues(
+                            start = m,
+                            end = m,
+                            bottom = l
+                        ),
+                        content = { gridItems() }
                     )
                 }
-
-                IconButton(
-                    onClick = {
-                        scope.launch {
-                            drawerState.open()
-                        }
-                    },
-                    icon = Icons.Default.Favorite,
-                    iconContentDescriptionResId = null
-                )
-            }
-            PullToRefreshBox(
-                state = state,
-                isRefreshing = isRefreshing && onPullToRefresh != null,
-                onRefresh = { onPullToRefresh?.invoke() },
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(xxxl),
-                    contentPadding = PaddingValues(
-                        start = m,
-                        end = m,
-                        bottom = l
-                    ),
-                    content = { gridItems() }
-                )
             }
         }
-    }
+    )
 }
 
 @PreviewLightDark
