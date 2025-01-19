@@ -1,6 +1,8 @@
 # RSS Reader Application
 
-This is a showcase application designed for reading RSS feeds. With this app, you can manage RSS feeds from various sources, switch between them easily, and stay updated with new articles. You can also mark articles as favorites for quick access.
+This is a showcase application designed for reading RSS feeds. With this app, you can manage RSS
+feeds from various sources, switch between them easily, and stay updated with new articles. You can
+also mark articles as favorites for quick access.
 
 ---
 
@@ -11,15 +13,18 @@ Here are some sample RSS feeds you can use to test the application:
 - [ABC News - US Headlines](https://abcnews.go.com/abcnews/usheadlines)
 - [The Guardian - US News](https://www.theguardian.com/us-news/rss)
 - [Christian Science Monitor - USA](https://rss.csmonitor.com/feeds/usa)
-- Explore more options from [this list](https://about.fb.com/wp-content/uploads/2016/05/rss-urls-1.pdf).
+- Explore more options
+  from [this list](https://about.fb.com/wp-content/uploads/2016/05/rss-urls-1.pdf).
 
 ---
 
 ## Features
 
-- **Add and Manage Feeds**: Add RSS feeds from multiple sources and switch between them effortlessly.
+- **Add and Manage Feeds**: Add RSS feeds from multiple sources and switch between them
+  effortlessly.
 - **Unread Articles**: Track unread articles and stay informed.
-- **Notifications**: Receive notifications when new articles arrive, with background updates running hourly.
+- **Notifications**: Receive notifications when new articles arrive, with background updates running
+  hourly.
 - **Favorites**: Mark articles as favorites for easy access later.
 - **Pull to Refresh**: Easily fetch the latest data by pulling down on the screen.
 - **Offline Mode**: A network manager ensures smooth functionality even when offline.
@@ -29,7 +34,8 @@ Here are some sample RSS feeds you can use to test the application:
 
 ## Tech Stack
 
-The application is built using modern tools and frameworks to ensure performance and maintainability:
+The application is built using modern tools and frameworks to ensure performance and
+maintainability:
 
 ### Core Technologies
 
@@ -38,7 +44,8 @@ The application is built using modern tools and frameworks to ensure performance
 
 ### Architecture
 
-- **MVVM** (Model-View-ViewModel): Ensures clear separation of concerns, making the app modular and testable.
+- **MVVM** (Model-View-ViewModel): Ensures clear separation of concerns, making the app modular and
+  testable.
 - **Clean Architecture**: Provides scalability and maintains a clean codebase.
 
 ### Key Libraries
@@ -47,7 +54,8 @@ The application is built using modern tools and frameworks to ensure performance
 - **Ktor**: Handles network operations, including fetching and processing RSS feed data.
 - **Datastore**: For lightweight and efficient key-value storage.
 - **Room**: Manages structured, relational data with SQLite.
-- **WorkManager**: Runs background tasks, such as fetching new articles and sending notifications every hour.
+- **WorkManager**: Runs background tasks, such as fetching new articles and sending notifications
+  every hour.
 - **Coil (Coil3)**: For smooth image loading and caching.
 - **Compose Destinations**: Simplifies navigation within the app.
 
