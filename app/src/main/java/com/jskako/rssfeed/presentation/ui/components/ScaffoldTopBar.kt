@@ -30,7 +30,7 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 fun ScaffoldTopBar(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState? = null,
-    @StringRes titleResId: Int,
+    @StringRes titleResId: Int? = null,
     onNavigationIconClick: () -> Unit,
     navigationIconId: ImageVector? = Icons.AutoMirrored.Filled.ArrowBack,
     @StringRes navigationIconContentDescriptionResId: Int? = R.string.back,
@@ -38,12 +38,14 @@ fun ScaffoldTopBar(
         CenterAlignedTopAppBar(
             windowInsets = WindowInsets(zero),
             title = {
-                Text(
-                    text = stringResource(titleResId),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis
-                )
+                titleResId?.let {
+                    Text(
+                        text = stringResource(it),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             },
             navigationIcon = {
                 navigationIconId?.let {

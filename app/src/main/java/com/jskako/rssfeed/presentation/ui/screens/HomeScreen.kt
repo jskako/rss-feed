@@ -19,6 +19,7 @@ import com.jskako.rssfeed.presentation.viewmodel.RssViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.RssManagementScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.WebViewScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
@@ -63,7 +64,12 @@ fun HomeScreen(
                     selectedChannel = selectedChannel,
                     rssItems = rssItems,
                     onChannelSelected = viewModel::selectChannel,
-                    unreadItemsFlow = viewModel::observeUnreadCount
+                    unreadItemsFlow = viewModel::observeUnreadCount,
+                    onItemClick = { link ->
+                        link?.let {
+                            navigator.navigate(WebViewScreenDestination(url = it))
+                        }
+                    }
                 )
 
                 else -> HomeEmptyLayout(
@@ -92,7 +98,8 @@ fun HomeScreenPreview() {
             selectedChannel = null,
             rssItems = emptyList(),
             onChannelSelected = {},
-            unreadItemsFlow = { _ -> flowOf(5) }
+            unreadItemsFlow = { _ -> flowOf(5) },
+            onItemClick = {}
         )
     }
 }
