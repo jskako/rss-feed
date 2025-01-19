@@ -23,6 +23,7 @@
     <string name="delete_desc">Do you really want to proceed with deletion? This action is irreversible.</string>
 
     <!-- Home -->
+    <string name="unread_article">Unread article</string>
     <string name="rss_empty">Looks like you didn\'t add any rss feed yet.</string>
     <string name="add_rss_url">Add RSS url</string>
 
