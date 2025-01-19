@@ -1,17 +1,7 @@
 package com.jskako.rssfeed.presentation.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.jskako.rssfeed.core.utils.RSS_WORKER_KEY
-import com.jskako.rssfeed.data.worker.RssWorker
 import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItem
 import com.jskako.rssfeed.domain.model.database.RssChannel
@@ -19,9 +9,9 @@ import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.PreferencesUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
+import com.jskako.rssfeed.presentation.delegate.worker.WorkerDelegate
 import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.state.AddingProcessState
-import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.utils.SELECTED_CHANNEL_KEY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -32,12 +22,11 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 class RssViewModel(
-    private val context: Application,
     private val apiUseCases: ApiUseCases,
     private val databaseDelegate: DatabaseDelegate,
+    private val workerDelegate: WorkerDelegate,
     private val preferencesUseCases: PreferencesUseCases
 ) : ViewModel() {
 
@@ -77,77 +66,22 @@ class RssViewModel(
 
             is RssEvent.FetchRssFeeds -> {}
             is RssEvent.CancelWork -> {
-                cancelRssWorker(rss = event.rss)
+                viewModelScope.launch {
+                    workerDelegate.cancelRssWorker(rss = event.rss)
+                }
             }
 
             is RssEvent.DoWork -> {
-                scheduleRssWorker(rss = event.rss)
+                viewModelScope.launch {
+                    workerDelegate.scheduleRssWorker(rss = event.rss)
+                }
             }
 
             is RssEvent.ScheduleWork -> {
-                schedulePeriodicRssWorker(rss = event.rss)
+                viewModelScope.launch {
+                    workerDelegate.schedulePeriodicRssWorker(rss = event.rss)
+                }
             }
-        }
-    }
-
-    private val _rssWorkerState = MutableStateFlow<RssWorkerState>(RssWorkerState.Idle)
-    val rssWorkerState: StateFlow<RssWorkerState> = _rssWorkerState
-
-    fun scheduleRssWorker(rss: String) {
-        viewModelScope.launch {
-            _rssWorkerState.value = RssWorkerState.Running
-
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            val inputData = Data.Builder()
-                .putString(RSS_WORKER_KEY, rss)
-                .build()
-
-            val rssWorkRequest = OneTimeWorkRequestBuilder<RssWorker>()
-                .setInputData(inputData)
-                .setConstraints(constraints)
-                .addTag(rss)
-                .build()
-
-            WorkManager.getInstance(context).enqueue(rssWorkRequest)
-
-            _rssWorkerState.value = RssWorkerState.Fetched
-        }
-    }
-
-    fun schedulePeriodicRssWorker(rss: String) {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .build()
-
-        val inputData = Data.Builder()
-            .putString(RSS_WORKER_KEY, rss)
-            .build()
-
-        val rssPeriodicWorkRequest = PeriodicWorkRequestBuilder<RssWorker>(
-            1, TimeUnit.HOURS
-        )
-            .setInputData(inputData)
-            .setConstraints(constraints)
-            .addTag(rss)
-            .build()
-
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            rss,
-            ExistingPeriodicWorkPolicy.KEEP,
-            rssPeriodicWorkRequest
-        )
-
-        _rssWorkerState.value = RssWorkerState.Scheduled
-    }
-
-    fun cancelRssWorker(rss: String) {
-        viewModelScope.launch {
-            WorkManager.getInstance(context).cancelAllWorkByTag(rss)
-            _rssWorkerState.value = RssWorkerState.Unscheduled
         }
     }
 
