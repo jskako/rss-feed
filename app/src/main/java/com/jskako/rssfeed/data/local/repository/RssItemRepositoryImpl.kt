@@ -51,7 +51,7 @@ class RssItemIRepositoryImpl(
         return rssItemDao.hasBeenRead(guid)
     }
 
-    override suspend fun updateFavorite(guid: String, isEnabled: Boolean) {
-        rssItemDao.updateFavorite(guid, isEnabled)
+    override suspend fun updateFavorite(guid: String, isFavorite: Boolean) {
+        rssItemDao.updateFavorite(guid, isFavorite)
     }
 }

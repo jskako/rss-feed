@@ -61,6 +61,10 @@ class DatabaseDelegateImpl(
         databaseItemUseCases.updateReadStatus(guid = guid, hasBeenRead = hasBeenRead)
     }
 
+    override suspend fun updateFavoriteStatus(guid: String, isFavorite: Boolean) {
+        databaseItemUseCases.updateFavoriteStatus(guid = guid, isFavorite = isFavorite)
+    }
+
     override suspend fun addToDatabase(
         rss: String,
         rssChannel: RssChannel,

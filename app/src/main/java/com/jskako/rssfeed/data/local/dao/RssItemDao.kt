@@ -37,6 +37,6 @@ interface RssItemDao {
     @Query("SELECT has_been_read FROM rss_item WHERE guid = :guid")
     suspend fun hasBeenRead(guid: String): Boolean
 
-    @Query("UPDATE rss_item SET is_favorite = :isEnabled WHERE guid = :guid")
-    suspend fun updateFavorite(guid: String, isEnabled: Boolean)
+    @Query("UPDATE rss_item SET is_favorite = :isFavorite WHERE guid = :guid")
+    suspend fun updateFavorite(guid: String, isFavorite: Boolean)
 }

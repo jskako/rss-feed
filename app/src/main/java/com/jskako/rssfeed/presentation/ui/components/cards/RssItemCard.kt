@@ -34,7 +34,8 @@ import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 @Composable
 fun RssItemCard(
     rssItem: RssItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onFavorite: () -> Unit
 ) {
 
     Card(
@@ -75,9 +76,7 @@ fun RssItemCard(
                         IconButton(
                             icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             tint = MaterialTheme.colorScheme.error,
-                            onClick = {
-
-                            }
+                            onClick = onFavorite
                         )
                     }
 
@@ -113,7 +112,8 @@ fun ItemCardPreview() {
     RssFeedTheme {
         RssItemCard(
             rssItem = mockerRssItem,
-            onClick = {}
+            onClick = {},
+            onFavorite = {}
         )
     }
 }

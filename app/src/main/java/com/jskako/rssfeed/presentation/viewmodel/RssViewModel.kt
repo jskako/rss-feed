@@ -58,6 +58,10 @@ class RssViewModel(
                 updateNotification(rss = event.rss, isEnabled = event.isEnabled)
             }
 
+            is RssEvent.UpdateFavorite -> {
+                updateFavoriteStatus(guid = event.guid, isFavorite = event.isFavorite)
+            }
+
             is RssEvent.FetchRssFeeds -> {}
         }
     }
@@ -130,6 +134,12 @@ class RssViewModel(
     private fun updateNotification(rss: String, isEnabled: Boolean) {
         viewModelScope.launch {
             databaseDelegate.updateNotification(rss, isEnabled)
+        }
+    }
+
+    private fun updateFavoriteStatus(guid: String, isFavorite: Boolean) {
+        viewModelScope.launch {
+            databaseDelegate.updateFavoriteStatus(guid = guid, isFavorite = isFavorite)
         }
     }
 

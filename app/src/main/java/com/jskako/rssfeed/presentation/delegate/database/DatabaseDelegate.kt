@@ -16,6 +16,7 @@ interface DatabaseDelegate {
     suspend fun hasBeenRead(guid: String): Boolean
     suspend fun updateNotification(rss: String, isEnabled: Boolean)
     suspend fun updateReadStatus(guid: String, hasBeenRead: Boolean)
+    suspend fun updateFavoriteStatus(guid: String, isFavorite: Boolean)
     suspend fun isChannelUpdated(rss: String, lastBuildDate: Instant?): Boolean
     suspend fun channelExist(rss: String): Boolean
     suspend fun addToDatabase(

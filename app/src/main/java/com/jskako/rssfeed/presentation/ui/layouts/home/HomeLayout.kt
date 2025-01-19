@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +50,6 @@ fun HomeLayout(
 
     var itemsSearchText by remember { mutableStateOf("") }
     var channelsSearchText by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
 
     val filteredChannels = rssChannels.filter { channel ->
         channelsSearchText.isEmpty() ||
@@ -131,6 +129,14 @@ fun HomeLayout(
                     rssItem = item,
                     onClick = {
                         onItemClick(item.guid, item.link)
+                    },
+                    onFavorite = {
+                        onEvent(
+                            RssEvent.UpdateFavorite(
+                                guid = item.guid,
+                                isFavorite = !item.isFavorite
+                            )
+                        )
                     }
                 )
             }
