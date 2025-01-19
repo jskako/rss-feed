@@ -4,6 +4,17 @@ This is a showcase application designed for reading RSS feeds. With this app, yo
 
 ---
 
+## Test URLs
+
+Here are some sample RSS feeds you can use to test the application:
+
+- [ABC News - US Headlines](https://abcnews.go.com/abcnews/usheadlines)
+- [The Guardian - US News](https://www.theguardian.com/us-news/rss)
+- [Christian Science Monitor - USA](https://rss.csmonitor.com/feeds/usa)
+- Explore more options from [this list](https://about.fb.com/wp-content/uploads/2016/05/rss-urls-1.pdf).
+
+---
+
 ## Features
 
 - **Add and Manage Feeds**: Add RSS feeds from multiple sources and switch between them effortlessly.
