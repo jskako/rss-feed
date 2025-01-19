@@ -2,16 +2,14 @@ package com.jskako.rssfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jskako.rssfeed.domain.mapper.toRssChannel
-import com.jskako.rssfeed.domain.mapper.toRssItem
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem
-import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.PreferencesUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import com.jskako.rssfeed.presentation.delegate.worker.WorkerDelegate
 import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.state.AddingProcessState
+import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.utils.SELECTED_CHANNEL_KEY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -24,14 +22,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RssViewModel(
-    private val apiUseCases: ApiUseCases,
     private val databaseDelegate: DatabaseDelegate,
     private val workerDelegate: WorkerDelegate,
     private val preferencesUseCases: PreferencesUseCases
 ) : ViewModel() {
 
     init {
-        loadSelectedChannel()
+        loadSelectedRss()
     }
 
     fun onRssEvent(event: RssEvent) {
@@ -41,11 +38,17 @@ class RssViewModel(
             }
 
             is RssEvent.FetchRssFeed -> {
-                fetchRssFeed(
-                    rss = event.rss,
-                    runRssExistCheck = event.runRssExistCheck,
-                    setSelected = event.setSelected
-                )
+                viewModelScope.launch {
+
+                    if (event.setSelected) {
+                        selectChannel(rss = event.rss)
+                    }
+
+                    workerDelegate.scheduleRssWorker(
+                        rss = event.rss,
+                        runRssExistCheck = event.runRssExistCheck
+                    )
+                }
             }
 
             is RssEvent.HasBeenRead -> {
@@ -53,7 +56,7 @@ class RssViewModel(
             }
 
             is RssEvent.SelectChannel -> {
-                selectChannel(channel = event.channel)
+                selectChannel(rss = event.rss)
             }
 
             is RssEvent.UpdateNotification -> {
@@ -71,12 +74,6 @@ class RssViewModel(
                 }
             }
 
-            is RssEvent.DoWork -> {
-                viewModelScope.launch {
-                    workerDelegate.scheduleRssWorker(rss = event.rss)
-                }
-            }
-
             is RssEvent.ScheduleWork -> {
                 viewModelScope.launch {
                     workerDelegate.schedulePeriodicRssWorker(rss = event.rss)
@@ -85,7 +82,9 @@ class RssViewModel(
         }
     }
 
+    val rssWorkerState: StateFlow<RssWorkerState> = workerDelegate.rssWorkerState
     private val _rssChannels = databaseDelegate.getRssChannels()
+
     val rssChannels: StateFlow<List<RssChannel>?> = _rssChannels
         .stateIn(
             scope = viewModelScope,
@@ -93,15 +92,13 @@ class RssViewModel(
             initialValue = null
         )
 
-    private val _selectedChannel = MutableStateFlow<RssChannel?>(null)
-    val selectedChannel: StateFlow<RssChannel?> = _selectedChannel
+    private val _selectedRss = MutableStateFlow<String?>(null)
+    val selectedRss: StateFlow<String?> = _selectedRss
 
-    private fun loadSelectedChannel() {
+    private fun loadSelectedRss() {
         viewModelScope.launch {
             preferencesUseCases.getPreference(SELECTED_CHANNEL_KEY).let { rss ->
-                rss?.let {
-                    _selectedChannel.value = databaseDelegate.getRssChannel(rss = it)
-                }
+                _selectedRss.value = rss
             }
         }
     }
@@ -115,10 +112,10 @@ class RssViewModel(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val _rssItems = _selectedChannel
+    private val _rssItems = _selectedRss
         .filterNotNull()
-        .flatMapLatest { channel ->
-            databaseDelegate.getRssItems(channel.rss)
+        .flatMapLatest { rss ->
+            databaseDelegate.getRssItems(rss)
         }
         .stateIn(
             scope = viewModelScope,
@@ -138,11 +135,11 @@ class RssViewModel(
         }
     }
 
-    private fun selectChannel(channel: RssChannel) {
-        _selectedChannel.value = channel
+    private fun selectChannel(rss: String) {
+        _selectedRss.value = rss
         savePreference(
             key = SELECTED_CHANNEL_KEY,
-            value = channel.rss
+            value = rss
         )
     }
 
@@ -160,49 +157,5 @@ class RssViewModel(
         viewModelScope.launch {
             databaseDelegate.updateFavoriteStatus(guid = guid, isFavorite = isFavorite)
         }
-    }
-
-    private fun fetchRssFeed(
-        rss: String,
-        runRssExistCheck: Boolean = true,
-        setSelected: Boolean = false
-    ) = viewModelScope.launch {
-        _addingProcessState.value = AddingProcessState.FetchingData
-        runCatching {
-            val feeds = apiUseCases.fetchRssFeeds(
-                rss = rss,
-                runRssExistCheck = runRssExistCheck
-            )
-
-            val rssChannel = feeds.rssApiChannel.toRssChannel(
-                isNotificationEnabled = databaseDelegate.isNotificationEnabled(rss = rss)
-            )
-
-            if (setSelected) {
-                selectChannel(channel = rssChannel)
-            }
-
-            databaseDelegate.addToDatabase(
-                rss = rss,
-                rssChannel = rssChannel,
-                rssItems = feeds.rssApiItems.map { item ->
-                    item.toRssItem(
-                        hasBeenRead = databaseDelegate.hasBeenRead(guid = item.guid),
-                        isFavorite = databaseDelegate.isFavorite(guid = item.guid)
-                    )
-                }
-            )
-        }.fold(
-            onSuccess = {
-                _addingProcessState.value = AddingProcessState.Done(
-                    result = Result.success(null)
-                )
-            },
-            onFailure = { error ->
-                _addingProcessState.value = AddingProcessState.Done(
-                    Result.failure(error)
-                )
-            }
-        )
     }
 }

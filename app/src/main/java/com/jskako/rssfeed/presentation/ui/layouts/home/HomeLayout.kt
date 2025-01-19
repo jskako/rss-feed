@@ -44,7 +44,7 @@ fun HomeLayout(
     onEvent: (RssEvent) -> Unit,
     rssChannels: List<RssChannel>,
     rssItems: List<RssItem>,
-    selectedChannel: RssChannel?,
+    selectedRss: String?,
     onItemClick: (guid: String, link: String?) -> Unit,
     addingProcessState: AddingProcessState,
     unreadItemsFlow: (String) -> Flow<Int>
@@ -126,10 +126,10 @@ fun HomeLayout(
                             )
                         }
                     },
-                    isSelected = selectedChannel?.rss == channel.rss,
+                    isSelected = selectedRss == channel.rss,
                     onClick = {
                         onEvent(
-                            RssEvent.SelectChannel(channel = channel)
+                            RssEvent.SelectChannel(rss = channel.rss)
                         )
                     }
                 )
@@ -163,7 +163,7 @@ fun HomeLayout(
             filterFavorites = !filterFavorites
         },
         isRefreshing = addingProcessState == AddingProcessState.FetchingData,
-        onPullToRefresh = selectedChannel?.rss?.let {
+        onPullToRefresh = selectedRss?.let {
             {
                 onEvent(
                     RssEvent.FetchRssFeed(
@@ -183,7 +183,7 @@ fun HomeLayoutPreview() {
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
-            selectedChannel = null,
+            selectedRss = null,
             rssItems = emptyList(),
             unreadItemsFlow = { _ -> flowOf(5) },
             onItemClick = { _, _ -> },

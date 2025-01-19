@@ -1,10 +1,8 @@
 package com.jskako.rssfeed.presentation.event
 
-import com.jskako.rssfeed.domain.model.database.RssChannel
-
 sealed interface RssEvent {
     data class HasBeenRead(val guid: String, val hasBeenRead: Boolean = true) : RssEvent
-    data class SelectChannel(val channel: RssChannel) : RssEvent
+    data class SelectChannel(val rss: String) : RssEvent
     data class DeleteChannel(val rss: String) : RssEvent
     data class UpdateNotification(val rss: String, val isEnabled: Boolean) : RssEvent
     data class UpdateFavorite(val guid: String, val isFavorite: Boolean) : RssEvent
@@ -20,7 +18,6 @@ sealed interface RssEvent {
         val onDone: () -> Unit
     ) : RssEvent
 
-    data class DoWork(val rss: String) : RssEvent
     data class ScheduleWork(val rss: String) : RssEvent
     data class CancelWork(val rss: String) : RssEvent
 }

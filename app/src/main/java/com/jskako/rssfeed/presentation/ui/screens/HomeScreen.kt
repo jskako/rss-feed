@@ -37,7 +37,7 @@ fun HomeScreen(
 
     val rssChannels by viewModel.rssChannels.collectAsState()
     val addingProcessState by viewModel.addingProcessState.collectAsState()
-    val selectedChannel by viewModel.selectedChannel.collectAsState()
+    val selectedRss by viewModel.selectedRss.collectAsState()
     val rssItems by viewModel.rssItems.collectAsState()
 
     if (rssChannels != null) {
@@ -60,7 +60,7 @@ fun HomeScreen(
                     },
                     rssChannels = rssChannels ?: emptyList(),
                     addingProcessState = addingProcessState,
-                    selectedChannel = selectedChannel,
+                    selectedRss = selectedRss,
                     rssItems = rssItems,
                     unreadItemsFlow = viewModel::observeUnreadCount,
                     onEvent = { event ->
@@ -99,7 +99,7 @@ fun HomeScreenPreview() {
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
-            selectedChannel = null,
+            selectedRss = null,
             rssItems = emptyList(),
             unreadItemsFlow = { _ -> flowOf(5) },
             onItemClick = { _, _ -> },

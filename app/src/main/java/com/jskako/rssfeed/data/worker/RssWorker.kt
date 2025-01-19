@@ -3,6 +3,7 @@ package com.jskako.rssfeed.data.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.jskako.rssfeed.core.utils.RSS_CHECK_WORKER_KEY
 import com.jskako.rssfeed.core.utils.RSS_WORKER_KEY
 import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItem
@@ -20,10 +21,11 @@ class RssWorker(
 
     override suspend fun doWork(): Result {
         val rss = inputData.getString(RSS_WORKER_KEY) ?: return Result.failure()
+        val rssCheck = inputData.getBoolean(key = RSS_CHECK_WORKER_KEY, defaultValue = false)
 
         return runCatching {
 
-            val feeds = apiUseCases.fetchRssFeeds(rss = rss)
+            val feeds = apiUseCases.fetchRssFeeds(rss = rss, runRssExistCheck = rssCheck)
 
             val rssChannel = feeds.rssApiChannel.toRssChannel(
                 isNotificationEnabled = databaseDelegate.isNotificationEnabled(rss = rss)
