@@ -1,5 +1,6 @@
 package com.jskako.rssfeed.data.remote.api
 
+import android.util.Log
 import com.jskako.rssfeed.core.utils.convertXmlToJsonString
 import com.jskako.rssfeed.core.utils.jsonToDataClass
 import com.jskako.rssfeed.data.remote.mapper.toRssApiResponse
@@ -18,7 +19,10 @@ class RssApi(private val client: HttpClient) {
         jsonOutput?.let {
             jsonToDataClass<RssResponseDto>(it)
         }?.toRssApiResponse(rss = rss)
-    }.getOrNull()
+    }.getOrElse {
+        Log.e("Fetch error", "${it.message}")
+        null
+    }
 
     suspend fun isUrlReachable(rss: String): Boolean {
         return runCatching {

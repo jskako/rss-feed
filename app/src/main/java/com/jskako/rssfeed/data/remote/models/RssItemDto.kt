@@ -20,6 +20,8 @@ data class RssItemDto(
     val guid: String,
     @JsonProperty("content")
     @JsonDeserialize(using = RssItemContentDeserializer::class)
-    val content: List<RssItemContentDto>? = null
-
+    val content: List<RssItemContentDto>? = null,
+    @JsonProperty("thumbnail")
+    @JsonDeserialize(using = RssItemContentDeserializer::class)
+    val thumbnail: List<RssItemContentDto>? = null
 )

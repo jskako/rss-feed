@@ -24,7 +24,7 @@ fun RssApiItem.toRssItem(
     return RssItem(
         guid = this.guid,
         rss = this.rss,
-        title = this.rss,
+        title = this.title,
         updateDate = this.updateDate,
         expiresDate = this.expiresDate,
         link = this.link,

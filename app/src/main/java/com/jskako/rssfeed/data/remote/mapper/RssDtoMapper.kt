@@ -30,7 +30,8 @@ private fun List<RssItemDto>.toRssApiItems(rss: String): List<RssApiItem> = this
         link = itemDto.link,
         updateDate = itemDto.updateDate?.toInstantOrNull(),
         expiresDate = itemDto.expiresDate?.toInstantOrNull(),
-        imagePaths = itemDto.content?.mapNotNull { it.url },
+        imagePaths = itemDto.content?.mapNotNull { it.url }
+            ?: itemDto.thumbnail?.mapNotNull { it.url },
         description = itemDto.description
     )
 }
