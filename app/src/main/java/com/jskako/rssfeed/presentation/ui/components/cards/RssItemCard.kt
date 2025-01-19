@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -13,13 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import coil3.compose.AsyncImage
 import com.jskako.rssfeed.core.utils.toFormattedString
 import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.model.database.RssItem.Companion.mockerRssItem
+import com.jskako.rssfeed.presentation.ui.components.ImageSlider
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
-import com.jskako.rssfeed.presentation.ui.theme.Padding.xxl
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 
@@ -47,10 +45,8 @@ fun RssItemCard(
             ) {
                 rssItem.run {
                     imagePaths?.let {
-                        AsyncImage(
-                            modifier = Modifier.size(xxl),
-                            model = it.first(),
-                            contentDescription = null
+                        ImageSlider(
+                            imageUrls = it
                         )
                     }
 
