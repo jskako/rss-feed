@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.database.RssChannel
+import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.AddRow
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar
@@ -32,10 +33,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun RssManagementLayout(
     navigateBack: () -> Unit,
+    onEvent: (RssEvent) -> Unit,
     addingProcessState: AddingProcessState,
-    rssChannels: List<RssChannel>,
-    fetchRss: (rss: String, runRssExistCheck: Boolean, setSelected: Boolean) -> Unit,
-    onDelete: (String) -> Unit
+    rssChannels: List<RssChannel>
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -88,7 +88,13 @@ fun RssManagementLayout(
                 hintResId = R.string.rss_management_add_hint,
                 onIconClick = {
                     keyboardController?.hide()
-                    fetchRss(it, true, true)
+                    onEvent(
+                        RssEvent.FetchRssFeed(
+                            rss = it,
+                            runRssExistCheck = true,
+                            setSelected = true
+                        )
+                    )
                 }
             )
 
@@ -97,7 +103,9 @@ fun RssManagementLayout(
                     RssChannelRowCard(
                         rssChannel = channel,
                         onDeleteConfirmed = {
-                            onDelete(channel.rss)
+                            onEvent(
+                                RssEvent.DeleteChannel(rss = channel.rss)
+                            )
                         }
                     )
                 }
@@ -114,8 +122,7 @@ fun RssManagementLayoutPreview() {
             navigateBack = {},
             rssChannels = emptyList(),
             addingProcessState = AddingProcessState.NotStarted,
-            onDelete = {},
-            fetchRss = { _, _, _ -> }
+            onEvent = {}
         )
     }
 }

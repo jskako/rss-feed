@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.R
+import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.InAppBanner
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
@@ -58,16 +59,18 @@ fun HomeScreen(
                         )
                     },
                     rssChannels = rssChannels ?: emptyList(),
-                    updateNotification = viewModel::updateNotification,
-                    onRefresh = viewModel::fetchRssFeed,
                     addingProcessState = addingProcessState,
                     selectedChannel = selectedChannel,
                     rssItems = rssItems,
-                    onChannelSelected = viewModel::selectChannel,
                     unreadItemsFlow = viewModel::observeUnreadCount,
+                    onEvent = { event ->
+                        viewModel.onRssEvent(event = event)
+                    },
                     onItemClick = { guid, link ->
                         if (isConnected) {
-                            viewModel.hasBeenRead(guid = guid)
+                            viewModel.onRssEvent(
+                                RssEvent.HasBeenRead(guid = guid)
+                            )
                             link?.let {
                                 navigator.navigate(WebViewScreenDestination(url = it))
                             }
@@ -95,14 +98,12 @@ fun HomeScreenPreview() {
         HomeLayout(
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
-            updateNotification = { _, _ -> },
-            onRefresh = { _, _ -> },
             addingProcessState = AddingProcessState.NotStarted,
             selectedChannel = null,
             rssItems = emptyList(),
-            onChannelSelected = {},
             unreadItemsFlow = { _ -> flowOf(5) },
-            onItemClick = { _, _ -> }
+            onItemClick = { _, _ -> },
+            onEvent = {}
         )
     }
 }

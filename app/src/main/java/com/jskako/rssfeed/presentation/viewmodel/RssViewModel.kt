@@ -9,6 +9,7 @@ import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.domain.usecase.rss.database.PreferencesUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
+import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.utils.SELECTED_CHANNEL_KEY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,6 +30,36 @@ class RssViewModel(
 
     init {
         loadSelectedChannel()
+    }
+
+    fun onRssEvent(event: RssEvent) {
+        when (event) {
+            is RssEvent.DeleteChannel -> {
+                deleteRssChannel(rss = event.rss)
+            }
+
+            is RssEvent.FetchRssFeed -> {
+                fetchRssFeed(
+                    rss = event.rss,
+                    runRssExistCheck = event.runRssExistCheck,
+                    setSelected = event.setSelected
+                )
+            }
+
+            is RssEvent.HasBeenRead -> {
+                hasBeenRead(guid = event.guid, hasBeenRead = event.hasBeenRead)
+            }
+
+            is RssEvent.SelectChannel -> {
+                selectChannel(channel = event.channel)
+            }
+
+            is RssEvent.UpdateNotification -> {
+                updateNotification(rss = event.rss, isEnabled = event.isEnabled)
+            }
+
+            is RssEvent.FetchRssFeeds -> {}
+        }
     }
 
     private val _rssChannels = databaseDelegate.getRssChannels()
@@ -56,7 +87,7 @@ class RssViewModel(
         return databaseDelegate.getUnreadItemsCount(rss)
     }
 
-    fun hasBeenRead(guid: String, hasBeenRead: Boolean = true) = viewModelScope.launch {
+    private fun hasBeenRead(guid: String, hasBeenRead: Boolean = true) = viewModelScope.launch {
         databaseDelegate.updateReadStatus(guid = guid, hasBeenRead = hasBeenRead)
     }
 
@@ -84,7 +115,7 @@ class RssViewModel(
         }
     }
 
-    fun selectChannel(channel: RssChannel) {
+    private fun selectChannel(channel: RssChannel) {
         _selectedChannel.value = channel
         savePreference(
             key = SELECTED_CHANNEL_KEY,
@@ -92,17 +123,17 @@ class RssViewModel(
         )
     }
 
-    fun deleteRssChannels(rss: String) = viewModelScope.launch {
+    private fun deleteRssChannel(rss: String) = viewModelScope.launch {
         databaseDelegate.deleteRssChannel(rss = rss)
     }
 
-    fun updateNotification(rss: String, isEnabled: Boolean) {
+    private fun updateNotification(rss: String, isEnabled: Boolean) {
         viewModelScope.launch {
             databaseDelegate.updateNotification(rss, isEnabled)
         }
     }
 
-    fun fetchRssFeed(
+    private fun fetchRssFeed(
         rss: String,
         runRssExistCheck: Boolean = true,
         setSelected: Boolean = false

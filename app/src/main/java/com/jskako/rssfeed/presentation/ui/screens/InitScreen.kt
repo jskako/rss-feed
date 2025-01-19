@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.ui.layouts.home.InitConnectedLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
@@ -32,16 +33,18 @@ fun InitScreen(
 
     LaunchedEffect(Unit) {
         if (isConnected) {
-            viewModel.fetchRssFeeds(
-                onCurrentStepIndex = {
-                    currentStep = it
-                },
-                onTotalSteps = {
-                    totalSteps = it
-                },
-                onDone = {
-                    navigator.navigate(HomeScreenDestination())
-                }
+            viewModel.onRssEvent(
+                RssEvent.FetchRssFeeds(
+                    onCurrentStep = {
+                        currentStep = it
+                    },
+                    onTotalSteps = {
+                        totalSteps = it
+                    },
+                    onDone = {
+                        navigator.navigate(HomeScreenDestination())
+                    }
+                )
             )
         } else {
             navigator.navigate(HomeScreenDestination())

@@ -7,6 +7,7 @@ import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItem
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
+import com.jskako.rssfeed.presentation.event.RssEvent
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -15,9 +16,23 @@ class InitViewModel(
     private val databaseDelegate: DatabaseDelegate
 ) : ViewModel() {
 
+    fun onRssEvent(event: RssEvent) {
+        when (event) {
 
-    fun fetchRssFeeds(
-        onCurrentStepIndex: ((Int) -> Unit)? = null,
+            is RssEvent.FetchRssFeeds -> {
+                fetchRssFeeds(
+                    onCurrentStep = event.onCurrentStep,
+                    onTotalSteps = event.onTotalSteps,
+                    onDone = event.onDone
+                )
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun fetchRssFeeds(
+        onCurrentStep: ((Int) -> Unit)? = null,
         onTotalSteps: ((Int) -> Unit),
         onDone: () -> Unit
     ) = viewModelScope.launch {
@@ -27,7 +42,7 @@ class InitViewModel(
         onTotalSteps(rssList.size)
 
         rssList.forEachIndexed { index, rss ->
-            onCurrentStepIndex?.let {
+            onCurrentStep?.let {
                 it(index.inc())
             }
 

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem
+import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.components.IconButton
@@ -35,18 +36,15 @@ import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeLayout(
     navigateToRssManagementScreen: () -> Unit,
+    onEvent: (RssEvent) -> Unit,
     rssChannels: List<RssChannel>,
     rssItems: List<RssItem>,
     selectedChannel: RssChannel?,
-    onChannelSelected: (RssChannel) -> Unit,
     onItemClick: (guid: String, link: String?) -> Unit,
-    updateNotification: (rss: String, isEnabled: Boolean) -> Unit,
-    onRefresh: (rss: String, runRssExistCheck: Boolean) -> Unit,
     addingProcessState: AddingProcessState,
     unreadItemsFlow: (String) -> Flow<Int>
 ) {
@@ -105,14 +103,21 @@ fun HomeLayout(
                                 icon = Icons.Default.Notifications,
                                 tint = if (channel.notifications) LocalContentColor.current else MaterialTheme.colorScheme.outline,
                                 onClick = {
-                                    updateNotification(channel.rss, !channel.notifications)
+                                    onEvent(
+                                        RssEvent.UpdateNotification(
+                                            rss = channel.rss,
+                                            isEnabled = !channel.notifications
+                                        )
+                                    )
                                 }
                             )
                         }
                     },
                     isSelected = selectedChannel?.rss == channel.rss,
                     onClick = {
-                        onChannelSelected(channel)
+                        onEvent(
+                            RssEvent.SelectChannel(channel = channel)
+                        )
                     }
                 )
             }
@@ -135,9 +140,11 @@ fun HomeLayout(
         isRefreshing = addingProcessState == AddingProcessState.FetchingData,
         onPullToRefresh = selectedChannel?.rss?.let {
             {
-                scope.launch {
-                    onRefresh(it, false)
-                }
+                onEvent(
+                    RssEvent.FetchRssFeed(
+                        rss = it, runRssExistCheck = false
+                    )
+                )
             }
         }
     )
@@ -150,14 +157,12 @@ fun HomeLayoutPreview() {
         HomeLayout(
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
-            updateNotification = { _, _ -> },
-            onRefresh = { _, _ -> },
             addingProcessState = AddingProcessState.NotStarted,
             selectedChannel = null,
             rssItems = emptyList(),
-            onChannelSelected = {},
             unreadItemsFlow = { _ -> flowOf(5) },
-            onItemClick = { _, _ -> }
+            onItemClick = { _, _ -> },
+            onEvent = {}
         )
     }
 }
