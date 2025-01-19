@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.presentation.event.RssEvent
-import com.jskako.rssfeed.presentation.state.AddingProcessState
+import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.ui.components.InAppBanner
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeEmptyLayout
 import com.jskako.rssfeed.presentation.ui.layouts.home.HomeLayout
@@ -36,7 +36,7 @@ fun HomeScreen(
     BackHandler { }
 
     val rssChannels by viewModel.rssChannels.collectAsState()
-    val addingProcessState by viewModel.addingProcessState.collectAsState()
+    val rssWorkerState by viewModel.rssWorkerState.collectAsState()
     val selectedRss by viewModel.selectedRss.collectAsState()
     val rssItems by viewModel.rssItems.collectAsState()
 
@@ -59,7 +59,7 @@ fun HomeScreen(
                         )
                     },
                     rssChannels = rssChannels ?: emptyList(),
-                    addingProcessState = addingProcessState,
+                    rssWorkerState = rssWorkerState,
                     selectedRss = selectedRss,
                     rssItems = rssItems,
                     unreadItemsFlow = viewModel::observeUnreadCount,
@@ -98,7 +98,7 @@ fun HomeScreenPreview() {
         HomeLayout(
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
-            addingProcessState = AddingProcessState.NotStarted,
+            rssWorkerState = RssWorkerState.Idle,
             selectedRss = null,
             rssItems = emptyList(),
             unreadItemsFlow = { _ -> flowOf(5) },

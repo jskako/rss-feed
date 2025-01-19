@@ -27,7 +27,7 @@ import coil3.compose.AsyncImage
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.domain.model.database.RssItem
 import com.jskako.rssfeed.presentation.event.RssEvent
-import com.jskako.rssfeed.presentation.state.AddingProcessState
+import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.ui.components.GridDrawer
 import com.jskako.rssfeed.presentation.ui.components.IconButton
 import com.jskako.rssfeed.presentation.ui.components.cards.DrawerCard
@@ -46,7 +46,7 @@ fun HomeLayout(
     rssItems: List<RssItem>,
     selectedRss: String?,
     onItemClick: (guid: String, link: String?) -> Unit,
-    addingProcessState: AddingProcessState,
+    rssWorkerState: RssWorkerState,
     unreadItemsFlow: (String) -> Flow<Int>
 ) {
 
@@ -162,7 +162,7 @@ fun HomeLayout(
         onGridLeadingIconClick = {
             filterFavorites = !filterFavorites
         },
-        isRefreshing = addingProcessState == AddingProcessState.FetchingData,
+        isRefreshing = rssWorkerState == RssWorkerState.Running,
         onPullToRefresh = selectedRss?.let {
             {
                 onEvent(
@@ -182,7 +182,7 @@ fun HomeLayoutPreview() {
         HomeLayout(
             navigateToRssManagementScreen = {},
             rssChannels = emptyList(),
-            addingProcessState = AddingProcessState.NotStarted,
+            rssWorkerState = RssWorkerState.Idle,
             selectedRss = null,
             rssItems = emptyList(),
             unreadItemsFlow = { _ -> flowOf(5) },

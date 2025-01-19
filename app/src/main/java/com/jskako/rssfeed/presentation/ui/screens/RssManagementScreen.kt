@@ -3,7 +3,7 @@ package com.jskako.rssfeed.presentation.ui.screens
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.jskako.rssfeed.presentation.state.AddingProcessState
+import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.ui.layouts.RssManagementLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
@@ -21,14 +21,14 @@ fun RssManagementScreen(
 ) {
 
     val rssChannels by viewModel.rssChannels.collectAsState()
-    val addingProcessState by viewModel.addingProcessState.collectAsState()
+    val rssWorkerState by viewModel.rssWorkerState.collectAsState()
 
     RssManagementLayout(
         navigateBack = {
             navigator.navigateUp()
         },
         rssChannels = rssChannels ?: emptyList(),
-        addingProcessState = addingProcessState,
+        rssWorkerState = rssWorkerState,
         onEvent = viewModel::onRssEvent
     )
 }
@@ -40,7 +40,7 @@ fun RssManagementLayoutPreview() {
         RssManagementLayout(
             navigateBack = {},
             rssChannels = emptyList(),
-            addingProcessState = AddingProcessState.NotStarted,
+            rssWorkerState = RssWorkerState.Idle,
             onEvent = {}
         )
     }

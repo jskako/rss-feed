@@ -8,7 +8,6 @@ import com.jskako.rssfeed.domain.usecase.rss.database.PreferencesUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import com.jskako.rssfeed.presentation.delegate.worker.WorkerDelegate
 import com.jskako.rssfeed.presentation.event.RssEvent
-import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.utils.SELECTED_CHANNEL_KEY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -124,10 +123,6 @@ class RssViewModel(
         )
 
     val rssItems: StateFlow<List<RssItem>> = _rssItems
-
-    private val _addingProcessState =
-        MutableStateFlow<AddingProcessState>(AddingProcessState.NotStarted)
-    val addingProcessState: StateFlow<AddingProcessState> = _addingProcessState
 
     private fun savePreference(key: String, value: String) {
         viewModelScope.launch {

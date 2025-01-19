@@ -2,8 +2,10 @@ package com.jskako.rssfeed.data.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.WorkerParameters
 import com.jskako.rssfeed.core.utils.RSS_CHECK_WORKER_KEY
+import com.jskako.rssfeed.core.utils.RSS_ERROR_KEY
 import com.jskako.rssfeed.core.utils.RSS_WORKER_KEY
 import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItem
@@ -24,7 +26,6 @@ class RssWorker(
         val rssCheck = inputData.getBoolean(key = RSS_CHECK_WORKER_KEY, defaultValue = false)
 
         return runCatching {
-
             val feeds = apiUseCases.fetchRssFeeds(rss = rss, runRssExistCheck = rssCheck)
 
             val rssChannel = feeds.rssApiChannel.toRssChannel(
@@ -54,8 +55,12 @@ class RssWorker(
             onSuccess = {
                 Result.success()
             },
-            onFailure = {
-                Result.failure()
+            onFailure = { error ->
+                val errorData = Data.Builder()
+                    .putString(RSS_ERROR_KEY, error.message ?: "Unknown error occurred")
+                    .build()
+
+                Result.failure(errorData)
             }
         )
     }

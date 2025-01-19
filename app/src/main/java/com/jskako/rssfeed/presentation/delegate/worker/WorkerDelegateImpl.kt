@@ -7,8 +7,10 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.jskako.rssfeed.core.utils.RSS_CHECK_WORKER_KEY
+import com.jskako.rssfeed.core.utils.RSS_ERROR_KEY
 import com.jskako.rssfeed.core.utils.RSS_WORKER_KEY
 import com.jskako.rssfeed.data.worker.RssWorker
 import com.jskako.rssfeed.presentation.state.RssWorkerState
@@ -41,9 +43,28 @@ class WorkerDelegateImpl(
             .addTag(rss)
             .build()
 
-        WorkManager.getInstance(context).enqueue(rssWorkRequest)
+        val workManager = WorkManager.getInstance(context)
+        workManager.enqueue(rssWorkRequest)
 
-        _rssWorkerState.value = RssWorkerState.Fetched
+        workManager.getWorkInfoByIdLiveData(rssWorkRequest.id).observeForever { workInfo ->
+            when (workInfo?.state) {
+                WorkInfo.State.SUCCEEDED -> {
+                    _rssWorkerState.value = RssWorkerState.FetchDone(
+                        result = Result.success(null)
+                    )
+                }
+
+                WorkInfo.State.FAILED -> {
+                    val errorMessage =
+                        workInfo.outputData.getString(RSS_ERROR_KEY) ?: "Unknown error"
+                    _rssWorkerState.value = RssWorkerState.FetchDone(
+                        Result.failure(RuntimeException(errorMessage))
+                    )
+                }
+
+                else -> {}
+            }
+        }
     }
 
     override suspend fun schedulePeriodicRssWorker(rss: String) {

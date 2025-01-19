@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.domain.model.database.RssChannel
 import com.jskako.rssfeed.presentation.event.RssEvent
-import com.jskako.rssfeed.presentation.state.AddingProcessState
+import com.jskako.rssfeed.presentation.state.RssWorkerState
 import com.jskako.rssfeed.presentation.ui.components.AddRow
 import com.jskako.rssfeed.presentation.ui.components.ScaffoldTopBar
 import com.jskako.rssfeed.presentation.ui.components.cards.RssChannelRowCard
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 fun RssManagementLayout(
     navigateBack: () -> Unit,
     onEvent: (RssEvent) -> Unit,
-    addingProcessState: AddingProcessState,
+    rssWorkerState: RssWorkerState,
     rssChannels: List<RssChannel>
 ) {
 
@@ -43,25 +43,22 @@ fun RssManagementLayout(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(addingProcessState) {
-        addingProcessState.also {
-            when (it) {
-                is AddingProcessState.Done -> {
-                    it.result.fold(
-                        onSuccess = {
-                            input = ""
-                        },
-                        onFailure = { error ->
-                            scope.launch {
-                                error.message.showSnackbarMessage(snackbarHostState = snackbarHostState)
-                            }
+    LaunchedEffect(rssWorkerState) {
+        when (rssWorkerState) {
+            is RssWorkerState.FetchDone -> {
+                rssWorkerState.result.fold(
+                    onSuccess = {
+                        input = ""
+                    },
+                    onFailure = { error ->
+                        scope.launch {
+                            error.message.showSnackbarMessage(snackbarHostState = snackbarHostState)
                         }
-                    )
-                }
-
-                AddingProcessState.FetchingData -> {}
-                AddingProcessState.NotStarted -> {}
+                    }
+                )
             }
+
+            else -> {}
         }
     }
 
@@ -81,7 +78,7 @@ fun RssManagementLayout(
                 modifier = Modifier
                     .fillMaxWidth(),
                 input = input,
-                isRunning = addingProcessState == AddingProcessState.FetchingData,
+                isRunning = rssWorkerState == RssWorkerState.Running,
                 onInputChanged = {
                     input = it
                 },
@@ -121,7 +118,7 @@ fun RssManagementLayoutPreview() {
         RssManagementLayout(
             navigateBack = {},
             rssChannels = emptyList(),
-            addingProcessState = AddingProcessState.NotStarted,
+            rssWorkerState = RssWorkerState.Idle,
             onEvent = {}
         )
     }
