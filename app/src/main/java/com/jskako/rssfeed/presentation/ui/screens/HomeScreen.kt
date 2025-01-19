@@ -20,6 +20,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.RssManagementScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 
 @Destination<RootGraph>
@@ -61,7 +62,8 @@ fun HomeScreen(
                     addingProcessState = addingProcessState,
                     selectedChannel = selectedChannel,
                     rssItems = rssItems,
-                    onChannelSelected = viewModel::selectChannel
+                    onChannelSelected = viewModel::selectChannel,
+                    unreadItemsFlow = viewModel::observeUnreadCount
                 )
 
                 else -> HomeEmptyLayout(
@@ -89,7 +91,8 @@ fun HomeScreenPreview() {
             addingProcessState = AddingProcessState.NotStarted,
             selectedChannel = null,
             rssItems = emptyList(),
-            onChannelSelected = {}
+            onChannelSelected = {},
+            unreadItemsFlow = { _ -> flowOf(5) }
         )
     }
 }

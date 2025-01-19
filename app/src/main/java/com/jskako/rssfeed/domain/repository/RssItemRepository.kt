@@ -10,7 +10,7 @@ interface RssItemRepository {
     suspend fun get(guid: String): RssItem?
     suspend fun getLastUpdateDate(guid: String): Instant?
     suspend fun itemExists(guid: String): Boolean
-    suspend fun unreadItems(rss: String): Int
+    fun unreadItems(rss: String): Flow<Int>
     suspend fun updateReadStatus(guid: String, isEnabled: Boolean)
     suspend fun isFavorite(guid: String): Boolean
     suspend fun hasBeenRead(guid: String): Boolean

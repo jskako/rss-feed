@@ -26,7 +26,7 @@ interface RssItemDao {
     suspend fun itemExists(guid: String): Boolean
 
     @Query("SELECT COUNT(*) FROM rss_item WHERE rss = :rss AND has_been_read = 0")
-    suspend fun countUnreadItems(rss: String): Int
+    fun countUnreadItems(rss: String): Flow<Int>
 
     @Query("UPDATE rss_item SET has_been_read = :isEnabled WHERE guid = :guid")
     suspend fun updateReadStatus(guid: String, isEnabled: Boolean)

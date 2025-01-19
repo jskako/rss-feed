@@ -35,7 +35,7 @@ class RssItemIRepositoryImpl(
         return rssItemDao.itemExists(guid)
     }
 
-    override suspend fun unreadItems(rss: String): Int {
+    override fun unreadItems(rss: String): Flow<Int> {
         return rssItemDao.countUnreadItems(rss)
     }
 

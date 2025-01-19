@@ -12,6 +12,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,8 @@ import com.jskako.rssfeed.presentation.ui.components.cards.RssItemCard
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
 import com.jskako.rssfeed.presentation.ui.util.preview.PreviewLightDark
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,7 +46,8 @@ fun HomeLayout(
     onChannelSelected: (RssChannel) -> Unit,
     updateNotification: (rss: String, isEnabled: Boolean) -> Unit,
     onRefresh: (rss: String, runRssExistCheck: Boolean) -> Unit,
-    addingProcessState: AddingProcessState
+    addingProcessState: AddingProcessState,
+    unreadItemsFlow: (String) -> Flow<Int>
 ) {
 
     var itemsSearchText by remember { mutableStateOf("") }
@@ -71,6 +75,9 @@ fun HomeLayout(
         },
         drawerItems = {
             items(filteredChannels) { channel ->
+
+                val unreadCount by unreadItemsFlow(channel.rss).collectAsState(initial = 0)
+
                 DrawerCard(
                     text = channel.title ?: channel.rss,
                     leadingIcon = channel.imagePath?.let {
@@ -87,7 +94,7 @@ fun HomeLayout(
                             horizontalArrangement = Arrangement.spacedBy(s)
                         ) {
                             Text(
-                                text = "23",
+                                text = unreadCount.toString(),
                                 fontWeight = FontWeight.Bold,
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontSize = 12.sp
@@ -147,7 +154,8 @@ fun HomeLayoutPreview() {
             addingProcessState = AddingProcessState.NotStarted,
             selectedChannel = null,
             rssItems = emptyList(),
-            onChannelSelected = {}
+            onChannelSelected = {},
+            unreadItemsFlow = { _ -> flowOf(5) }
         )
     }
 }

@@ -24,6 +24,10 @@ class DatabaseDelegateImpl(
         return databaseItemUseCases.getRssItems(rss = rss)
     }
 
+    override fun getUnreadItemsCount(rss: String): Flow<Int> {
+        return databaseItemUseCases.getUnreadItemsCount(rss)
+    }
+
     override suspend fun deleteRssChannel(rss: String) {
         return databaseChannelUseCases.deleteRssChannel(rss = rss)
     }

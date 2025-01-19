@@ -12,6 +12,7 @@ import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import com.jskako.rssfeed.presentation.state.AddingProcessState
 import com.jskako.rssfeed.presentation.utils.SELECTED_CHANNEL_KEY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -49,6 +50,10 @@ class RssViewModel(
                 }
             }
         }
+    }
+
+    fun observeUnreadCount(rss: String): Flow<Int> {
+        return databaseDelegate.getUnreadItemsCount(rss)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

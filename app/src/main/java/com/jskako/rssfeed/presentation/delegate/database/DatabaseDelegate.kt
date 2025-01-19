@@ -9,6 +9,7 @@ interface DatabaseDelegate {
     fun getRssChannels(): Flow<List<RssChannel>>
     suspend fun getRssChannel(rss: String): RssChannel?
     fun getRssItems(rss: String): Flow<List<RssItem>>
+    fun getUnreadItemsCount(rss: String): Flow<Int>
     suspend fun deleteRssChannel(rss: String)
     suspend fun isNotificationEnabled(rss: String): Boolean
     suspend fun isFavorite(guid: String): Boolean

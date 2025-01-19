@@ -21,6 +21,9 @@ Here are some sample RSS feeds you can use to test the application:
 - **Unread Articles**: Track unread articles and stay informed.
 - **Notifications**: Receive notifications when new articles arrive, with background updates running hourly.
 - **Favorites**: Mark articles as favorites for easy access later.
+- **Pull to Refresh**: Easily fetch the latest data by pulling down on the screen.
+- **Offline Mode**: A network manager ensures smooth functionality even when offline.
+- **Landscape Mode**: Fully functional landscape orientation for better usability.
 
 ---
 
