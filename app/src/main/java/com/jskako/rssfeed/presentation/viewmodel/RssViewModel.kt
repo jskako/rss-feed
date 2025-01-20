@@ -33,7 +33,9 @@ class RssViewModel(
     fun onRssEvent(event: RssEvent) {
         when (event) {
             is RssEvent.DeleteChannel -> {
-                deleteRssChannel(rss = event.rss)
+                viewModelScope.launch {
+                    deleteRssChannel(rss = event.rss)
+                }
             }
 
             is RssEvent.FetchRssFeed -> {
@@ -51,7 +53,9 @@ class RssViewModel(
             }
 
             is RssEvent.HasBeenRead -> {
-                hasBeenRead(guid = event.guid, hasBeenRead = event.hasBeenRead)
+                viewModelScope.launch {
+                    hasBeenRead(guid = event.guid, hasBeenRead = event.hasBeenRead)
+                }
             }
 
             is RssEvent.SelectChannel -> {
@@ -106,7 +110,7 @@ class RssViewModel(
         return databaseDelegate.getUnreadItemsCount(rss)
     }
 
-    private fun hasBeenRead(guid: String, hasBeenRead: Boolean = true) = viewModelScope.launch {
+    private suspend fun hasBeenRead(guid: String, hasBeenRead: Boolean = true) {
         databaseDelegate.updateReadStatus(guid = guid, hasBeenRead = hasBeenRead)
     }
 
@@ -138,7 +142,7 @@ class RssViewModel(
         )
     }
 
-    private fun deleteRssChannel(rss: String) = viewModelScope.launch {
+    private suspend fun deleteRssChannel(rss: String) {
         databaseDelegate.deleteRssChannel(rss = rss)
     }
 
