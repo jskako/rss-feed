@@ -11,8 +11,9 @@ also mark articles as favorites for quick access.
 Here are some sample RSS feeds you can use to test the application:
 
 - [ABC News - US Headlines](https://abcnews.go.com/abcnews/usheadlines)
-- [The Guardian - US News](https://www.theguardian.com/us-news/rss)
-- [Christian Science Monitor - USA](https://rss.csmonitor.com/feeds/usa)
+- [NBC News - World](https://feeds.nbcnews.com/nbcnews/public/world)
+- [NPR - News](https://feeds.npr.org/1003/rss.xml)
+- [BuzzFeed - Politics](https://www.buzzfeed.com/politics.xml)
 - Explore more options
   from [this list](https://about.fb.com/wp-content/uploads/2016/05/rss-urls-1.pdf).
 
