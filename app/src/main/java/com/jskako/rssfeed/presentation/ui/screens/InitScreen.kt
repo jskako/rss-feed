@@ -4,9 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.jskako.rssfeed.presentation.event.RssEvent
 import com.jskako.rssfeed.presentation.ui.layouts.InitConnectedLayout
 import com.jskako.rssfeed.presentation.ui.theme.RssFeedTheme
@@ -28,19 +25,13 @@ fun InitScreen(
 ) {
 
     val isConnected by networkViewModel.isConnected.collectAsState()
-    var currentStep by remember { mutableIntStateOf(0) }
-    var totalSteps by remember { mutableIntStateOf(0) }
+    val currentStep by viewModel.currentStep.collectAsState()
+    val totalSteps by viewModel.totalSteps.collectAsState()
 
     LaunchedEffect(Unit) {
         if (isConnected) {
             viewModel.onRssEvent(
                 RssEvent.FetchRssFeeds(
-                    onCurrentStep = {
-                        currentStep = it
-                    },
-                    onTotalSteps = {
-                        totalSteps = it
-                    },
                     onDone = {
                         navigator.navigate(HomeScreenDestination())
                     }

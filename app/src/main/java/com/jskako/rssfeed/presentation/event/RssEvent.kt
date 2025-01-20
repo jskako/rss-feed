@@ -12,11 +12,7 @@ sealed interface RssEvent {
         val setSelected: Boolean = false
     ) : RssEvent
 
-    data class FetchRssFeeds(
-        val onCurrentStep: ((Int) -> Unit)? = null,
-        val onTotalSteps: ((Int) -> Unit),
-        val onDone: () -> Unit
-    ) : RssEvent
+    data class FetchRssFeeds(val onDone: () -> Unit) : RssEvent
 
     data class ScheduleWork(val rss: String) : RssEvent
     data class CancelWork(val rss: String) : RssEvent

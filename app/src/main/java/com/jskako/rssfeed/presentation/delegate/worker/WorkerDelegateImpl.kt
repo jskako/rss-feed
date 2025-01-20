@@ -25,7 +25,10 @@ class WorkerDelegateImpl(
     private val _rssWorkerState = MutableStateFlow<RssWorkerState>(RssWorkerState.Idle)
     override val rssWorkerState: StateFlow<RssWorkerState> = _rssWorkerState
 
-    override suspend fun scheduleRssWorker(rss: String, runRssExistCheck: Boolean) {
+    override suspend fun scheduleRssWorker(
+        rss: String,
+        runRssExistCheck: Boolean
+    ) {
         _rssWorkerState.value = RssWorkerState.Running
 
         val constraints = Constraints.Builder()
