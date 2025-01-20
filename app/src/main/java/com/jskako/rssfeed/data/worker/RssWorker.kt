@@ -4,21 +4,23 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
+import com.jskako.rssfeed.R
 import com.jskako.rssfeed.core.utils.RSS_CHECK_WORKER_KEY
 import com.jskako.rssfeed.core.utils.RSS_ERROR_KEY
 import com.jskako.rssfeed.core.utils.RSS_WORKER_KEY
 import com.jskako.rssfeed.domain.mapper.toRssChannel
 import com.jskako.rssfeed.domain.mapper.toRssItem
+import com.jskako.rssfeed.domain.notifications.NotificationSender
 import com.jskako.rssfeed.domain.usecase.rss.api.ApiUseCases
 import com.jskako.rssfeed.presentation.delegate.database.DatabaseDelegate
 import kotlinx.coroutines.flow.first
 
 class RssWorker(
-    context: Context,
+    private val context: Context,
     params: WorkerParameters,
     private val apiUseCases: ApiUseCases,
     private val databaseDelegate: DatabaseDelegate,
-    //private val notificationSender: NotificationSender
+    private val notificationSender: NotificationSender
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
@@ -45,12 +47,12 @@ class RssWorker(
 
             val unreadItems = databaseDelegate.getUnreadItemsCount(rss = rss).first()
 
-            /*if (unreadItems > 0) {
+            if (unreadItems > 0) {
                 notificationSender.sendNotification(
                     title = context.getString(R.string.rss_notification_title),
                     text = context.getString(R.string.rss_notification_desc, unreadItems)
                 )
-            }*/
+            }
         }.fold(
             onSuccess = {
                 Result.success()
