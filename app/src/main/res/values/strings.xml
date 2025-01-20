@@ -26,6 +26,8 @@
     <string name="unread_article">Unread article</string>
     <string name="rss_empty">Looks like you didn\'t add any rss feed yet.</string>
     <string name="add_rss_url">Add RSS url</string>
+    <string name="rss_notification_enabled">You will be notified about new posts</string>
+    <string name="rss_notification_disabled">We won\'t bother you about this RSS any more</string>
 
     <!-- Banners -->
     <string name="offline_mode_banner">Application is working in offline mode with limited functionalities.</string>

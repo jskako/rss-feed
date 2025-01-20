@@ -31,10 +31,10 @@ fun ScaffoldTopBar(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState? = null,
     @StringRes titleResId: Int? = null,
-    onNavigationIconClick: () -> Unit,
+    onNavigationIconClick: (() -> Unit)? = null,
     navigationIconId: ImageVector? = Icons.AutoMirrored.Filled.ArrowBack,
     @StringRes navigationIconContentDescriptionResId: Int? = R.string.back,
-    topBar: @Composable () -> Unit = {
+    topBar: (@Composable () -> Unit)? = {
         CenterAlignedTopAppBar(
             windowInsets = WindowInsets(zero),
             title = {
@@ -52,7 +52,7 @@ fun ScaffoldTopBar(
                     IconButton(
                         modifier = Modifier
                             .padding(horizontal = s),
-                        onClick = onNavigationIconClick,
+                        onClick = { onNavigationIconClick?.invoke() },
                         icon = it,
                         iconContentDescriptionResId = navigationIconContentDescriptionResId
                     )
@@ -70,7 +70,7 @@ fun ScaffoldTopBar(
         },
         modifier = modifier,
         topBar = {
-            topBar.invoke()
+            topBar?.invoke()
         }
     ) { paddingValues ->
         content(paddingValues)
