@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.jskako.rssfeed.presentation.ui.theme.Padding.l
 import com.jskako.rssfeed.presentation.ui.theme.Padding.s
 import com.jskako.rssfeed.presentation.ui.theme.Padding.xs
@@ -35,19 +34,19 @@ fun InitConnectedLayout(
     ) {
         CircularProgressIndicator(
             modifier = Modifier.size(xxl),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.background,
             strokeWidth = xs
         )
         Spacer(modifier = Modifier.height(l))
         Text(
             text = "$currentStep/$totalSteps",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.background,
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(s))
         Text(
             text = "Fetching new data",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.background,
             style = MaterialTheme.typography.bodyMedium
         )
     }

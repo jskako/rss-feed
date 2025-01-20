@@ -6,9 +6,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.jskako.rssfeed.R
 import com.jskako.rssfeed.presentation.ui.theme.Padding.m
@@ -42,7 +42,7 @@ fun AddRow(
                 IconButton(
                     modifier = Modifier.padding(end = s),
                     isEnabled = enabled && input.isNotBlank(),
-                    tint = if (enabled && input.isNotBlank()) LocalContentColor.current else Color.LightGray,
+                    tint = if (enabled && input.isNotBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                     icon = icon,
                     onClick = {
                         onIconClick(input)
