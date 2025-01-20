@@ -30,6 +30,7 @@ Here are some sample RSS feeds you can use to test the application:
 - **Pull to Refresh**: Easily fetch the latest data by pulling down on the screen.
 - **Offline Mode**: A network manager ensures smooth functionality even when offline.
 - **Landscape Mode**: Fully functional landscape orientation for better usability.
+- **Material3**: Light and Dark mode
 
 ---
 
