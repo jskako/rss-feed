@@ -53,7 +53,7 @@ class WorkerDelegateImpl(
             when (workInfo?.state) {
                 WorkInfo.State.SUCCEEDED -> {
                     _rssWorkerState.value = RssWorkerState.FetchDone(
-                        result = Result.success(null)
+                        result = Result.success(rss)
                     )
                 }
 

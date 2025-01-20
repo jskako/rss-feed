@@ -47,7 +47,12 @@ fun RssManagementLayout(
         when (rssWorkerState) {
             is RssWorkerState.FetchDone -> {
                 rssWorkerState.result.fold(
-                    onSuccess = {
+                    onSuccess = { rss ->
+                        rss?.let {
+                            onEvent(
+                                RssEvent.SelectChannel(rss = it)
+                            )
+                        }
                         input = ""
                     },
                     onFailure = { error ->
